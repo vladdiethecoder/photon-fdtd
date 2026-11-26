@@ -1,0 +1,12 @@
+[package]
+name = "photon-fdtd"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+rayon = "1.12"
+cudarc = { version = "0.19.10", default-features = false, features = ["std", "driver", "nvrtc", "dynamic-loading", "cuda-13010"] }
+
+[profile.release]
+codegen-units = 1
+lto = "fat"
