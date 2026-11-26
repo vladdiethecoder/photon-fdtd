@@ -1,0 +1,18 @@
+absorber reflection: test 512 x 512, reference 2048 x 2048, 1200 steps, point source at centre,
+Gaussian-sine lambda0 40 cells, t0 90 tau 30; probes 5 cells inside the absorber interface
+sponge 10 cells: reference exactly independent of its own walls (1 cell/step bound): true
+  normal (+x wall)   cell (496,256)  incident 7.026e-3  max|diff| 6.062e-4  R =  -21.3 dB (time max)   -21.2 dB (at f0)
+  diagonal (corner)  cell (496,496)  incident 5.936e-3  max|diff| 3.035e-3  R =   -5.8 dB (time max)    -5.5 dB (at f0)
+sponge 20 cells: reference exactly independent of its own walls (1 cell/step bound): true
+  normal (+x wall)   cell (486,256)  incident 7.168e-3  max|diff| 6.703e-4  R =  -20.6 dB (time max)   -17.1 dB (at f0)
+  diagonal (corner)  cell (486,486)  incident 6.065e-3  max|diff| 2.335e-3  R =   -8.3 dB (time max)    -7.6 dB (at f0)
+sponge 40 cells: reference exactly independent of its own walls (1 cell/step bound): true
+  normal (+x wall)   cell (466,256)  incident 7.515e-3  max|diff| 3.659e-4  R =  -26.3 dB (time max)   -26.4 dB (at f0)
+  diagonal (corner)  cell (466,466)  incident 6.353e-3  max|diff| 1.119e-3  R =  -15.1 dB (time max)   -15.1 dB (at f0)
+sponge 80 cells: reference exactly independent of its own walls (1 cell/step bound): true
+  normal (+x wall)   cell (426,256)  incident 8.351e-3  max|diff| 4.509e-5  R =  -45.4 dB (time max)   -57.0 dB (at f0)
+  diagonal (corner)  cell (426,426)  incident 7.059e-3  max|diff| 1.067e-4  R =  -36.4 dB (time max)   -47.9 dB (at f0)
+
+real	0m43.520s
+user	9m43.369s
+sys	0m29.424s

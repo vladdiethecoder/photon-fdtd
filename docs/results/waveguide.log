@@ -1,0 +1,26 @@
+grid 1200 x 600, sponge 40, strip rows 292..308 (width 16), lambda0 40 cells, pulse t0 300 tau 80
+Courant S = 0.700036 (limit 1/sqrt(2) = 0.707107), steps = 2572
+CFL guard: S = 1.001/sqrt(2) rejected -> CFL violated: S = 0.707813887967734 but the 2D Yee limit is 1/sqrt(2) = 0.7071067811865476
+
+[cpu silicon run 2.29 s]
+silicon strip eps_r = 12.11 in air:
+  energy left in grid / peak energy      = 4.96e-1
+  final energy inside band rows 284..316   = 0.9999 of grid energy
+  probe x=400: time-integrated Ez^2 in band = 0.9939 of column total
+  probe x=400: RMS transverse width        = 16.1 cells
+  pulse centre on axis at t_end          = x 507 (group velocity ~0.271 c, n_g ~3.69)
+control: all air:
+  energy left in grid / peak energy      = 4.54e-5
+  final energy inside band rows 284..316   = 0.0979 of grid energy
+  probe x=400: time-integrated Ez^2 in band = 0.0704 of column total
+  probe x=400: RMS transverse width        = 147.7 cells
+
+confinement verdict: TRAPPED in the silicon lane
+
+GPU vs CPU serial after 2572 steps: 0 of 720000 Ez values differ in bits
+CPU parallel vs CPU serial: 0 Ez values differ in bits
+snapshots: out/waveguide_si.ppm out/waveguide_air.ppm
+
+real	0m7.519s
+user	1m6.174s
+sys	0m8.131s
