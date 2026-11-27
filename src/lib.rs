@@ -14,6 +14,7 @@
 
 pub mod cpml;
 pub mod gpu;
+pub mod sparams;
 pub mod verify;
 
 use rayon::prelude::*;

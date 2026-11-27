@@ -222,3 +222,73 @@ fn gpu_viewer_kernels_paint_render_reset() {
     assert!(g.download_ez().unwrap().iter().all(|&e| e == 0.0));
     assert_eq!(bit_mismatches(&g.download_cb().unwrap(), &cb), 0, "reset keeps the geometry");
 }
+
+// ---- Stage 4: slab mode, ports and S-parameters (src/sparams.rs) ----
+
+use photon_fdtd::sparams::{
+    Geometry, PortSetup, Run, analytic_overlap, db, discrete_mode, measured_beta, slab_even_mode,
+};
+
+/// The grid-dispersion error |beta_analytic / beta_grid - 1| decreases by 4x
+/// when the resolution doubles (second order), so the analytic root is the
+/// continuum limit of the Yee eigenvalue. Single mode over the whole band.
+#[test]
+fn slab_mode_grid_dispersion_is_second_order() {
+    let (s1, s2) = (PortSetup::standard(Geometry::Straight, 1), PortSetup::standard(Geometry::Straight, 2));
+    let (e1, e2) = (s1.eps_column(), s2.eps_column());
+    for (f1, f2) in s1.freqs().into_iter().zip(s2.freqs()) {
+        let gap = |s: &PortSetup, e: &[f64], f: f64| {
+            slab_even_mode(s.core_w as f64, EPS_SI.sqrt(), 1.0, f).beta / discrete_mode(e, f, courant()).beta - 1.0
+        };
+        let (g1, g2) = (gap(&s1, &e1, f1), gap(&s2, &e2, f2));
+        assert!((3.8..4.2).contains(&(g1 / g2)), "lambda0 {:.1}: gap {g1:.3e} -> {g2:.3e}", 1.0 / f1);
+        assert!(g1.abs() < 2e-3);
+        assert_eq!(discrete_mode(&e1, f1, courant()).guided, 1, "not single mode at lambda0 {:.1}", 1.0 / f1);
+    }
+}
+
+/// Straight guide into the right CPML. Gates:
+/// - the measured beta (DFT phase along the slab) equals the grid eigenvalue within 1e-4,
+///   and the analytic beta within the grid-dispersion error + 1e-4;
+/// - the analytic profile overlaps the grid eigenmode to better than 1 - 1e-5;
+/// - |S11|^2 + |S21|^2 = 1 +- 1e-3 for the modal and for the flux S-parameters;
+/// - modal back-reflection from the 10-cell CPML <= -70 dB.
+#[test]
+fn straight_guide_mode_energy_balance_and_cpml_reflection() {
+    let st = PortSetup::standard(Geometry::Straight, 1);
+    assert!(st.reference_is_clean());
+    let (reference, dut) = (st.run(Run::Reference).unwrap(), st.run(Run::Dut).unwrap());
+    let eps = st.eps_column();
+    let s = st.sparams(&reference, &dut);
+    for (k, &f) in reference.freqs.iter().enumerate() {
+        let grid = discrete_mode(&eps, f, courant()).beta;
+        let an = slab_even_mode(st.core_w as f64, EPS_SI.sqrt(), 1.0, f).beta;
+        let me = measured_beta(&reference.axis[k]);
+        let l = 1.0 / f;
+        assert!((me / grid - 1.0).abs() <= 1e-4, "lambda0 {l:.1}: measured {me} grid {grid}");
+        assert!((me / an - 1.0).abs() <= (an / grid - 1.0).abs() + 1e-4, "lambda0 {l:.1}: measured {me} analytic {an}");
+        assert!(1.0 - analytic_overlap(&st, f) < 1e-5);
+        let (mode_sum, flux_sum) = (s.s11_mode[k] + s.s21_mode[k], s.s11[k] + s.s21[k]);
+        println!("lambda0 {l:.1}: S11 {:.1} dB, mode sum-1 {:.2e}, flux sum-1 {:.2e}", db(s.s11_mode[k]), mode_sum - 1.0, flux_sum - 1.0);
+        assert!((mode_sum - 1.0).abs() <= 1e-3 && (flux_sum - 1.0).abs() <= 1e-3);
+        assert!(db(s.s11_mode[k]) <= -70.0, "CPML modal reflection {:.1} dB", db(s.s11_mode[k]));
+    }
+}
+
+/// Baseline of the sharp 90-degree bend at the band centre (lambda0 = 146 cells):
+/// modal insertion loss 3.748 dB and return loss 6.69 dB (+- 0.05 dB). The
+/// run is deterministic; a change of these values means a change of the solver
+/// or of the setup. The Stage 5 optimiser must beat this benchmark.
+#[test]
+fn bend_90_baseline_insertion_and_return_loss() {
+    let bd = PortSetup::standard(Geometry::Bend, 1);
+    assert!(bd.reference_is_clean());
+    let s = bd.sparams(&bd.run(Run::Reference).unwrap(), &bd.run(Run::Dut).unwrap());
+    let k = bd.nf / 2;
+    let (il, rl) = (-db(s.s21_mode[k]), -db(s.s11_mode[k]));
+    println!("lambda0 {:.1}: IL {il:.3} dB, RL {rl:.2} dB, radiated {:.4}", 1.0 / s.freqs[k], 1.0 - s.s11_mode[k] - s.s21_mode[k]);
+    assert!((il - 3.748).abs() < 0.05 && (rl - 6.69).abs() < 0.05);
+    for k in 0..s.freqs.len() {
+        assert!(s.s11_mode[k] + s.s21_mode[k] < 1.0 && s.s11_mode[k] > 0.0 && s.s21_mode[k] > 0.0);
+    }
+}

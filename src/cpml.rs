@@ -35,6 +35,9 @@ impl Pml {
     /// Default profile. sigma_max = 0.8 (m + 1) / dx is the usual optimum for
     /// eta = 1. kappa_max = 1 and alpha_max = 0.05 come from the sweep in
     /// docs/verification.md: kappa_max > 1 made the grazing reflection worse.
+    /// The sweep used lambda0 = 40 cells (omega = 0.157). Keep alpha_max below
+    /// the lowest angular frequency of the run: at omega < alpha_max the CFS
+    /// term removes most of the absorption (Stage 4 uses 0.01 for lambda0 <= 200).
     pub fn new(cells: usize) -> Self {
         let m = 3.0;
         Self { cells, m, sigma_max: 0.8 * (m + 1.0), kappa_max: 1.0, alpha_max: 0.05, m_alpha: 1.0 }
