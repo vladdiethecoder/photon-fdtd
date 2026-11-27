@@ -1,6 +1,10 @@
 # photon-fdtd
 
-photon-fdtd is a minimal 2D TM_z Yee FDTD solver in Rust. It has a CPU backend (one thread or a rayon thread pool) and a CUDA backend for the RTX 5090 (sm_120). Both backends use flat, row-major `Vec<f64>` arrays and natural units (c = eps0 = mu0 = dx = 1). The two backends give bitwise identical fields. A CFS-CPML (Roden and Gedney, 2000) absorbs the outgoing waves. Its auxiliary arrays exist only in the boundary strips.
+photon-fdtd is a minimal 2D TM_z Yee FDTD solver in Rust. It has a CPU backend (one thread or a rayon thread pool) and a CUDA backend for the RTX 5090 (sm_120). Both backends use flat, row-major `Vec<f64>` arrays and natural units (c = eps0 = mu0 = dx = 1). The two backends give bitwise identical fields.
+
+A CFS-CPML (Roden and Gedney, 2000) absorbs the outgoing waves. Its auxiliary arrays exist only in the boundary strips. An optional interactive viewer (`--features gui`) shows the field live and lets you paint silicon with the mouse.
+
+![Viewer: a silicon strip with a 90-degree bend](docs/images/viewer_bend.png)
 
 ## Reproduce every claim
 
@@ -14,12 +18,14 @@ Run the demonstration binaries:
 	cargo run --release --bin waveguide -- --check-pml           # CPML reflection in dB against thickness
 	cargo run --release --bin waveguide -- --check-pml --sweep   # CPML parameter sweep (160 profiles)
 	cargo run --release --bin bench -- --cpu 2048,4096 --gpu 4096,8192
+	cargo run --release --features gui --bin viewer                # interactive viewer
+	cargo run --release --features gui --bin viewer -- --script examples/viewer_demo.script
 
 The GPU tests and the binaries need CUDA device 0. They compile the kernels for `sm_120` at run time with NVRTC.
 
 ## Status by claim
 
-All results come from commit `921ccb35809a5872e2981425fb169f3d2dd35507` on the machine in [Environment](#environment). The raw output of each run is in `docs/results/`.
+The solver results come from commit `921ccb35809a5872e2981425fb169f3d2dd35507`. The viewer results and the current test run come from commit `d6e23e8c9a3528007c2c537044ffc191b51796b5`, which adds the viewer and does not change the solver kernels. All runs used the machine in [Environment](#environment). The raw output of each run is in `docs/results/`.
 
 | Capability | Status | Evidence (entry point) |
 |---|---|---|
@@ -33,11 +39,15 @@ All results come from commit `921ccb35809a5872e2981425fb169f3d2dd35507` on the m
 | GPU byte offsets above 2^31 | Verified on 16384 x 20000 (2.62 GB per array) | `large_grid_16384x20000_gpu_corners_match_cpu` |
 | GPU rows above the CUDA gridDim.y limit (65535) | Verified on 64 x 70000 | `tall_grid_past_cuda_grid_y_limit_matches_cpu` |
 | Throughput (Mcells/s) | Measured | `bench`, docs/architecture.md |
+| Viewer kernels: brush, heat map orientation and colours, field reset | Verified without a display | `gpu_viewer_kernels_paint_render_reset` |
+| Viewer controls through egui (run, pause, step, brush, erase, source, gain, clear) | Verified by scripted pointer events, log and screenshots | `viewer --script examples/viewer_demo.script` |
+| Viewer image path: CUDA-GL interop with the image on the GPU | Verified on the RTX 5090 (GL renderer NVIDIA) | `docs/results/viewer_paths.log` |
+| Viewer input from a real mouse on KDE Wayland | Open. Not tested by an automated run. | none |
 | Flux, S-parameters | Open. Not implemented. | none |
 | CPML absorption of evanescent waves | Open. Not measured. | none |
 | Device selection, multi-GPU | Open. Device 0 is hard-coded. | none |
 
-Test suite result at that commit: 10 tests pass, 0 fail, 0 are ignored. The test binary ran for 12.4 s. The wall time from `cargo clean` to the end was 21.5 s, including the build.
+Test suite result at commit d6e23e8: 11 tests pass, 0 fail, 0 are ignored. The test binary ran for 9.2 s. `cargo test --release` does not build the GUI dependencies.
 
 ## CPML thickness
 
@@ -89,6 +99,32 @@ One cell update is one H update plus one E update of one cell, with the CPML str
 
 v0.1.0 used a conductive sponge. At 4096^2, it gave 12959.7 Mcells/s on the GPU and 498.1 Mcells/s on 24 CPU threads. The CPML removed the per-cell loss coefficients, so the minimum traffic decreased from 104 to 80 bytes per cell.
 
+## Interactive viewer
+
+	cargo run --release --features gui --bin viewer
+
+The core library has no GUI dependencies. Only the `viewer` binary uses eframe (egui with the glow OpenGL backend), and only with `--features gui`. The viewer opens a 1024 x 512 grid with a 10-cell CPML and a silicon strip that bends 90 degrees. A continuous-wave line source (lambda0 = 40 cells) drives the strip.
+
+The viewer has four groups of controls:
+
+- **Pause** or **Run**, **Step**, and a steps-per-frame slider.
+- The mouse tool: **Paint silicon** (eps_r 12.11) and **Erase to air** (eps_r 1) with a brush radius. A drag paints from the press point and fills the segments between frames.
+- **Place source**: click a cell to move the line source there.
+- **gain** for the heat map, and **Clear fields**. Red is +Ez and blue is -Ez. Silicon is grey.
+
+Each frame, the `render_rgba` CUDA kernel writes the image into an OpenGL pixel buffer that CUDA has mapped with `cuGraphicsGLRegisterBuffer`. OpenGL copies the buffer into the texture. Thus the field never goes to the host. If the registration fails, the viewer copies the 2 MiB RGBA image through the host and shows that path in the panel. From `docs/results/viewer_paths.log`:
+
+| Image path | Image time per frame |
+|---|---|
+| CUDA-GL interop | 0.266 ms |
+| Host copy (`--host-copy`) | 0.590 ms |
+
+The image time includes the render kernel, the texture update and `glFinish`. The display runs at 239.96 Hz. With 20 steps per frame, the viewer gives 2510 Mcells/s, which is 239 frames/s. Thus the display rate limits the viewer, not the image path.
+
+`--script FILE` replays pointer input as egui events, so scripted input goes through the same widgets and hit tests as a mouse. `examples/viewer_demo.script` uses every control and saves two screenshots. `docs/results/viewer_demo.log` has its output. F12 saves a screenshot at any time.
+
+![Viewer after the scripted edits: a second strip, a cut in the vertical arm, the source on the new strip](docs/images/viewer_edited.png)
+
 ## Environment
 
 - CPU: AMD Ryzen 9 7900X, 12 cores, 24 threads. 32 MiB L3 per CCD, 2 CCDs.
@@ -104,10 +140,11 @@ v0.1.0 used a conductive sponge. At 4096^2, it gave 12959.7 Mcells/s on the GPU 
 - The GPU backend uses CUDA device 0 only. The kernels compile for `sm_120` only.
 - The CPML is measured for propagating waves in air at three probe cells. Evanescent waves and the reflection of a guided mode in the silicon strip are not measured.
 - No test compares the numerical dispersion with the analytic Yee dispersion relation.
+- No automated run used a real mouse on the viewer. Synthetic XTest input from the desktop automation tool did not reach the viewer window on KDE Wayland. The scripted egui events replace it.
 - In the air control, the band-energy fraction at t_end is a ratio of residual energies near 6e-11 of the peak. For the air control, the probe metric is the reliable metric.
 
 ## Documentation
 
 - [docs/methodology.md](docs/methodology.md): the discrete equations, the CFL derivation, the CPML and the sources.
 - [docs/verification.md](docs/verification.md): what each test does, how the reflection is measured, and the parameter sweep.
-- [docs/architecture.md](docs/architecture.md): the memory layout, the strip layout, the CUDA mapping and the throughput analysis.
+- [docs/architecture.md](docs/architecture.md): the memory layout, the strip layout, the CUDA mapping, the viewer boundary and the throughput analysis.

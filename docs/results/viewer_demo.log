@@ -1,0 +1,30 @@
+GL: NVIDIA Corporation / NVIDIA GeForce RTX 5090/PCIe/SSE2
+CUDA: NVIDIA GeForce RTX 5090
+image path: CUDA-GL interop: image stays on the GPU
+screenshot out/viewer_1_bend.ppm at step 6080 (2515 Mcells/s, image path 0.265 ms / frame)
+script: ui run
+running = false
+script: ui step
+single step -> step 6141
+script: ui step
+single step -> step 6142
+script: ui run
+running = true
+script: ui paint
+script: drag cell (300, 400) -> (520, 400)
+brush eps_r 12.11 r 8 from cell (300, 400)
+brush stroke ended after 61 disks
+script: ui erase
+script: drag cell (585, 380) -> (635, 380)
+brush eps_r 1 r 8 from cell (585, 380)
+brush stroke ended after 21 disks
+script: ui source
+script: click cell (320, 400)
+source placed at (320, 400)
+script: ui gain at 0.4
+gain = 10.000
+script: ui gain at 0.2
+gain = 0.250
+script: ui clear
+fields cleared at step 7522
+screenshot out/viewer_2_edited.ppm at step 11582 (2601 Mcells/s, image path 0.270 ms / frame)

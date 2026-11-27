@@ -12,6 +12,8 @@ This document describes the data layout, the CPU and CUDA execution, and the mea
 | `src/verify.rs` | The scenarios for the binaries and the tests: `Strip`, `AbsorberCheck` |
 | `src/bin/waveguide.rs` | The silicon strip demonstration and `--check-pml` |
 | `src/bin/bench.rs` | The throughput measurement |
+| `src/bin/viewer.rs` | The interactive viewer. It builds only with `--features gui`. |
+| `examples/viewer_demo.script` | A scripted viewer session that uses every control |
 | `tests/verification.rs` | The verification suite |
 
 ## Memory layout
@@ -53,6 +55,33 @@ One step is six kernel launches in one stream: `update_h`, `psi_h_x`, `psi_h_y`,
 - The y-strip kernels have one block row for each of the 2W strip rows.
 
 Offsets are `size_t`, calculated as `(size_t)j * (size_t)nx + (size_t)i`. The kernels use no shared memory and no tiling. The L1 and L2 caches supply the neighbour values.
+
+## Viewer boundary
+
+The library (`src/lib.rs`, `src/cpml.rs`, `src/gpu.rs`, `src/verify.rs`) has no GUI dependency. The `gui` feature adds `eframe` and `libloading`, and only `src/bin/viewer.rs` uses them (`required-features = ["gui"]`). `cargo tree -e normal` without the feature lists no eframe, egui, winit or glow crate. Thus `cargo test --release` needs no display server.
+
+The library gives the viewer five headless functions on `GpuYee`:
+
+| Function | Kernel | Effect |
+|---|---|---|
+| `paint_disk(cx, cy, r, eps)` | `paint_disk` | Sets `cb` in a disk to `cb_coeff(dt, eps)`, calculated on the host |
+| `render_rgba_to_ptr(ptr, gain)` | `render_rgba` | Writes the RGBA8 heat map to any device address |
+| `render_rgba(&mut buf, gain)` | `render_rgba` | The same, into a `CudaSlice<u32>` |
+| `reset_fields()` | memset | Sets the fields and the psi arrays to zero. `cb` stays. |
+| `stream()` | none | The CUDA stream, for the interop calls |
+
+A painted cell holds the same `cb` bits as a cell that a constructor builds. Thus the CPU and GPU parity rules also apply to painted geometry.
+
+### Viewer frame
+
+One frame has these steps:
+
+1. `advance` enqueues the solver steps and the source updates.
+2. The viewer waits for the stream. Then `cuGraphicsMapResources` maps the GL pixel buffer, `render_rgba_to_ptr` writes the image into it, and `cuGraphicsUnmapResources` unmaps it. The unmap orders the CUDA work before the GL use.
+3. `glTexSubImage2D` copies the pixel buffer into the texture on the GPU.
+4. egui draws the texture as a native glow texture, and the panel widgets.
+
+The mapping needs a GL context on the same GPU as CUDA. The host has two GPUs (the RTX 5090 and a Radeon 610M). The GL context of the viewer runs on the RTX 5090 (GL renderer `NVIDIA GeForce RTX 5090/PCIe/SSE2`). If `cuGraphicsGLRegisterBuffer` fails, the viewer copies the image through the host instead.
 
 ## Throughput
 

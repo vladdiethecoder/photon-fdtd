@@ -1,0 +1,8 @@
+GL: NVIDIA Corporation / NVIDIA GeForce RTX 5090/PCIe/SSE2
+CUDA: NVIDIA GeForce RTX 5090
+image path: CUDA-GL interop: image stays on the GPU
+screenshot out/viewer_cap_interop.ppm at step 6040 (2510 Mcells/s, image path 0.266 ms / frame)
+GL: NVIDIA Corporation / NVIDIA GeForce RTX 5090/PCIe/SSE2
+CUDA: NVIDIA GeForce RTX 5090
+image path: host copy of the RGBA image (disabled by --host-copy)
+screenshot out/viewer_cap_host.ppm at step 6040 (2511 Mcells/s, image path 0.590 ms / frame)

@@ -8,7 +8,7 @@ All verification code is in `src/verify.rs`. The `waveguide` binary prints the r
 
 Use `--release`. In a debug build, the CPU runs are very slow. To see the measured values, add `-- --nocapture`.
 
-At commit `921ccb35809a5872e2981425fb169f3d2dd35507`, 10 tests pass. 0 tests fail, and 0 tests are ignored. The test binary runs for 12.4 s. `docs/results/test.log` has the full output.
+At commit `d6e23e8c9a3528007c2c537044ffc191b51796b5`, 11 tests pass. 0 tests fail, and 0 tests are ignored. The test binary runs for 9.2 s. `docs/results/test.log` has the full output. The CPML and throughput measurements below come from commit `921ccb3`. The solver kernels did not change between the two commits.
 
 ## Tests
 
@@ -24,6 +24,7 @@ At commit `921ccb35809a5872e2981425fb169f3d2dd35507`, 10 tests pass. 0 tests fai
 | `absorber_metric_detects_bare_pec` | With N = 0, the metric reports the reflection of bare PEC walls | normal and corner > -6 dB |
 | `large_grid_16384x20000_gpu_corners_match_cpu` | GPU offsets above 2^31 bytes are correct | 0 differing bits in two 25 x 25 corner patches |
 | `tall_grid_past_cuda_grid_y_limit_matches_cpu` | GPU rows above row 65535 get updates | 0 differing bits on all 4.48e6 cells |
+| `gpu_viewer_kernels_paint_render_reset` | The brush sets exactly the disk cells to the constructor's `cb` bits. The heat map puts row j at image row ny-1-j, with +Ez red, -Ez blue and silicon grey. Reset clears the fields and keeps `cb`. | exact bits and pixel values |
 
 ### Confinement criterion
 
@@ -75,6 +76,28 @@ The suggested grid of 16384 x 16385 does not cross 2^31 bytes in the updated cel
 ### Rows above the CUDA gridDim.y limit
 
 CUDA limits gridDim.y to 65535. The main kernels and the x-strip kernels launch min(ny, 65535) rows of blocks and use a loop with a grid stride over the rows. The test uses a 64 x 70000 grid with a second source near the top row, and it compares all cells with the CPU. In Stage 1, a mutation run confirmed that the test can fail: a loop that stops after one pass made the test fail.
+
+## Viewer
+
+The viewer needs a display, so `cargo test` does not run it. These runs verified it on the RTX 5090:
+
+	cargo run --release --features gui --bin viewer -- --script examples/viewer_demo.script
+	cargo run --release --features gui --bin viewer -- --capture out/a.ppm --steps 6000
+	cargo run --release --features gui --bin viewer -- --host-copy --capture out/b.ppm --steps 6000
+
+The script sends egui pointer events through `raw_input_hook`. The events go through the same widgets and hit tests as a mouse. `docs/results/viewer_demo.log` shows each effect:
+
+- **Pause** stopped the run, two **Step** clicks advanced the step counter from 2540 to 2542, and **Run** continued.
+- The silicon brush painted from the press cell (300, 400), with 61 disks. The erase brush started at cell (585, 380), with 21 disks.
+- A click with **Place source** moved the source to (320, 400).
+- Two clicks on the gain slider set the gain to 10.000 and then 0.250.
+- **Clear fields** cleared the fields at step 3922.
+
+`docs/images/viewer_edited.png` is the second screenshot of the script. It shows the new strip, the cut in the vertical arm, and the source on the new strip.
+
+`docs/results/viewer_paths.log` shows that the viewer used CUDA-GL interop by default and the host copy with `--host-copy`.
+
+A real-mouse test was tried and did not work. The desktop automation tool sent XTest drags to the viewer under XWayland, but no input reached the viewer, and the viewer log stayed empty. The first drag used the background route. The tool reported that route as global input, so the drag may have gone to another window on the desktop. No automated test covers real mouse input.
 
 ## Absorber reflection
 
