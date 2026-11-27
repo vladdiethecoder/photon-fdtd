@@ -40,7 +40,7 @@ Paths under `out/` are local working outputs. The release copies are under
 
 | Gate | Status | Artifact | Evidence |
 |---|---|---|---|
-| Tuning allowance (6 runs, cap 300, seed 0, sharp L) | done | `out/stage6/phase2/tuning/chosen.json` | best J at 300: adjoint lr 0.05 18.09 vs 0.10 19.61; CMA-ES sigma0 0.30 15.03 vs 0.15 21.23; PPO lr 0.05 20.01 vs 0.02 21.94 (no tuning run reached a feasible design below J 15); tuning cost 1789 charged, about 23 min |
+| Tuning allowance (6 runs, cap 300, seed 0, sharp L) | done | `out/stage6/phase2/tuning/chosen.json` | best J at 300: adjoint lr 0.05 18.09 vs 0.10 19.61; CMA-ES sigma0 0.30 15.03 vs 0.15 21.23; PPO lr 0.05 20.01 vs 0.02 21.94 (no tuning run reached a feasible design below J 15); tuning cost 1778 charged, 1376 s wall |
 | Production (15 runs, cap 1200) | running | `out/stage6/phase2/runs/` | |
 | Finalist validation | open | `out/stage6/phase2/validate/` | |
 
