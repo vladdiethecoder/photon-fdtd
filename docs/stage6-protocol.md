@@ -1,4 +1,7 @@
-# Stage 6 protocol (version 2)
+# Stage 6 protocol (version 2.1)
+
+Version 2.1 corrects the definition of target T1 (section 8) and the sentence
+about J in section 5. Both changes were made before any production run.
 
 This protocol is fixed before any Stage 6 production trial. It replaces
 `docs/stage6-benchmark-protocol.md` (version 1), which no production run used.
@@ -73,7 +76,10 @@ For a binary nominal mask that meets the geometry gates:
 
 on the training spectrum. A mask that fails a geometry gate gets
 J = 100 + (number of violations) and no FDTD run. Lower J is better. A mask
-that meets the performance gates on the training spectrum has J < 0.50.
+that meets the performance gates on the training spectrum has J < 0.50, but
+J < 0.50 alone does not show RL >= 22 dB (for example, IL 0.30 dB with RL
+21.9 dB gives J = 0.40). The performance gates are therefore tested on the
+spectra, not on J.
 
 ## 6. Conventional baselines (phase 1)
 
@@ -187,7 +193,8 @@ Tuning cost is reported separately from production cost.
   that meet the performance gates.
 - For each method: the five runs, the median, and the range.
 - Time to target, as charged cost and wall time, for two targets:
-  T1 = J < 0.50 (the performance gates on the training spectrum), and
+  T1 = the first scored mask that meets the geometry gates and the performance
+  gates of section 4 on the training spectrum, and
   T2 = J <= (J of the best tested baseline) - 0.10. A run that does not reach
   a target is reported as "not reached".
 - Failed and infeasible runs stay in every plot and table.
