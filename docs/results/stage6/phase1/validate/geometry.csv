@@ -1,0 +1,19 @@
+design,scale,variant,silicon_cells,ports_connected,floating_silicon,enclosed_air,islands,width_violations,gap_violations,min_width,min_gap,feasible
+phase1 r_f 6,1,eroded,1525,true,0,0,0,0,0,12,12,true
+phase1 r_f 6,1,nominal,1706,true,0,0,0,0,0,12,12,true
+phase1 r_f 6,1,dilated,1887,true,0,0,0,0,0,10,12,true
+phase1 r_f 6,2,eroded,6113,true,0,0,0,0,6,24,1,false
+phase1 r_f 6,2,nominal,6835,true,0,0,0,0,0,24,24,true
+phase1 r_f 6,2,dilated,7557,true,0,0,0,10,0,2,24,false
+baseline bezier:0.45,1,eroded,1394,true,0,0,0,0,0,12,12,true
+baseline bezier:0.45,1,nominal,1565,true,0,0,0,0,0,12,12,true
+baseline bezier:0.45,1,dilated,1736,true,0,0,0,0,0,12,12,true
+baseline bezier:0.45,2,eroded,5571,true,0,0,0,0,8,18,2,false
+baseline bezier:0.45,2,nominal,6255,true,0,0,0,0,0,18,18,true
+baseline bezier:0.45,2,dilated,6939,true,0,0,0,8,0,2,18,false
+baseline arc,1,eroded,1428,true,0,0,0,0,0,12,10,true
+baseline arc,1,nominal,1609,true,0,0,0,0,0,12,10,true
+baseline arc,1,dilated,1790,true,0,0,0,0,0,12,10,true
+baseline arc,2,eroded,5711,true,0,0,0,0,8,24,2,false
+baseline arc,2,nominal,6435,true,0,0,0,0,0,24,24,true
+baseline arc,2,dilated,7159,true,0,0,0,8,0,2,24,false

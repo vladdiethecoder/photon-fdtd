@@ -1,0 +1,4 @@
+{
+  "rf6": {"eta_e": 0.641366102, "eta_d": 0.358633898, "arc_area": 1609, "eroded_area": 1428, "dilated_area": 1790, "filtered_area_at_0.5": 1609},
+  "rf8": {"eta_e": 0.607312731, "eta_d": 0.394539504, "arc_area": 1609, "eroded_area": 1428, "dilated_area": 1790, "filtered_area_at_0.5": 1607}
+}

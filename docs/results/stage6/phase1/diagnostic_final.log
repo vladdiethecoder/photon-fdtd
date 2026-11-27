@@ -1,0 +1,5 @@
+diagnostic phase1 final iterate (fails L_min) robust IL / RL: train 0.0877 / 24.41  held-out 61 0.0877 / 24.41  scale 2 0.0926 / 23.76  geometry false  gates FAIL
+    eroded   train 0.0877 / 24.41  61 0.0877 / 24.41  scale 2 0.0926 / 23.76  grid change IL +0.0049 dB RL -0.65 dB
+    nominal  train 0.0712 / 33.20  61 0.0712 / 33.14  scale 2 0.0756 / 34.15  grid change IL +0.0044 dB RL +0.95 dB
+    dilated  train 0.0858 / 26.24  61 0.0858 / 26.24  scale 2 0.0891 / 26.42  grid change IL +0.0033 dB RL +0.17 dB
+83 s

@@ -1,0 +1,14 @@
+phase1 r_f 6               robust IL / RL: train 0.2737 / 22.50  held-out 61 0.2737 / 22.31  scale 2 0.2724 / 22.59  geometry true  gates PASS
+    eroded   train 0.2737 / 27.98  61 0.2737 / 27.86  scale 2 0.2724 / 26.67  grid change IL -0.0013 dB RL -1.31 dB
+    nominal  train 0.2006 / 28.78  61 0.2006 / 28.60  scale 2 0.1999 / 29.05  grid change IL -0.0007 dB RL +0.27 dB
+    dilated  train 0.1799 / 22.50  61 0.1799 / 22.31  scale 2 0.1795 / 22.59  grid change IL -0.0004 dB RL +0.09 dB
+baseline bezier:0.45       robust IL / RL: train 0.3306 / 23.21  held-out 61 0.3306 / 23.00  scale 2 0.3299 / 23.16  geometry true  gates PASS
+    eroded   train 0.3306 / 25.76  61 0.3306 / 25.75  scale 2 0.3299 / 27.93  grid change IL -0.0007 dB RL +2.18 dB
+    nominal  train 0.2586 / 31.10  61 0.2586 / 31.07  scale 2 0.2589 / 32.83  grid change IL +0.0002 dB RL +1.74 dB
+    dilated  train 0.2445 / 23.21  61 0.2445 / 23.00  scale 2 0.2471 / 23.16  grid change IL +0.0026 dB RL -0.05 dB
+baseline arc               robust IL / RL: train 0.3625 / 25.25  held-out 61 0.3625 / 24.99  scale 2 0.3614 / 25.96  geometry true  gates PASS
+    eroded   train 0.3625 / 25.25  61 0.3625 / 24.99  scale 2 0.3614 / 26.13  grid change IL -0.0012 dB RL +0.88 dB
+    nominal  train 0.2580 / 40.91  61 0.2580 / 40.89  scale 2 0.2578 / 41.81  grid change IL -0.0001 dB RL +0.91 dB
+    dilated  train 0.2166 / 25.73  61 0.2166 / 25.73  scale 2 0.2180 / 25.96  grid change IL +0.0014 dB RL +0.22 dB
+win test phase1 r_f 6 vs baseline bezier:0.45: gains 0.0569 / 0.0569 / 0.0575 dB (train / 61 / scale 2), largest |grid change| 0.0026 dB, gates true -> NO WIN
+113 s

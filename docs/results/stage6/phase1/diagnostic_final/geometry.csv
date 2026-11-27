@@ -1,0 +1,7 @@
+design,scale,variant,silicon_cells,ports_connected,floating_silicon,enclosed_air,islands,width_violations,gap_violations,min_width,min_gap,feasible
+diagnostic phase1 final iterate (fails L_min),1,eroded,2205,true,1,0,0,16,0,1,5,false
+diagnostic phase1 final iterate (fails L_min),1,nominal,2445,true,1,0,0,8,11,2,3,false
+diagnostic phase1 final iterate (fails L_min),1,dilated,2682,true,1,1,1,11,28,2,1,false
+diagnostic phase1 final iterate (fails L_min),2,eroded,8795,true,1,0,0,42,23,1,1,false
+diagnostic phase1 final iterate (fails L_min),2,nominal,9750,true,1,0,0,22,60,1,4,false
+diagnostic phase1 final iterate (fails L_min),2,dilated,10707,true,0,2,2,18,95,1,1,false
