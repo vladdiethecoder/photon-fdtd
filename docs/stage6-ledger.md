@@ -70,5 +70,5 @@ Paths under `out/` are local working outputs. The release copies are under
 
 ## Commits
 
-- Code and results tested by the final receipts: `48d6220` (clean clone: 24 tests pass, both builds, Stage 5 fixture identical, layouts byte-identical, RTL testbench 2 of 2).
-- After it: `release/receipts/`, `release/release.json`, `release/SHA256SUMS`, the `--portfolio-href` option of `tools/build_site.py` (page back link for GitHub Pages), and this ledger. None of them changes the solver, the tests, the RTL, or the layout files.
+- v0.6.0-rc1: tag on `aff5e78`; receipts of `48d6220`.
+- v0.6.0: receipts of `93c1176` (clean clone: 24 tests pass, both builds, Stage 5 fixture identical, layouts byte-identical, RTL testbench 2 of 2, Lean proof builds with only the standard axioms). The tagged commit after it adds only `release/receipts/`, `release/release.json`, `release/SHA256SUMS` and this ledger.

@@ -1,5 +1,5 @@
 {
-  "commit": "48d62201845fb49ef98598e5a264f34a3cbd1907",
+  "commit": "93c1176b012d105339242919f36d4c758be8d355",
   "clean_checkout": true,
   "toolchain": "rustc 1.96.0 (ac68faa20 2026-05-25);cargo 1.96.0 (30a34c682 2026-05-25);",
   "gpu": "NVIDIA GeForce RTX 5090, 615.78.08",
@@ -8,5 +8,6 @@
   "viewer_build": true,
   "stage5_fixture_identical": true,
   "release_layout_rebuilt_byte_identical": true,
-  "rtl_testbench_cases_passed": "2 of 2"
+  "rtl_testbench_cases_passed": "2 of 2",
+  "lean_proof_builds_without_sorry": "true"
 }

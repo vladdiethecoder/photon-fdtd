@@ -1,0 +1,18 @@
+'YeeEnergy.energy_conserved' depends on axioms: [propext, Classical.choice, Quot.sound]
+'YeeEnergy.energy2_conserved' depends on axioms: [propext, Classical.choice, Quot.sound]
+'YeeEnergy.density_step' depends on axioms: [propext, Classical.choice, Quot.sound]
+'YeeEnergy.density_step_2d' depends on axioms: [propext, Classical.choice, Quot.sound]
+@YeeEnergy.energy_conserved : ∀ {R : Type} [inst : Lean.Grind.CommRing R] (n : Nat) (c : R) (e h : Int → R),
+  YeeEnergy.Periodic n e →
+    YeeEnergy.Periodic n h →
+      YeeEnergy.energy n c (YeeEnergy.eNext c e h) (YeeEnergy.hNext c e h) = YeeEnergy.energy n c e h
+@YeeEnergy.energy2_conserved : ∀ {R : Type} [inst : Lean.Grind.CommRing R] (nx ny : Nat) (cx cy : R)
+  (e hx hy : Int → Int → R),
+  YeeEnergy.Periodic2 nx ny e →
+    YeeEnergy.Periodic2 nx ny hx →
+      YeeEnergy.Periodic2 nx ny hy →
+        YeeEnergy.energy2 nx ny cx cy (YeeEnergy.eNext2 cx cy e hx hy) (YeeEnergy.hxNext cy e hx)
+            (YeeEnergy.hyNext cx e hy) =
+          YeeEnergy.energy2 nx ny cx cy e hx hy
+[525, 525, 525, 525, 525, 525, 525, 525, 525, 525, 525]
+[1710, 1710, 1710, 1710, 1710, 1710, 1710, 1710, 1710, 1710, 1710]

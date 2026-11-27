@@ -1,5 +1,5 @@
 tb_yee1d rtl/vectors/nominal: 400 steps, 51600 words checked, 0 mismatches, final ovf 0 -> PASS
 - rtl/tb_yee1d.sv:97: Verilog $finish
 - S i m u l a t i o n   R e p o r t: Verilator 5.046 2026-02-28
-- Verilator: $finish at 16us; walltime 0.010 s; speed 1.912 ms/s
-- Verilator: cpu 0.008 s on 1 threads; allocated 7 MB
+- Verilator: $finish at 16us; walltime 0.010 s; speed 1.849 ms/s
+- Verilator: cpu 0.009 s on 1 threads; allocated 7 MB

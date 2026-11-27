@@ -7,5 +7,5 @@
    Compiling either v1.19.0
    Compiling libloading v0.9.1
    Compiling rayon v1.12.0
-   Compiling photon-fdtd v0.6.0-rc.1 (/run/media/vdubrov/NVMe-Storage/.tmp/photon-fdtd-clean-48d62201845fb49ef98598e5a264f34a3cbd1907)
-    Finished `release` profile [optimized] target(s) in 8.67s
+   Compiling photon-fdtd v0.6.0 (/run/media/vdubrov/NVMe-Storage/.tmp/photon-fdtd-clean-93c1176b012d105339242919f36d4c758be8d355)
+    Finished `release` profile [optimized] target(s) in 8.76s
