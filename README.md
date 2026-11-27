@@ -153,5 +153,6 @@ The image time includes the render kernel, the texture update and `glFinish`. Th
 
 - [docs/methodology.md](docs/methodology.md): the discrete equations, the CFL derivation, the CPML and the sources.
 - [docs/verification.md](docs/verification.md): what each test does, how the reflection is measured, and the parameter sweep.
+- [docs/inverse-design.md](docs/inverse-design.md): the Stage 5 design region, the baselines and the proposed gates (work in progress).
 - [docs/sparams.md](docs/sparams.md): the slab mode, the mode source, the ports, the S-parameters and the bend benchmark.
 - [docs/architecture.md](docs/architecture.md): the memory layout, the strip layout, the CUDA mapping, the viewer boundary and the throughput analysis.

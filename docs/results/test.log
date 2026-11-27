@@ -1,48 +1,56 @@
-   Compiling photon-fdtd v0.3.0 (/home/vdubrov/photon-fdtd)
-    Finished `release` profile [optimized] target(s) in 5.95s
-     Running unittests src/lib.rs (target/release/deps/photon_fdtd-b27ff297e229d8a6)
+    Finished `release` profile [optimized] target(s) in 0.04s
+     Running unittests src/lib.rs (target/release/deps/photon_fdtd-8863b660e40b4229)
 
 running 0 tests
 
 test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
 
-     Running unittests src/bin/bench.rs (target/release/deps/bench-3e56a96c5060224c)
+     Running unittests src/bin/bench.rs (target/release/deps/bench-88b1c45d38c7132f)
 
 running 0 tests
 
 test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
 
-     Running unittests src/bin/sparams.rs (target/release/deps/sparams-4e32755ff4246caa)
+     Running unittests src/bin/bend_design.rs (target/release/deps/bend_design-52d1996fbe5b4938)
 
 running 0 tests
 
 test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
 
-     Running unittests src/bin/waveguide.rs (target/release/deps/waveguide-14044eeffeca46d1)
+     Running unittests src/bin/sparams.rs (target/release/deps/sparams-91a6450ebc8010d2)
 
 running 0 tests
 
 test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
 
-     Running tests/verification.rs (target/release/deps/verification-b441697ba9f5b1df)
+     Running unittests src/bin/waveguide.rs (target/release/deps/waveguide-da02c7462e43640d)
 
-running 14 tests
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/verification.rs (target/release/deps/verification-5bd7aae93eadb40c)
+
+running 17 tests
 test cfl_guard_rejects_courant_above_2d_limit ... ok
+test design_metrics_binary_fraction_and_islands ... ok
+test design_filter_projection_and_pullback ... ok
 test slab_mode_grid_dispersion_is_second_order ... ok
 test gpu_viewer_kernels_paint_render_reset ... ok
 test bit_parity_serial_parallel_gpu_512x256 ... ok
 test large_grid_16384x20000_gpu_corners_match_cpu ... ok
 test absorber_metric_detects_bare_pec ... ok
 test absorber_reflection_db ... ok
-test absorber_reflection_grazing_db ... ok
 test bit_parity_cpml_corner_non_square_300x170 ... ok
+test absorber_reflection_grazing_db ... ok
 test straight_guide_mode_energy_balance_and_cpml_reflection ... ok
 test bend_90_baseline_insertion_and_return_loss ... ok
 test confinement_and_parity_1200x600 ... ok
 test confinement_and_parity_600x1200 ... ok
 test tall_grid_past_cuda_grid_y_limit_matches_cpu ... ok
+test design_box_forward_evaluation_and_baselines ... ok
 
-test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 11.48s
+test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 12.19s
 
    Doc-tests photon_fdtd
 
@@ -50,7 +58,3 @@ running 0 tests
 
 test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
 
-
-real	0m17.506s
-user	3m9.078s
-sys	0m16.899s
