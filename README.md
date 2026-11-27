@@ -48,6 +48,8 @@ The CPML and throughput results come from commit `921ccb35809a5872e2981425fb169f
 | Guided mode into the 10-cell CPML | Verified: modal back-reflection -83.4 dB or lower (alpha_max = 0.01) | `straight_guide_mode_energy_balance_and_cpml_reflection` |
 | Straight guide energy balance | Verified: modal |S11|^2 + |S21|^2 = 1 within 4.3e-6, flux within 9.3e-4 | `straight_guide_mode_energy_balance_and_cpml_reflection` |
 | Sharp 90-degree bend benchmark (lambda0 = 146 cells) | Measured: modal IL 3.748 dB, RL 6.69 dB, 36.4 % radiated | `bend_90_baseline_insertion_and_return_loss` |
+| Adjoint gradient of the modal bend transmission (2D TMz) | Verified against finite differences: per cell, directional (4 step sizes) and full chain, ratio within 1e-4 | `adjoint_gradient_matches_finite_differences` |
+| Inverse-designed bend, 48 x 48 box (2D TMz) | Verified under docs/stage5-protocol.md: worst IL 0.2586 dB, worst RL 23.36 dB (61 freqs); 0.33 dB better than the best conventional baseline, U = 0.0073 dB | `stage5_optimised_design_meets_gates`, docs/inverse-design.md |
 | CPML absorption of evanescent waves | Open. Not measured. | none |
 | Device selection, multi-GPU | Open. Device 0 is hard-coded. | none |
 
