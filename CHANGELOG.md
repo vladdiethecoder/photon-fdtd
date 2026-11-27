@@ -3,7 +3,7 @@
 All results are for the 2D TMz model in natural units. No entry claims 3D
 silicon-on-insulator performance or fabrication readiness.
 
-## v0.6.0-rc1 (release candidate, not yet tagged)
+## v0.6.0-rc1 (release candidate)
 
 Robust 80 x 80 bend, layout export with an independent check, optimiser
 benchmark, project page, and a fixed-point RTL stencil. The protocol
@@ -24,7 +24,8 @@ Added
 - Layered GDSII and SVG export (`export_layout`) and the independent checker
   and certificate (`tools/check_layout.py`).
 - Fixed-point 1D Yee stencil in SystemVerilog (`rtl/`) with a bit-exact Rust
-  reference, golden vectors and a self-checking testbench (not yet simulated).
+  reference, golden vectors and a self-checking testbench; Verilator 5.046:
+  0 mismatches on both cases, a rounding mutant fails.
 - Plots, field movie, project page and release tooling (`tools/`).
 
 Results
@@ -34,8 +35,10 @@ Results
   conventional bend (Bezier k = 0.45, 0.3306 dB) by 0.1595 / 0.1588 / 0.1611 dB
   (training / held-out / half-cell grid). The protocol did not name the release
   design; it is the lowest training-set J among the designs that pass every gate.
-- Full-resolution phase 1 design: robust IL 0.2737 dB, RL 22.31 dB held-out;
-  passes every gate; no win (gain 0.057 dB, below the pre-registered 0.10 dB).
+- Full-resolution phase 1 design (`bend80_phase1.gds`, kept as the record of
+  the unconstrained-grid failure mode): robust IL 0.2737 dB, RL 22.31 dB
+  held-out; passes every gate; no win (gain 0.057 dB, below the
+  pre-registered 0.10 dB).
 - Failure mode: 23 of 25 scored masks of the full-resolution run broke the
   5-cell rule; the final relaxed iterate (0.0877 dB) is not feasible.
 - Benchmark (5 seeds, cap 1200 charged): adjoint median best J 0.2166 dB
@@ -51,8 +54,8 @@ Results
 - Clean-checkout receipts: `release/receipts/receipts.json`.
 
 Not verified
-- The RTL has not been simulated (no HDL simulator installed).
-- No Lean proof (Lean is not installed; optional).
+- No synthesis figures (no synthesis tool).
+- No Lean proof in this release candidate (optional).
 
 ## v0.5.0 (2026-11-26)
 

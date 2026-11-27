@@ -13,6 +13,8 @@
 // overflow flag `ovf`. E[0] and E[N-1] stay 0 (PEC ends). `rst` clears the
 // fields and `ovf`.
 
+`timescale 1ns / 1ps
+
 module yee1d #(
     parameter int N   = 64,
     parameter int W   = 18,
@@ -42,11 +44,14 @@ module yee1d #(
     typedef enum logic [1:0] {IDLE, PH_H, PH_E} state_t;
     state_t state;
 
+    // The upper bits of q are sign copies (|q| < 2^20), so the truncation to SW bits is exact.
+    /* verilator lint_off UNUSEDSIGNAL */
     function automatic logic signed [SW-1:0] rnd(input logic signed [PW-1:0] p);
         logic signed [PW-1:0] q;
         q = (p + HALF) >>> CF;
         return SW'(q);
     endfunction
+    /* verilator lint_on UNUSEDSIGNAL */
 
     function automatic logic signed [W-1:0] clamp(input logic signed [SW-1:0] v, output logic hit);
         hit = (v > MAXV) || (v < MINV);

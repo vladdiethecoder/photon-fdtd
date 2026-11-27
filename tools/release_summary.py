@@ -55,7 +55,7 @@ def main():
                 f"gates IL < 0.50 dB, RL >= 22 dB), {tail}")
     p1 = next(l for l in opt if l.startswith("phase1"))
     headline = (f"The best validated 80 x 80 inverse-designed bend ({label}, shared 20 x 20 representation) " + sentence(label) + ". "
-                f"The full-resolution phase 1 run ({p1}) " + sentence(p1) + ". "
+                f"The full-resolution phase 1 run ({p1}; bend80_phase1.gds, kept as the record of the unconstrained-grid failure mode) " + sentence(p1) + ". "
                 "The release design was chosen by the lowest training-set robust J among the designs that meet every gate; the protocol did not name it "
                 "in advance, and the choice does not use held-out data.") if label != p1 else ("The robust 80 x 80 inverse-designed bend " + sentence(label) + ".")
     diag = json.load(open(os.path.join(a.diagnostic, "validate.json")))["designs"][0]
@@ -99,8 +99,8 @@ def main():
         "gates": d["gates"],
         "win": win["win"],
         "failures": failures,
-        "unverified": ("RTL: the SystemVerilog stencil has not been simulated (no HDL simulator installed); only its software reference is tested. "
-                       "No Lean proof (Lean is not installed). The layout scale is illustrative. The independent layout reader is a second "
+        "unverified": ("RTL: the SystemVerilog stencil is bit-exact with its software reference in Verilator on two test cases only; no synthesis figures. "
+                       "No Lean proof in this release candidate. The layout scale is illustrative. The independent layout reader is a second "
                        "implementation by the same author, not a commercial DRC tool."),
     }
     if a.tests and os.path.exists(a.tests):

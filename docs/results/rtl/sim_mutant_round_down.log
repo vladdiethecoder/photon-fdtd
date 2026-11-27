@@ -1,0 +1,5 @@
+first mismatch: step 2 E[7] = 00000, expected 00001
+tb_yee1d rtl/vectors/nominal: 400 steps, 51600 words checked, 42241 mismatches, final ovf 0 -> FAIL
+[16010000] %Fatal: tb_yee1d.sv:96: Assertion failed in tb_yee1d: bit mismatch against the software reference
+%Error: rtl/tb_yee1d.sv:96: Verilog $stop
+Aborting...

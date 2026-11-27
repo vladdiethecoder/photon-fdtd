@@ -54,7 +54,7 @@ The CPML and throughput results come from commit `921ccb35809a5872e2981425fb169f
 | Robust 80 x 80 bend (2D TMz), Stage 6 | Verified under docs/stage6-protocol.md: robust IL 0.1718 dB, RL 22.99 dB (61 held-out wavelengths); 0.16 dB better than the best tested conventional bend; full-resolution run: no win | docs/stage6.md, `release/` |
 | Optimiser benchmark: adjoint, CMA-ES, one-step PPO | Measured, 5 seeds each: adjoint leads CMA-ES; PPO comparisons inconclusive (runs stopped early) | docs/stage6.md, `release/tradeoff.svg` |
 | GDSII and SVG layout export | Verified by an independent reader: zero symmetric difference, exact area, width, gap, connectivity, negative controls ("layout-verified for the stated 2D rules"; not PDK signoff) | `tools/check_layout.py`, `release/bend80_certificate.json` |
-| Fixed-point 1D Yee stencil (SystemVerilog) | Partial: the bit-exact Rust reference is tested; the RTL is not simulated (no HDL simulator installed) | `fixed_point_yee1d_reference_and_vectors`, docs/rtl.md |
+| Fixed-point 1D Yee stencil (SystemVerilog) | Verified in Verilator 5.046: bit-exact with the Rust reference on 2 cases (51600 words each, 0 mismatches); a rounding mutant fails. No synthesis figures. | `fixed_point_yee1d_reference_and_vectors`, docs/rtl.md, docs/results/rtl/ |
 | CPML absorption of evanescent waves | Open. Not measured. | none |
 | Device selection, multi-GPU | Open. Device 0 is hard-coded. | none |
 

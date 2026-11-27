@@ -61,17 +61,26 @@ Measured with `cargo test --release --test verification -- fixed_point`:
 | Drift after 400 steps against f64 (exact coefficients) | 144.1 LSB (`yee1d_vectors` output) |
 | Saturate case | flag set at step 59, all words inside 18 bits |
 
-## Not verified
+## Simulation (Verilator)
 
-- **The RTL has not been simulated.** No HDL simulator (Verilator, Icarus
-  Verilog) is installed on the build machine, and installing one needs the
-  owner's approval. Until the testbench runs, the bit-exact claim holds only
-  for the software reference, not for `rtl/yee1d.sv`.
-- No synthesis was run, so this document gives no area, timing, or power
-  figures.
+Measured with Verilator 5.046 (`docs/results/rtl/`):
 
-To run the testbench after a simulator is installed:
-
-	verilator --binary -j 0 --top-module tb_yee1d rtl/yee1d.sv rtl/tb_yee1d.sv
+	verilator --binary -j 0 -Wall --top-module tb_yee1d rtl/yee1d.sv rtl/tb_yee1d.sv
 	obj_dir/Vtb_yee1d +VEC=rtl/vectors/nominal
 	obj_dir/Vtb_yee1d +VEC=rtl/vectors/saturate
+
+| Run | Result |
+|---|---|
+| Lint (`-Wall`) | 0 warnings |
+| `nominal` | 400 steps, 51600 words checked, 0 mismatches, final ovf 0, PASS, exit 0 |
+| `saturate` | 400 steps, 51600 words checked, 0 mismatches, final ovf 1, PASS, exit 0 |
+| Mutant: `rnd` without the rounding constant (round down) | 42241 mismatches, first at step 2 (E[7] = 00000, expected 00001), `$fatal`, exit 1 |
+
+Thus `rtl/yee1d.sv` is bit-exact with `src/fixed1d.rs` on both test cases, and
+the testbench detects a 1-LSB rounding change.
+
+## Not verified
+
+- Only the two committed test cases were simulated (N = 64, 400 steps).
+- No synthesis was run (no synthesis tool is installed), so this document
+  gives no area, timing, or power figures.

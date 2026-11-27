@@ -6,9 +6,9 @@
 // one summary line and ends with $fatal if any word differs.
 //
 // Example (Verilator 5):
-//   verilator --binary -j 0 --top-module tb_yee1d rtl/yee1d.sv rtl/tb_yee1d.sv
-//   obj_dir/Vtb_yee1d +VEC=rtl/vectors/nominal
-//   obj_dir/Vtb_yee1d +VEC=rtl/vectors/saturate
+//   $ verilator --binary -j 0 --top-module tb_yee1d rtl/yee1d.sv rtl/tb_yee1d.sv
+//   $ obj_dir/Vtb_yee1d +VEC=rtl/vectors/nominal
+//   $ obj_dir/Vtb_yee1d +VEC=rtl/vectors/saturate
 `timescale 1ns / 1ps
 
 module tb_yee1d;
@@ -16,7 +16,8 @@ module tb_yee1d;
     localparam int T = 400;
     localparam int W = 18;
 
-    logic clk = 1'b0;
+    logic clk;
+    initial clk = 1'b0;
     logic rst, start, done, ovf;
     logic signed [W-1:0] src, ch;
     logic signed [W-1:0] cb [N];

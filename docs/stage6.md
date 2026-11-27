@@ -192,7 +192,7 @@ Production total: 13276 charged, 10594 s (2.94 h). T1: the first scored mask tha
 
 The finalist of each method is its lowest-J run on the training spectrum. Held-out validation cost: 125 s for the phase 2 finalists (`docs/results/stage6/phase2/validate.log`), 113 s for phase 1, and 155 s for the combined release validation, whose results are identical to both (`docs/results/stage6/release_validate/`).
 
-The release design is `adjoint seed 5`: the lowest training-set robust J among the designs that meet every gate. The protocol did not name the release design in advance. This rule was stated after the results were known, and it does not use held-out data. Its biased masks have 4 width violations (eroded) and 2 width and 2 gap violations (dilated); the protocol reports these and does not gate them.
+Release artifacts: `release/bend80.gds` is the release design; `release/bend80_phase1.gds` is the full-resolution phase 1 design, kept as the record of the unconstrained-grid failure mode (it passes the gates but has no win, and its run produced mostly infeasible masks). The release design is `adjoint seed 5`: the lowest training-set robust J among the designs that meet every gate. The protocol did not name the release design in advance. This rule was stated after the results were known, and it does not use held-out data. Its biased masks have 4 width violations (eroded) and 2 width and 2 gap violations (dilated); the protocol reports these and does not gate them.
 
 Regenerate the plots and tables:
 

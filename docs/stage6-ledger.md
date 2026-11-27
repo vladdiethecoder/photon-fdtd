@@ -45,7 +45,7 @@ Paths under `out/` are local working outputs. The release copies are under
 | Cost accounting | done | `events.csv` and `summary.json` of each run | charged = physical solves (26 per adjoint iteration, 3 per score); forward and adjoint solves logged separately; cache hits 0; measured adjoint/forward wall-time ratio 0.852 |
 | Finalists on held-out sweep and grid | done | `docs/results/stage6/phase2/validate/` | adjoint seed 5: pass, win (0.1595 / 0.1588 / 0.1611 dB); CMA-ES seed 5: fail (RL 19.75 dB half-cell); PPO seed 1: pass, no win (0.0045 dB) |
 | Combined release validation | done | `docs/results/stage6/release_validate/` | identical to the phase 1 and phase 2 validation files (7/7 design entries) |
-| Release design choice | done (disclosed) | `release/release.json` | lowest training-set J among designs that pass every gate: adjoint seed 5; the rule was stated after the results; it does not use held-out data |
+| Release design choice | done (owner accepted) | `release/release.json` | lowest training-set J among designs that pass every gate: adjoint seed 5 (`bend80.gds`); the rule was stated after the results, does not use held-out data, and the owner accepted it; `bend80_phase1.gds` documents the unconstrained-grid failure mode |
 | Lead plot: optimiser trade-offs | done | `release/tradeoff.svg`, `.png` | all 15 runs drawn; curves end where runs end; medians only while all 5 runs run; checked by eye |
 
 ## Phase 3: package and showcase
@@ -62,8 +62,8 @@ Paths under `out/` are local working outputs. The release copies are under
 
 | Gate | Status | Artifact | Evidence |
 |---|---|---|---|
-| Fixed-point 1D Yee RTL, reference, testbench | done (RTL not simulated) | `rtl/`, `src/fixed1d.rs`, `docs/rtl.md` | `fixed_point_yee1d_reference_and_vectors`: vectors match the reference; local error E 0.750 LSB (bound 1), H 0.500 LSB (bound 0.5); saturation at step 59 |
-| RTL simulation | blocked | none | no HDL simulator installed; install needs approval |
+| Fixed-point 1D Yee RTL, reference, testbench | done | `rtl/`, `src/fixed1d.rs`, `docs/rtl.md` | `fixed_point_yee1d_reference_and_vectors`: vectors match the reference; local error E 0.750 LSB (bound 1), H 0.500 LSB (bound 0.5); saturation at step 59 |
+| RTL simulation | done | `docs/results/rtl/` | Verilator 5.046 (installed with owner approval): `-Wall` 0 warnings; nominal and saturate 0 mismatches of 51600 words each; round-down mutant 42241 mismatches, exit 1 |
 | Synthesis figures | not measured | none | no synthesis tool |
 | Lean proof (optional) | blocked | none | Lean 4 not installed; install needs approval |
 | Outreach drafts (5, including Waterloo) | done (drafts, not sent) | `out/outreach/emails.md` (not committed) | contacts and research connections checked on official pages |
