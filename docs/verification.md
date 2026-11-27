@@ -8,7 +8,7 @@ All verification code is in `src/verify.rs`. The `waveguide` binary prints the r
 
 Use `--release`. In a debug build, the CPU runs are very slow. To see the measured values, add `-- --nocapture`.
 
-At commit `d6e23e8c9a3528007c2c537044ffc191b51796b5`, 11 tests pass. 0 tests fail, and 0 tests are ignored. The test binary runs for 9.2 s. `docs/results/test.log` has the full output. The CPML and throughput measurements below come from commit `921ccb3`. The solver kernels did not change between the two commits.
+At commit `702b85c4f3eb6df12fb90a400267d46e03953548`, 14 tests pass. 0 tests fail, and 0 tests are ignored. The test binary runs for 11.5 s. `docs/results/test.log` has the full output. The CPML and throughput measurements below come from commit `921ccb3`. The solver kernels did not change after that commit.
 
 ## Tests
 
@@ -24,6 +24,9 @@ At commit `d6e23e8c9a3528007c2c537044ffc191b51796b5`, 11 tests pass. 0 tests fai
 | `absorber_metric_detects_bare_pec` | With N = 0, the metric reports the reflection of bare PEC walls | normal and corner > -6 dB |
 | `large_grid_16384x20000_gpu_corners_match_cpu` | GPU offsets above 2^31 bytes are correct | 0 differing bits in two 25 x 25 corner patches |
 | `tall_grid_past_cuda_grid_y_limit_matches_cpu` | GPU rows above row 65535 get updates | 0 differing bits on all 4.48e6 cells |
+| `slab_mode_grid_dispersion_is_second_order` | The analytic slab root is the continuum limit of the grid eigenvalue. The guide has one mode in the band. | gap ratio 3.8 to 4.2 at 2x resolution |
+| `straight_guide_mode_energy_balance_and_cpml_reflection` | Measured beta, mode profile, energy balance, CPML modal reflection and mode split. See docs/sparams.md. | 6 gates per frequency |
+| `bend_90_baseline_insertion_and_return_loss` | The bend benchmark stays fixed | IL 3.748 dB, RL 6.69 dB, +- 0.05 dB |
 | `gpu_viewer_kernels_paint_render_reset` | The brush sets exactly the disk cells to the constructor's `cb` bits. The heat map puts row j at image row ny-1-j, with +Ez red, -Ez blue and silicon grey. Reset clears the fields and keeps `cb`. | exact bits and pixel values |
 
 ### Confinement criterion

@@ -2,7 +2,7 @@
 
 photon-fdtd is a minimal 2D TM_z Yee FDTD solver in Rust. It has a CPU backend (one thread or a rayon thread pool) and a CUDA backend for the RTX 5090 (sm_120). Both backends use flat, row-major `Vec<f64>` arrays and natural units (c = eps0 = mu0 = dx = 1). The two backends give bitwise identical fields.
 
-A CFS-CPML (Roden and Gedney, 2000) absorbs the outgoing waves. Its auxiliary arrays exist only in the boundary strips. An optional interactive viewer (`--features gui`) shows the field live and lets you paint silicon with the mouse.
+A CFS-CPML (Roden and Gedney, 2000) absorbs the outgoing waves. Its auxiliary arrays exist only in the boundary strips. A mode source and DFT port monitors give calibrated S-parameters of waveguide devices. An optional interactive viewer (`--features gui`) shows the field live and lets you paint silicon with the mouse.
 
 ![Viewer: a silicon strip with a 90-degree bend](docs/images/viewer_bend.png)
 
@@ -18,6 +18,7 @@ Run the demonstration binaries:
 	cargo run --release --bin waveguide -- --check-pml           # CPML reflection in dB against thickness
 	cargo run --release --bin waveguide -- --check-pml --sweep   # CPML parameter sweep (160 profiles)
 	cargo run --release --bin bench -- --cpu 2048,4096 --gpu 4096,8192
+	cargo run --release --bin sparams                            # slab mode, straight guide and 90-degree bend S-parameters
 	cargo run --release --features gui --bin viewer                # interactive viewer
 	cargo run --release --features gui --bin viewer -- --script examples/viewer_demo.script
 
@@ -25,7 +26,7 @@ The GPU tests and the binaries need CUDA device 0. They compile the kernels for 
 
 ## Status by claim
 
-The solver results come from commit `921ccb35809a5872e2981425fb169f3d2dd35507`. The viewer results and the current test run come from commit `d6e23e8c9a3528007c2c537044ffc191b51796b5`, which adds the viewer and does not change the solver kernels. All runs used the machine in [Environment](#environment). The raw output of each run is in `docs/results/`.
+The CPML and throughput results come from commit `921ccb35809a5872e2981425fb169f3d2dd35507`. The viewer results come from commit `d6e23e8c9a3528007c2c537044ffc191b51796b5`. The S-parameter results and the current test run come from commit `702b85c4f3eb6df12fb90a400267d46e03953548`. The solver kernels did not change after 921ccb3. All runs used the machine in [Environment](#environment). The raw output of each run is in `docs/results/`.
 
 | Capability | Status | Evidence (entry point) |
 |---|---|---|
@@ -43,11 +44,14 @@ The solver results come from commit `921ccb35809a5872e2981425fb169f3d2dd35507`. 
 | Viewer controls through egui (run, pause, step, brush, erase, source, gain, clear) | Verified by scripted pointer events, log and screenshots | `viewer --script examples/viewer_demo.script` |
 | Viewer image path: CUDA-GL interop with the image on the GPU | Verified on the RTX 5090 (GL renderer NVIDIA) | `docs/results/viewer_paths.log` |
 | Viewer input from a pointer device on KDE Plasma Wayland | Verified with a uinput virtual mouse (ydotool) through libinput, KWin and the native Wayland window: brush, erase, source, Pause and Run | `docs/results/viewer_real_mouse.log`, `docs/images/viewer_real_mouse.png` |
-| Flux, S-parameters | Open. Not implemented. | none |
+| Slab mode: measured beta vs grid eigenvalue vs analytic root | Verified: measured = grid within 8.3e-5; analytic - grid gap 7.7e-4 to 1.7e-3, 4.0x smaller at 2x resolution | `slab_mode_grid_dispersion_is_second_order`, `straight_guide_mode_energy_balance_and_cpml_reflection`, docs/sparams.md |
+| Guided mode into the 10-cell CPML | Verified: modal back-reflection -83.4 dB or lower (alpha_max = 0.01) | `straight_guide_mode_energy_balance_and_cpml_reflection` |
+| Straight guide energy balance | Verified: modal |S11|^2 + |S21|^2 = 1 within 4.3e-6, flux within 9.3e-4 | `straight_guide_mode_energy_balance_and_cpml_reflection` |
+| Sharp 90-degree bend benchmark (lambda0 = 146 cells) | Measured: modal IL 3.748 dB, RL 6.69 dB, 36.4 % radiated | `bend_90_baseline_insertion_and_return_loss` |
 | CPML absorption of evanescent waves | Open. Not measured. | none |
 | Device selection, multi-GPU | Open. Device 0 is hard-coded. | none |
 
-Test suite result at commit d6e23e8: 11 tests pass, 0 fail, 0 are ignored. The test binary ran for 9.2 s. `cargo test --release` does not build the GUI dependencies.
+Test suite result at commit 702b85c: 14 tests pass, 0 fail, 0 are ignored. The test binary ran for 11.5 s. `cargo test --release` does not build the GUI dependencies.
 
 ## CPML thickness
 
@@ -138,7 +142,9 @@ The image time includes the render kernel, the texture update and `glFinish`. Th
 - The suite does not run CPU grids larger than 4104^2. Host RAM (31.9 GB) limits the CPU solver.
 - No test crosses 2^32 bytes per array. The largest test array is 2.62 GB.
 - The GPU backend uses CUDA device 0 only. The kernels compile for `sm_120` only.
-- The CPML is measured for propagating waves in air at three probe cells. Evanescent waves and the reflection of a guided mode in the silicon strip are not measured.
+- The CPML is measured for propagating waves in air at three probe cells, and for the guided slab mode at normal incidence. Evanescent waves are not measured.
+- The CPML default alpha_max = 0.05 removes absorption for omega < 0.05 (lambda0 > 126 cells). The S-parameter setup uses alpha_max = 0.01. docs/sparams.md has the data.
+- The S-parameters are power ratios of the fundamental mode, without phase. Only the straight guide and one sharp bend are measured.
 - No test compares the numerical dispersion with the analytic Yee dispersion relation.
 - The pointer test used a uinput virtual mouse, not a human hand on a physical mouse. The kernel, libinput, KWin and Wayland path is the same. The hardware is not.
 - In the air control, the band-energy fraction at t_end is a ratio of residual energies near 6e-11 of the peak. For the air control, the probe metric is the reliable metric.
@@ -147,4 +153,5 @@ The image time includes the render kernel, the texture update and `glFinish`. Th
 
 - [docs/methodology.md](docs/methodology.md): the discrete equations, the CFL derivation, the CPML and the sources.
 - [docs/verification.md](docs/verification.md): what each test does, how the reflection is measured, and the parameter sweep.
+- [docs/sparams.md](docs/sparams.md): the slab mode, the mode source, the ports, the S-parameters and the bend benchmark.
 - [docs/architecture.md](docs/architecture.md): the memory layout, the strip layout, the CUDA mapping, the viewer boundary and the throughput analysis.

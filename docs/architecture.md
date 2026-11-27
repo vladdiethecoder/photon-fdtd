@@ -10,6 +10,8 @@ This document describes the data layout, the CPU and CUDA execution, and the mea
 | `src/cpml.rs` | `Pml` (parameters), `CpmlLayout` (1D tables and strip index maps), `Profile` |
 | `src/gpu.rs` | `GpuYee` (CUDA solver) and the kernel source |
 | `src/verify.rs` | The scenarios for the binaries and the tests: `Strip`, `AbsorberCheck` |
+| `src/sparams.rs` | Analytic and discrete slab modes, `PortSetup`, flux and modal S-parameters |
+| `src/bin/sparams.rs` | The S-parameter measurement |
 | `src/bin/waveguide.rs` | The silicon strip demonstration and `--check-pml` |
 | `src/bin/bench.rs` | The throughput measurement |
 | `src/bin/viewer.rs` | The interactive viewer. It builds only with `--features gui`. |
@@ -55,6 +57,10 @@ One step is six kernel launches in one stream: `update_h`, `psi_h_x`, `psi_h_y`,
 - The y-strip kernels have one block row for each of the 2W strip rows.
 
 Offsets are `size_t`, calculated as `(size_t)j * (size_t)nx + (size_t)i`. The kernels use no shared memory and no tiling. The L1 and L2 caches supply the neighbour values.
+
+## Mode source and DFT monitors
+
+`GpuYee::add_source_profile` adds amp * profile[s] to a column of Ez. `GpuYee::dft_line` creates a monitor of n samples of Ez, Hx or Hy along x or along y. `GpuYee::accumulate` adds the current samples to the DFT at nf frequencies on the GPU (one thread for each sample and frequency). Only the final DFT goes to the host. Thus a port measurement downloads 2 * nf * n values once per run, not field data at each step.
 
 ## Viewer boundary
 
