@@ -7,7 +7,7 @@
 //! 4. erosion and dilation of each binary design by 1 cell (scale 1, 15 frequencies);
 //! 5. numerical uncertainty U and the protocol's win test and acceptance gates.
 //!
-//! Usage: stage5_validate RHO_FINAL.txt [--rf 5] [--beta 32] [--out out/validate]
+//! Usage: stage5_validate RHO_FINAL.txt [--rf 5] [--beta 32] [--n 48] [--bezier-k 0.40] [--out out/validate]
 
 use std::fs;
 
@@ -61,26 +61,29 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let path = std::env::args().nth(1).expect("RHO_FINAL.txt");
     let rf: f64 = arg("--rf", 5.0);
     let beta: f64 = arg("--beta", 32.0);
+    let n: usize = arg("--n", 48);
+    let k: f64 = arg("--bezier-k", 0.40);
+    let bez = format!("bezier k={k:.2}");
     let out: String = arg("--out", "out/validate".to_string());
     fs::create_dir_all(&out)?;
     let rho: Vec<f64> = fs::read_to_string(&path)?.lines().map(|l| l.trim().parse().unwrap()).collect();
 
     let s15 = setup(1, 15);
-    let bx1 = DesignBox::for_bend(&s15, 48, 8);
+    let bx1 = DesignBox::for_bend(&s15, n, 8);
     let filt = ConicFilter::new(rf);
     let filtered = filt.apply(&bx1, &rho);
     let rho_bar = densities(&bx1, &filt, &rho, beta);
     let opt1: Vec<f64> = filtered.iter().map(|&v| if project(v, beta, 0.5) >= 0.5 { 1.0 } else { 0.0 }).collect();
     let designs1 = [
         ("optimised", opt1.clone()),
-        ("bezier k=0.40", bx1.rasterise(&bx1.bezier_centreline(0.40))),
+        (bez.as_str(), bx1.rasterise(&bx1.bezier_centreline(k))),
         ("arc", bx1.circular_arc()),
     ];
     let s2 = setup(2, 15);
-    let bx2 = DesignBox::for_bend(&s2, 96, 16);
+    let bx2 = DesignBox::for_bend(&s2, 2 * n, 16);
     let designs2 = [
         ("optimised", upsample(&bx1, &filtered, &bx2)),
-        ("bezier k=0.40", bx2.rasterise(&bx2.bezier_centreline(0.40))),
+        (bez.as_str(), bx2.rasterise(&bx2.bezier_centreline(k))),
         ("arc", bx2.circular_arc()),
     ];
 

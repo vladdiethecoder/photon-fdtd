@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="640" height="640">
+<title>photon-fdtd bend (2D TMz design, white = silicon)</title>
+<rect width="80" height="80" fill="black"/>
+<path d="M0 56 L16 56 L16 55 L18 55 L18 54 L26 54 L26 53 L29 53 L29 52 L32 52 L32 51 L34 51 L34 50 L36 50 L36 49 L37 49 L37 48 L39 48 L39 47 L40 47 L40 46 L41 46 L41 45 L42 45 L42 44 L43 44 L43 43 L44 43 L44 42 L45 42 L45 41 L46 41 L46 40 L47 40 L47 39 L48 39 L48 37 L49 37 L49 36 L50 36 L50 34 L51 34 L51 32 L52 32 L52 29 L53 29 L53 26 L54 26 L54 18 L55 18 L55 16 L56 16 L56 0 L40 0 L40 16 L21 16 L21 17 L19 17 L19 18 L18 18 L18 19 L17 19 L17 21 L16 21 L16 40 L0 40 Z" fill="white" fill-rule="evenodd"/>
+</svg>

@@ -543,3 +543,64 @@ fn stage5_optimised_design_meets_gates() {
     println!("optimised: worst IL {il:.4} dB, worst RL {rl:.2} dB");
     assert!(il < 0.5 && rl > 20.0 && (il - 0.2586).abs() < 0.002);
 }
+
+// ---- Stage 6: GDSII / SVG export ----
+
+use photon_fdtd::export::{Mask, area2, gds, group, rasterise, read_gds, trace};
+
+fn export_round_trip(mask: &Mask) -> (usize, usize) {
+    let groups = group(trace(mask));
+    let area: i64 = groups.iter().map(|g| area2(&g.0) + g.1.iter().map(area2).sum::<i64>()).sum::<i64>() / 2;
+    assert_eq!(area, mask.cells() as i64, "traced area differs from the cell count");
+    for (o, hs) in &groups {
+        for r in std::iter::once(o).chain(hs) {
+            for i in 0..r.len() {
+                let (p, q) = (r[i], r[(i + 1) % r.len()]);
+                assert!(p.0 == q.0 || p.1 == q.1, "non-Manhattan edge {p:?} -> {q:?}");
+            }
+        }
+    }
+    let bytes = gds(mask, 10, "T", 1);
+    let (polys, units) = read_gds(&bytes);
+    assert_eq!(units, (1e-3, 1e-9));
+    assert_eq!(polys.iter().map(area2).sum::<i64>() / 2, mask.cells() as i64 * 100);
+    assert_eq!(rasterise(&polys, 10, mask.nx, mask.ny), mask.on, "GDSII round trip differs from the mask");
+    (groups.len(), groups.iter().map(|g| g.1.len()).sum())
+}
+
+/// Export: a synthetic mask with two holes, an island inside a hole, and two
+/// diagonal saddles; then the committed 48 x 48 design. Each must give
+/// Manhattan loops whose area equals the cell count, and a GDSII file whose
+/// polygons rasterise back to the same mask, cell for cell.
+#[test]
+fn export_gds_round_trip_matches_mask() {
+    let rows = [
+        "..............",
+        ".##########...",
+        ".#........#...",
+        ".#.####...#...",
+        ".#.#..#...#.#.",
+        ".#.#.##...##..",
+        ".#.####...#...",
+        ".#........#...",
+        ".##########...",
+        ".#.#.#........",
+        ".###.#.#......",
+        "......#.......",
+    ];
+    let (nx, ny) = (rows[0].len(), rows.len());
+    let on = (0..nx * ny).map(|k| rows[ny - 1 - k / nx].as_bytes()[k % nx] == b'#').collect();
+    let (outer, holes) = export_round_trip(&Mask { nx, ny, on });
+    println!("synthetic: {outer} outer boundaries, {holes} holes");
+    assert_eq!((outer, holes), (5, 3));
+
+    let bx = DesignBox::for_bend(&PortSetup::standard(Geometry::Bend, 1), 48, 8);
+    let rho: Vec<f64> = std::fs::read_to_string(concat!(env!("CARGO_MANIFEST_DIR"), "/docs/results/stage5/rho_final.txt"))
+        .unwrap()
+        .lines()
+        .map(|l| l.trim().parse().unwrap())
+        .collect();
+    let bin: Vec<f64> = ConicFilter::new(5.0).apply(&bx, &rho).iter().map(|&v| if v >= 0.5 { 1.0 } else { 0.0 }).collect();
+    let (outer, holes) = export_round_trip(&Mask::from_box(&bx, &bin, 16));
+    println!("optimised 48 x 48: {outer} outer boundaries, {holes} holes");
+}

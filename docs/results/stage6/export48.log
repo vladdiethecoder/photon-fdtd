@@ -1,0 +1,5 @@
+canvas 80 x 80 cells (box 48, halo 16), cell 10 nm, units 1e-3 um / 1e-9 m
+silicon cells 1679, outer boundaries 1, holes 0, vertices 66
+traced area 1679 cells, GDSII area 1679 cells, GDSII polygons 1
+round trip (GDSII rasterised at cell centres vs mask): 0 differing cells
+wrote docs/results/stage6/bend48.gds (674 bytes), docs/results/stage6/bend48.svg

@@ -15,6 +15,7 @@
 pub mod adjoint;
 pub mod cpml;
 pub mod design;
+pub mod export;
 pub mod gpu;
 pub mod sparams;
 pub mod verify;
