@@ -1,0 +1,6 @@
+name = "yee_energy"
+version = "0.1.0"
+defaultTargets = ["YeeEnergy"]
+
+[[lean_lib]]
+name = "YeeEnergy"

@@ -199,3 +199,16 @@ Regenerate the plots and tables:
 	tools/plot_stage6.py tradeoff docs/results/stage6/phase2/runs release/tradeoff.svg release/tradeoff.json --t2 0.2306
 	tools/plot_stage6.py spectra docs/results/stage6/release_validate release/spectra_heldout61.svg release/spectra_heldout61.json --designs "adjoint seed 5,phase1 r_f 6,baseline bezier:0.45,baseline arc"
 	tools/make_release.sh v0.6.0-rc1
+
+## Lean 4 proof (range item)
+
+`lean/YeeEnergy.lean` proves in core Lean 4 (no Mathlib) that one leapfrog Yee
+step conserves the discrete energy W = Σ E² + Σ H·H⁺ on a periodic grid, in 1D
+(`energy_conserved`) and 2D TMz (`energy2_conserved`), over any commutative
+ring and for every Courant coefficient. `#print axioms` lists only `propext`,
+`Classical.choice` and `Quot.sound`; a concrete integer instance keeps the
+energy at 525 (1D) and 1710 (2D) over 10 steps; a wrong flux coefficient makes
+the build fail. The proof does not cover the CPML, sources, material contrast,
+floating-point arithmetic or the CUDA code. Details: [lean.md](lean.md);
+evidence: `docs/results/lean/`.
+

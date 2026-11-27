@@ -1,0 +1,7 @@
+Mutation check (run during development, file restored afterwards):
+in `flux`, the coefficient 2 * c * e i was changed to 3 * c * e i.
+$ lake build
+✖ [2/4] Building YeeEnergy (639ms)
+error: YeeEnergy.lean:115:2: `grind` failed
+error: build failed
+The restored file builds: "Build completed successfully (4 jobs)."

@@ -55,6 +55,7 @@ The CPML and throughput results come from commit `921ccb35809a5872e2981425fb169f
 | Optimiser benchmark: adjoint, CMA-ES, one-step PPO | Measured, 5 seeds each: adjoint leads CMA-ES; PPO comparisons inconclusive (runs stopped early) | docs/stage6.md, `release/tradeoff.svg` |
 | GDSII and SVG layout export | Verified by an independent reader: zero symmetric difference, exact area, width, gap, connectivity, negative controls ("layout-verified for the stated 2D rules"; not PDK signoff) | `tools/check_layout.py`, `release/bend80_certificate.json` |
 | Fixed-point 1D Yee stencil (SystemVerilog) | Verified in Verilator 5.046: bit-exact with the Rust reference on 2 cases (51600 words each, 0 mismatches); a rounding mutant fails. No synthesis figures. | `fixed_point_yee1d_reference_and_vectors`, docs/rtl.md, docs/results/rtl/ |
+| Energy identity of the lossless periodic Yee step (1D and 2D TMz), exact arithmetic | Proved in core Lean 4 (no Mathlib; axioms: propext, Classical.choice, Quot.sound). Does not cover the CPML, sources, floating point or CUDA. | `lean/YeeEnergy.lean`, docs/lean.md, docs/results/lean/ |
 | CPML absorption of evanescent waves | Open. Not measured. | none |
 | Device selection, multi-GPU | Open. Device 0 is hard-coded. | none |
 

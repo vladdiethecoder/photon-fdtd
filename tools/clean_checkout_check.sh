@@ -49,6 +49,14 @@ if command -v verilator > /dev/null; then
   run rtl_saturate "$SCRATCH/obj_dir/Vtb_yee1d" +VEC=rtl/vectors/saturate
   rtl=$(grep -h 'tb_yee1d rtl' "$OUT/rtl_nominal.log" "$OUT/rtl_saturate.log" | grep -c 'PASS')
 fi
+lean=skipped
+if command -v lake > /dev/null || [ -x "$HOME/.elan/bin/lake" ]; then
+  export PATH="$HOME/.elan/bin:$PATH"
+  lean --version >> "$OUT/toolchain.log"
+  run lean_build bash -c "cd lean && lake build"
+  run lean_axioms bash -c "cd lean && lake env lean PrintAxioms.lean"
+  if grep -q sorryAx "$OUT/lean_axioms.log" || grep -qE 'sorry|admit|^axiom' lean/YeeEnergy.lean; then lean=false; else lean=true; fi
+fi
 passed=$(grep -o 'test result: ok\. [0-9]* passed' "$OUT/test.log" | awk '{s+=$4} END {print s+0}')
 failed=$(grep -o '[0-9]* failed' "$OUT/test.log" | awk '{s+=$1} END {print s+0}')
 cat > "$OUT/receipts.json" <<JSON
@@ -62,7 +70,8 @@ cat > "$OUT/receipts.json" <<JSON
   "viewer_build": true,
   "stage5_fixture_identical": $( [ -s "$OUT/stage5_fixture.diff" ] && echo false || echo true ),
   "release_layout_rebuilt_byte_identical": $layout_same,
-  "rtl_testbench_cases_passed": "$rtl of 2"
+  "rtl_testbench_cases_passed": "$rtl of 2",
+  "lean_proof_builds_without_sorry": "$lean"
 }
 JSON
 cat "$OUT/receipts.json"

@@ -65,8 +65,8 @@ Paths under `out/` are local working outputs. The release copies are under
 | Fixed-point 1D Yee RTL, reference, testbench | done | `rtl/`, `src/fixed1d.rs`, `docs/rtl.md` | `fixed_point_yee1d_reference_and_vectors`: vectors match the reference; local error E 0.750 LSB (bound 1), H 0.500 LSB (bound 0.5); saturation at step 59 |
 | RTL simulation | done | `docs/results/rtl/` | Verilator 5.046 (installed with owner approval): `-Wall` 0 warnings; nominal and saturate 0 mismatches of 51600 words each; round-down mutant 42241 mismatches, exit 1 |
 | Synthesis figures | not measured | none | no synthesis tool |
-| Lean proof (optional) | blocked | none | Lean 4 not installed; install needs approval |
-| Outreach drafts (5, including Waterloo) | done (drafts, not sent) | `out/outreach/emails.md` (not committed) | contacts and research connections checked on official pages |
+| Lean proof (optional) | done | `lean/YeeEnergy.lean`, `docs/results/lean/` | Lean 4.36.0 (elan, owner approved), core only: 1D and 2D TMz energy identity; axioms propext, Classical.choice, Quot.sound; Int instance constant over 10 steps (525, 1710); flux mutant fails the build |
+| Outreach drafts (5, including Waterloo) | done (drafts, not sent; owner sends) | `out/outreach/emails.md` (not committed) | contacts and research connections checked on official pages |
 
 ## Commits
 

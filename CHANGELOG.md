@@ -3,7 +3,26 @@
 All results are for the 2D TMz model in natural units. No entry claims 3D
 silicon-on-insulator performance or fabrication readiness.
 
-## v0.6.0-rc1 (release candidate)
+## v0.6.0 (2026-11-27)
+
+Final release of Stage 6. The results, gates and assets are those of
+v0.6.0-rc1 (`release/`, `docs/stage6.md`); this release adds:
+
+- A core Lean 4 proof (no Mathlib) of the energy identity of the lossless
+  periodic Yee step in 1D and 2D TMz (`lean/YeeEnergy.lean`, `docs/lean.md`).
+  `#print axioms`: `propext`, `Classical.choice`, `Quot.sound` only. It does
+  not cover the CPML, sources, floating point or the CUDA code.
+- The RTL testbench and the Lean build in the clean-checkout receipts.
+- The project page links back to the portfolio at https://vladdiethecoder.github.io/.
+
+Release design and disclosures are unchanged from v0.6.0-rc1: `bend80.gds` is
+the adjoint 20 x 20 design (seed 5), chosen after the results by the lowest
+training-set robust J among designs that pass every gate (no held-out data);
+`bend80_phase1.gds` is the record of the unconstrained-grid failure mode; every
+one-step PPO run stopped at the 20000-candidate rule, so PPO comparisons are
+inconclusive.
+
+## v0.6.0-rc1 (release candidate, 2026-11-27)
 
 Robust 80 x 80 bend, layout export with an independent check, optimiser
 benchmark, project page, and a fixed-point RTL stencil. The protocol
@@ -55,7 +74,7 @@ Results
 
 Not verified
 - No synthesis figures (no synthesis tool).
-- No Lean proof in this release candidate (optional).
+- No Lean proof in this release candidate (added in v0.6.0).
 
 ## v0.5.0 (2026-11-26)
 
