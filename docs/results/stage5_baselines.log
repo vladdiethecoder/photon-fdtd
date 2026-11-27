@@ -1,0 +1,22 @@
+box 48 x 48, steps 20259, L_min disk diameter 5
+arc            worst IL 0.6926 dB  worst RL 27.52 dB  binary 1.000  islands 0  L_min violations open 0 close 0
+euler p=0.1    worst IL 0.7478 dB  worst RL 25.62 dB  binary 1.000  islands 0  L_min violations open 0 close 0
+euler p=0.2    worst IL 0.8006 dB  worst RL 23.73 dB  binary 1.000  islands 0  L_min violations open 0 close 0
+euler p=0.3    worst IL 0.8456 dB  worst RL 21.34 dB  binary 1.000  islands 0  L_min violations open 0 close 0
+euler p=0.4    worst IL 0.8684 dB  worst RL 20.00 dB  binary 1.000  islands 0  L_min violations open 0 close 0
+euler p=0.5    worst IL 0.8977 dB  worst RL 19.73 dB  binary 1.000  islands 0  L_min violations open 0 close 0
+euler p=0.6    worst IL 0.9141 dB  worst RL 18.60 dB  binary 1.000  islands 0  L_min violations open 0 close 0
+euler p=0.7    worst IL 0.9316 dB  worst RL 18.32 dB  binary 1.000  islands 0  L_min violations open 0 close 0
+euler p=0.8    worst IL 0.9337 dB  worst RL 18.41 dB  binary 1.000  islands 0  L_min violations open 0 close 1
+euler p=0.9    worst IL 0.9446 dB  worst RL 18.47 dB  binary 1.000  islands 0  L_min violations open 0 close 0
+euler p=1.0    worst IL 0.9446 dB  worst RL 18.47 dB  binary 1.000  islands 0  L_min violations open 0 close 0
+bezier k=0.30  worst IL 0.8055 dB  worst RL 22.21 dB  binary 1.000  islands 0  L_min violations open 0 close 0
+bezier k=0.35  worst IL 0.6302 dB  worst RL 24.24 dB  binary 1.000  islands 0  L_min violations open 0 close 0
+bezier k=0.40  worst IL 0.5933 dB  worst RL 25.35 dB  binary 1.000  islands 0  L_min violations open 0 close 0
+bezier k=0.45  worst IL 0.6171 dB  worst RL 28.45 dB  binary 1.000  islands 0  L_min violations open 0 close 0
+bezier k=0.50  worst IL 0.6516 dB  worst RL 32.33 dB  binary 1.000  islands 0  L_min violations open 0 close 0
+bezier k=0.55  worst IL 0.6926 dB  worst RL 27.52 dB  binary 1.000  islands 0  L_min violations open 0 close 0
+bezier k=0.60  worst IL 0.7436 dB  worst RL 24.86 dB  binary 1.000  islands 0  L_min violations open 0 close 0
+bezier k=0.65  worst IL 0.7941 dB  worst RL 22.55 dB  binary 1.000  islands 0  L_min violations open 0 close 0
+bezier k=0.70  worst IL 0.8556 dB  worst RL 20.14 dB  binary 1.000  islands 0  L_min violations open 0 close 0
+best conventional baseline: bezier k=0.40 (worst IL 0.5933 dB)

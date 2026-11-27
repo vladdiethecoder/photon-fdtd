@@ -231,3 +231,148 @@ pub fn single_cell_islands(bx: &DesignBox, rho_bar: &[f64]) -> usize {
     let (s, v) = components(bx, rho_bar);
     s.iter().chain(&v).filter(|&&k| k == 1).count()
 }
+
+/// A centreline in box coordinates (continuous, cell (a, b) spans [a, a+1) x [b, b+1)).
+pub type Polyline = Vec<(f64, f64)>;
+
+impl DesignBox {
+    /// Start and end of the bend centreline and the per-axis distance L.
+    fn bend_ends(&self) -> ((f64, f64), (f64, f64), f64) {
+        let (n, m, w) = (self.n as f64, self.margin as f64, self.core_w as f64);
+        let p0 = (0.0, m + w / 2.0);
+        let p3 = (n - m - w / 2.0, n);
+        (p0, p3, p3.0 - p0.0)
+    }
+
+    /// Euler bend: curvature ramps up linearly, stays constant, ramps down;
+    /// `p` is the fraction of the 90-degree angle in the two ramps (p = 0: arc).
+    pub fn euler_centreline(&self, p: f64) -> Polyline {
+        let (p0, _, l) = self.bend_ends();
+        let (s1, s2) = (p * std::f64::consts::FRAC_PI_2, (1.0 - p) * std::f64::consts::FRAC_PI_2);
+        let total = 2.0 * s1 + s2;
+        let kappa = |s: f64| {
+            if s < s1 {
+                s / s1
+            } else if s < s1 + s2 {
+                1.0
+            } else {
+                (total - s) / s1
+            }
+        };
+        let steps = 20000;
+        let ds = total / steps as f64;
+        let (mut x, mut y, mut th) = (0.0, 0.0, 0.0);
+        let mut pts = vec![(0.0, 0.0)];
+        for k in 0..steps {
+            let s = (k as f64 + 0.5) * ds;
+            let thm = th + 0.5 * kappa(s) * ds;
+            x += thm.cos() * ds;
+            y += thm.sin() * ds;
+            th += kappa(s) * ds;
+            pts.push((x, y));
+        }
+        let scale = l / x;
+        pts.into_iter().map(|(x, y)| (p0.0 + scale * x, p0.1 + scale * y)).collect()
+    }
+
+    /// Cubic Bezier bend with handle length k L along the end directions.
+    pub fn bezier_centreline(&self, k: f64) -> Polyline {
+        let (p0, p3, l) = self.bend_ends();
+        let p1 = (p0.0 + k * l, p0.1);
+        let p2 = (p3.0, p3.1 - k * l);
+        (0..=4000)
+            .map(|q| {
+                let t = q as f64 / 4000.0;
+                let u = 1.0 - t;
+                let (a, b, c, d) = (u * u * u, 3.0 * u * u * t, 3.0 * u * t * t, t * t * t);
+                (a * p0.0 + b * p1.0 + c * p2.0 + d * p3.0, a * p0.1 + b * p1.1 + c * p2.1 + d * p3.1)
+            })
+            .collect()
+    }
+
+    /// Rasterise a tube of width core_w around a centreline. The centreline is
+    /// extended straight beyond both ends, so the slabs continue across the box edges.
+    pub fn rasterise(&self, line: &Polyline) -> Vec<f64> {
+        let (n, half) = (self.n, self.core_w as f64 / 2.0);
+        let (first, last) = (line[0], line[line.len() - 1]);
+        let mut pts = vec![(first.0 - 2.0 * n as f64, first.1)];
+        pts.extend_from_slice(line);
+        pts.push((last.0, last.1 + 2.0 * n as f64));
+        let mut out = vec![0.0; n * n];
+        for b in 0..n {
+            for a in 0..n {
+                let (x, y) = (a as f64 + 0.5, b as f64 + 0.5);
+                let mut d2 = f64::INFINITY;
+                for s in pts.windows(2) {
+                    let ((x0, y0), (x1, y1)) = (s[0], s[1]);
+                    let (dx, dy) = (x1 - x0, y1 - y0);
+                    let t = (((x - x0) * dx + (y - y0) * dy) / (dx * dx + dy * dy)).clamp(0.0, 1.0);
+                    let (px, py) = (x0 + t * dx - x, y0 + t * dy - y);
+                    d2 = d2.min(px * px + py * py);
+                }
+                if d2 <= half * half {
+                    out[b * n + a] = 1.0;
+                }
+            }
+        }
+        out
+    }
+}
+
+/// Binary morphology on the box with the fixed exterior as padding.
+/// `offsets`: the structuring element. `dilate = true`: max, otherwise min.
+pub fn morph(bx: &DesignBox, s: &[f64], offsets: &[(i64, i64)], dilate: bool) -> Vec<f64> {
+    let n = bx.n as i64;
+    let at = |p: i64, q: i64| if (0..n).contains(&p) && (0..n).contains(&q) { s[(q * n + p) as usize] >= 0.5 } else { bx.exterior(p, q) >= 0.5 };
+    let mut out = vec![0.0; s.len()];
+    for b in 0..n {
+        for a in 0..n {
+            let v = if dilate { offsets.iter().any(|&(dx, dy)| at(a + dx, b + dy)) } else { offsets.iter().all(|&(dx, dy)| at(a + dx, b + dy)) };
+            out[(b * n + a) as usize] = if v { 1.0 } else { 0.0 };
+        }
+    }
+    out
+}
+
+/// Disk offsets dx^2 + dy^2 <= r2 (r2 = 4: diameter 5 cells).
+pub fn disk(r2: i64) -> Vec<(i64, i64)> {
+    let r = (r2 as f64).sqrt().floor() as i64;
+    (-r..=r).flat_map(|dy| (-r..=r).map(move |dx| (dx, dy))).filter(|&(dx, dy)| dx * dx + dy * dy <= r2).collect()
+}
+
+/// 4-neighbour cross (1-cell erosion and dilation).
+pub fn cross() -> Vec<(i64, i64)> {
+    vec![(0, 0), (1, 0), (-1, 0), (0, 1), (0, -1)]
+}
+
+/// Minimum feature check: number of box cells changed by an opening (thin
+/// silicon) and by a closing (narrow air gaps) with a symmetric `element`.
+/// The operations run on a canvas that holds the box and a halo of the fixed
+/// exterior, so the exterior slabs are eroded and dilated like the box.
+pub fn feature_violations(bx: &DesignBox, s: &[f64], element: &[(i64, i64)]) -> (usize, usize) {
+    let n = bx.n as i64;
+    let r = element.iter().map(|&(x, y)| x.abs().max(y.abs())).max().unwrap_or(0);
+    let pad = 2 * r + 2;
+    let m = n + 2 * pad;
+    let base: Vec<bool> = (0..m * m)
+        .map(|k| {
+            let (a, b) = (k % m - pad, k / m - pad);
+            if (0..n).contains(&a) && (0..n).contains(&b) { s[(b * n + a) as usize] >= 0.5 } else { bx.exterior(a, b) >= 0.5 }
+        })
+        .collect();
+    let op = |c: &[bool], dilate: bool| -> Vec<bool> {
+        (0..m * m)
+            .map(|k| {
+                let (a, b) = (k % m, k / m);
+                let get = |p: i64, q: i64| {
+                    if (0..m).contains(&p) && (0..m).contains(&q) { c[(q * m + p) as usize] } else { bx.exterior(p - pad, q - pad) >= 0.5 }
+                };
+                if dilate { element.iter().any(|&(dx, dy)| get(a + dx, b + dy)) } else { element.iter().all(|&(dx, dy)| get(a + dx, b + dy)) }
+            })
+            .collect()
+    };
+    let open = op(&op(&base, false), true);
+    let close = op(&op(&base, true), false);
+    let diff = |t: &[bool]| (0..n * n).filter(|&k| base[((k / n + pad) * m + k % n + pad) as usize] != t[((k / n + pad) * m + k % n + pad) as usize]).count();
+    (diff(&open), diff(&close))
+}
