@@ -237,6 +237,28 @@ pub fn gds_real_decode(b: &[u8]) -> f64 {
 /// keyholed), on `layer`/datatype 0. Coordinates in nm. The dates are fixed,
 /// so the output is deterministic.
 pub fn gds(mask: &Mask, cell_nm: i64, name: &str, layer: i16) -> Vec<u8> {
+    gds_layers(&[(layer, mask)], &[], cell_nm, name)
+}
+
+fn boundary(b: &mut Vec<u8>, layer: i16, ring: &Ring, cell_nm: i64) {
+    assert!(ring.len() < 8191, "polygon has {} vertices (GDSII limit 8191)", ring.len());
+    let mut xy = Vec::with_capacity(8 * (ring.len() + 1));
+    for p in ring.iter().chain(std::iter::once(&ring[0])) {
+        let (x, y) = (p.0 * cell_nm, p.1 * cell_nm);
+        assert!(i32::try_from(x).is_ok() && i32::try_from(y).is_ok(), "coordinate outside i32");
+        xy.extend_from_slice(&(x as i32).to_be_bytes());
+        xy.extend_from_slice(&(y as i32).to_be_bytes());
+    }
+    rec(b, 0x0800, &[]);
+    rec(b, 0x0D02, &layer.to_be_bytes());
+    rec(b, 0x0E02, &0i16.to_be_bytes());
+    rec(b, 0x1003, &xy);
+    rec(b, 0x1100, &[]);
+}
+
+/// GDSII library with one structure: the traced masks on their layers
+/// (datatype 0) and axis-aligned rectangles (x0, y0, x1, y1 in cells).
+pub fn gds_layers(layers: &[(i16, &Mask)], rects: &[(i16, (i64, i64, i64, i64))], cell_nm: i64, name: &str) -> Vec<u8> {
     let date: Vec<u8> = [2026i16, 11, 26, 0, 0, 0, 2026, 11, 26, 0, 0, 0].iter().flat_map(|v| v.to_be_bytes()).collect();
     let mut b = Vec::new();
     rec(&mut b, 0x0002, &600i16.to_be_bytes());
@@ -247,19 +269,13 @@ pub fn gds(mask: &Mask, cell_nm: i64, name: &str, layer: i16) -> Vec<u8> {
     rec(&mut b, 0x0305, &units);
     rec(&mut b, 0x0502, &date);
     rec(&mut b, 0x0606, &ascii(name));
-    for (outer, holes) in group(trace(mask)) {
-        let ring = keyhole(&outer, &holes);
-        let mut xy = Vec::with_capacity(8 * (ring.len() + 1));
-        for p in ring.iter().chain(std::iter::once(&ring[0])) {
-            xy.extend_from_slice(&((p.0 * cell_nm) as i32).to_be_bytes());
-            xy.extend_from_slice(&((p.1 * cell_nm) as i32).to_be_bytes());
+    for &(layer, mask) in layers {
+        for (outer, holes) in group(trace(mask)) {
+            boundary(&mut b, layer, &keyhole(&outer, &holes), cell_nm);
         }
-        assert!(ring.len() < 8191, "polygon has {} vertices (GDSII limit 8191)", ring.len());
-        rec(&mut b, 0x0800, &[]);
-        rec(&mut b, 0x0D02, &layer.to_be_bytes());
-        rec(&mut b, 0x0E02, &0i16.to_be_bytes());
-        rec(&mut b, 0x1003, &xy);
-        rec(&mut b, 0x1100, &[]);
+    }
+    for &(layer, (x0, y0, x1, y1)) in rects {
+        boundary(&mut b, layer, &vec![(x0, y0), (x1, y0), (x1, y1), (x0, y1)], cell_nm);
     }
     rec(&mut b, 0x0700, &[]);
     rec(&mut b, 0x0400, &[]);
