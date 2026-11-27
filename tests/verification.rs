@@ -604,3 +604,78 @@ fn export_gds_round_trip_matches_mask() {
     let (outer, holes) = export_round_trip(&Mask::from_box(&bx, &bin, 16));
     println!("optimised 48 x 48: {outer} outer boundaries, {holes} holes");
 }
+
+/// Port-1 reflection gradient dR_k/deps against finite differences, on the
+/// same grey design as `adjoint_gradient_matches_finite_differences`:
+/// 4 x 4 block at 3 wavelengths (cosine > 0.999, magnitude within 1e-3,
+/// 16/16 signs) and directional derivatives (steps 1e-2, 1e-3, within 1e-3).
+/// The single-line R estimate agrees with the two-line modal |S11|^2 of
+/// `sparams` to within 2 % (relative) at every band sample.
+#[test]
+fn adjoint_reflection_gradient_matches_finite_differences() {
+    use photon_fdtd::adjoint::gradient_r;
+    let mut base = PortSetup::standard(Geometry::Bend, 1);
+    base.extra_time = 6000.0;
+    let bx = DesignBox::for_bend(&base, 48, 8);
+    let n = bx.n;
+    let filt = ConicFilter::new(5.0);
+    let rho0: Vec<f64> = bx.circular_arc().iter().map(|v| 0.15 + 0.7 * v).collect();
+    let rho_bar = densities(&bx, &filt, &rho0, 4.0);
+    let reference = base.run(Run::Reference).unwrap();
+    let setup = base.clone().with_design(&bx, &rho_bar);
+    let obj = Objective::with_reflection(&setup, &reference);
+    println!("port-1 basis {} vectors, residual {:.2e}", obj.p1.as_ref().unwrap().basis.len(), obj.p1.as_ref().unwrap().basis_residual);
+    let fwd = forward(&setup, &obj, &bx).unwrap();
+    let s = setup.sparams(&reference, &setup.run(Run::Dut).unwrap());
+    for k in 0..15 {
+        let rel = (fwd.r[k] - s.s11_mode[k]).abs() / s.s11_mode[k];
+        println!("lambda0 {:.1}: R adjoint-line {:.6e}, |S11|^2 {:.6e}, rel {rel:.2e}", 1.0 / obj.freqs[k], fwd.r[k], s.s11_mode[k]);
+        assert!(rel < 0.02);
+    }
+    let grad = gradient_r(&setup, &obj, &bx, &fwd).unwrap();
+    let eps0: Vec<f64> = rho_bar.iter().map(|&r| DesignBox::eps(r)).collect();
+    let eval = |eps: &[f64]| {
+        let rb: Vec<f64> = eps.iter().map(|&e| (e - EPS_AIR) / (EPS_SI - EPS_AIR)).collect();
+        forward(&base.clone().with_design(&bx, &rb), &obj, &bx).unwrap().r
+    };
+    let r = bx.arc_radius() as f64;
+    let (ca, cb) = ((r * 0.7071) as usize - 2, (n as f64 - r * 0.7071) as usize - 2);
+    let cells: Vec<usize> = (0..16).map(|q| (cb + q / 4) * n + ca + q % 4).collect();
+    let ks = [0usize, 7, 14];
+    let mut fd = vec![vec![0.0; 16]; 15];
+    for (q, &c) in cells.iter().enumerate() {
+        let (mut p, mut m) = (eps0.clone(), eps0.clone());
+        p[c] += 1e-3;
+        m[c] -= 1e-3;
+        let (rp, rm) = (eval(&p), eval(&m));
+        for k in 0..15 {
+            fd[k][q] = (rp[k] - rm[k]) / 2e-3;
+        }
+    }
+    for &k in &ks {
+        let ad: Vec<f64> = cells.iter().map(|&c| grad[k][c]).collect();
+        let dot: f64 = ad.iter().zip(&fd[k]).map(|(a, b)| a * b).sum();
+        let (na, nb) = (ad.iter().map(|x| x * x).sum::<f64>().sqrt(), fd[k].iter().map(|x| x * x).sum::<f64>().sqrt());
+        let signs = ad.iter().zip(&fd[k]).filter(|(a, b)| a.signum() == b.signum()).count();
+        println!("R lambda0 {:.1}: cosine {:.8}, |adj|/|fd| {:.6}, signs {signs}/16", 1.0 / obj.freqs[k], dot / (na * nb), na / nb);
+        assert!(dot / (na * nb) > 0.999);
+        assert!((na / nb - 1.0).abs() < 1e-3);
+        assert_eq!(signs, 16);
+    }
+    let mut seed = 17u64;
+    let d: Vec<f64> = (0..16).map(|_| lcg(&mut seed) - 0.5).collect();
+    for &h in &[1e-2, 1e-3] {
+        let (mut p, mut m) = (eps0.clone(), eps0.clone());
+        for (q, &c) in cells.iter().enumerate() {
+            p[c] += h * d[q];
+            m[c] -= h * d[q];
+        }
+        let (rp, rm) = (eval(&p), eval(&m));
+        for &k in &ks {
+            let adj: f64 = cells.iter().zip(&d).map(|(&c, dq)| grad[k][c] * dq).sum();
+            let ratio = adj / ((rp[k] - rm[k]) / (2.0 * h));
+            println!("R directional h {h:.0e} lambda0 {:.1}: ratio {ratio:.8}", 1.0 / obj.freqs[k]);
+            assert!((ratio - 1.0).abs() < 1e-3);
+        }
+    }
+}

@@ -1,5 +1,7 @@
 # Stage 6 benchmark protocol: black-box optimisers against the adjoint
 
+Superseded by [docs/stage6-protocol.md](stage6-protocol.md) (version 2) before any production run. Only two smoke runs of 20 solves used this version.
+
 This protocol is fixed before any black-box optimiser code exists. It compares
 CMA-ES and a bandit policy gradient with the `v0.5.0` adjoint result on the
 same 48 x 48 evaluator. All results are for the 2D TMz model.

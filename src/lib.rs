@@ -17,6 +17,7 @@ pub mod cpml;
 pub mod design;
 pub mod export;
 pub mod gpu;
+pub mod robust;
 pub mod sparams;
 pub mod verify;
 
