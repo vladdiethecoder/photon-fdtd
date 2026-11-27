@@ -1,0 +1,90 @@
+{
+ "passed": true,
+ "layers": {
+  "1": {
+   "union_area_cells": 2798,
+   "source_cells": 2798,
+   "symmetric_difference_cells": 0,
+   "width_violations": 0,
+   "gap_violations": 0,
+   "ports_connected": true,
+   "floating_silicon": 0,
+   "enclosed_air": 0,
+   "agrees_with_rust": true
+  },
+  "2": {
+   "union_area_cells": 2602,
+   "source_cells": 2602,
+   "symmetric_difference_cells": 0,
+   "width_violations": 4,
+   "gap_violations": 0,
+   "ports_connected": true,
+   "floating_silicon": 0,
+   "enclosed_air": 0,
+   "agrees_with_rust": true
+  },
+  "3": {
+   "union_area_cells": 2994,
+   "source_cells": 2994,
+   "symmetric_difference_cells": 0,
+   "width_violations": 2,
+   "gap_violations": 2,
+   "ports_connected": true,
+   "floating_silicon": 0,
+   "enclosed_air": 0,
+   "agrees_with_rust": true
+  }
+ },
+ "negative_control": {
+  "description": "layer-1 source mask shifted by +1 cell in x (np.roll, equal area)",
+  "shifted_cells": 2798,
+  "equal_area": true,
+  "symmetric_difference_cells": 178,
+  "detected": true
+ }
+}
+{
+ "passed": true,
+ "layers": {
+  "1": {
+   "union_area_cells": 2218,
+   "source_cells": 2218,
+   "symmetric_difference_cells": 0,
+   "width_violations": 0,
+   "gap_violations": 0,
+   "ports_connected": true,
+   "floating_silicon": 0,
+   "enclosed_air": 0,
+   "agrees_with_rust": true
+  },
+  "2": {
+   "union_area_cells": 2037,
+   "source_cells": 2037,
+   "symmetric_difference_cells": 0,
+   "width_violations": 0,
+   "gap_violations": 0,
+   "ports_connected": true,
+   "floating_silicon": 0,
+   "enclosed_air": 0,
+   "agrees_with_rust": true
+  },
+  "3": {
+   "union_area_cells": 2399,
+   "source_cells": 2399,
+   "symmetric_difference_cells": 0,
+   "width_violations": 0,
+   "gap_violations": 0,
+   "ports_connected": true,
+   "floating_silicon": 0,
+   "enclosed_air": 0,
+   "agrees_with_rust": true
+  }
+ },
+ "negative_control": {
+  "description": "layer-1 source mask shifted by +1 cell in x (np.roll, equal area)",
+  "shifted_cells": 2218,
+  "equal_area": true,
+  "symmetric_difference_cells": 176,
+  "detected": true
+ }
+}

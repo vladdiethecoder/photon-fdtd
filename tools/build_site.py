@@ -196,11 +196,11 @@ def main():
             t2 = sum(1 for x in rr if x["t2"])
             fmt = lambda v: "none" if v is None else f"{v:.4f}"
             trows += (f"<tr><td>{esc(m)}</td><td>{len(rr)}</td><td>{sum(1 for x in rr if x['complete'])}</td><td>{fmt(s['median_at_cap'])}</td>"
-                      f"<td>{fmt(s['min_at_cap'])} – {fmt(s['max_at_cap'])}</td><td>{t1} / {len(rr)}</td><td>{t2} / {len(rr)}</td>"
+                      f"<td>{fmt(s['min_at_cap'])} – {fmt(s['max_at_cap'])}</td><td>{s.get('charged_min')}–{s.get('charged_max')}</td><td>{t1} / {len(rr)}</td><td>{t2} / {len(rr)}</td>"
                       f"<td>{sum(x['geometry_ok'] for x in rr)} / {sum(x['scored'] for x in rr)}</td></tr>")
         trade_html = f"""
 <figure><img src="files/{esc(rel['tradeoff_plot'])}" alt="Optimizer trade-off plot: best feasible robust J against charged cost and wall time for adjoint, CMA-ES and one-step PPO"><figcaption>Every run is drawn, including runs without a feasible design (no line until the first feasible design). Thick lines: median of five runs; bands: min–max.</figcaption></figure>
-<table><tr><th>method</th><th>runs</th><th>complete</th><th>median best J at cap</th><th>range</th><th>runs reaching T1</th><th>runs reaching T2</th><th>geometry-feasible candidates</th></tr>{trows}</table>
+<table><tr><th>method</th><th>runs</th><th>complete</th><th>median best J (dB)</th><th>range (dB)</th><th>charged per run</th><th>T1 runs</th><th>T2 runs</th><th>geometry-feasible / scored</th></tr>{trows}</table>
 <p>{esc(rel.get('benchmark_verdict', ''))}</p>"""
     poster_note = f"Ez at lambda0 = {movie['lambda0_cells']:g} cells, {movie['frames']} frames, {movie['steps_per_frame']} steps per frame; red +Ez, blue −Ez, grey silicon."
     page = f"""<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">

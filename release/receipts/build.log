@@ -1,0 +1,11 @@
+   Compiling crossbeam-utils v0.8.23
+   Compiling crossbeam-epoch v0.9.21
+   Compiling crossbeam-deque v0.8.8
+   Compiling rayon-core v1.13.0
+   Compiling cudarc v0.19.10
+   Compiling cfg-if v1.0.5
+   Compiling either v1.19.0
+   Compiling libloading v0.9.1
+   Compiling rayon v1.12.0
+   Compiling photon-fdtd v0.6.0-rc.1 (/run/media/vdubrov/NVMe-Storage/.tmp/photon-fdtd-clean-d9f6957956579b92484a48feded0908083a6d622)
+    Finished `release` profile [optimized] target(s) in 8.30s

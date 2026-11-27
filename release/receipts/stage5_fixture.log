@@ -1,0 +1,16 @@
+fabrication (scale 1):
+  optimised      islands 0  L_min violations open 0 close 0
+  bezier k=0.40  islands 0  L_min violations open 0 close 0
+  arc            islands 0  L_min violations open 0 close 0
+  optimised: binary fraction before the threshold 0.9965
+optimised      worst IL / RL: 15 freqs 0.2586 / 23.41  61 freqs 0.2586 / 23.36  scale 2 0.2659 / 23.53 dB
+bezier k=0.40  worst IL / RL: 15 freqs 0.5933 / 25.35  61 freqs 0.5933 / 25.34  scale 2 0.5869 / 26.08 dB
+arc            worst IL / RL: 15 freqs 0.6926 / 27.52  61 freqs 0.6926 / 27.52  scale 2 0.6967 / 27.75 dB
+erosion / dilation by 1 cell (scale 1, 15 freqs):
+  optimised       eroded: IL 0.3114 RL 20.40  dilated: IL 0.2730 RL 20.69
+  bezier k=0.40   eroded: IL 0.6949 RL 29.45  dilated: IL 0.5903 RL 19.86
+  arc             eroded: IL 0.8226 RL 22.40  dilated: IL 0.6096 RL 25.83
+numerical uncertainty U = 0.0073 dB (worst-IL change, scale 1 -> 2)
+gain over the best baseline: 15 freqs 0.3347, 61 freqs 0.3347, scale 2 0.3210 dB
+acceptance (IL < 0.50 dB and RL > 20 dB on 15 and 61 freqs): PASS
+optimiser win (gain >= 0.10 dB and > U on 15, 61 freqs and scale 2): YES

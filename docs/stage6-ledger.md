@@ -54,8 +54,8 @@ Paths under `out/` are local working outputs. The release copies are under
 |---|---|---|---|
 | Lead plot: validated spectra | done | `release/spectra_heldout61.svg`, `.png` | `tools/plot_stage6.py spectra`; checked by eye: no curve crosses a gate |
 | Field movie from solver output | done | `out/stage6/movie/` (`field_movie`) | 150 frames, VP9 and H.264, poster; checked by eye: guided field through the bend |
-| Project page and portfolio index | done (draft) | `dist/site/` (`tools/build_site.py`) | 15 local links resolve; downloads byte-identical; JS renders 6 curves; play, pause, scrub (1.5 / 3.0 / 5.4 s) and MP4 fallback work with a Range-capable server (`tools/serve_site.py`); first screen correct at 1280 and 390 px |
-| Clean-checkout receipts | done | `release/receipts/receipts.json` | see the release-candidate commit; 24 tests pass, viewer builds, Stage 5 fixture identical, layouts rebuild byte-identical |
+| Project page and portfolio index | done | `dist/site/` (`tools/build_site.py`) | 15 local links resolve; downloads byte-identical; JS renders 6 curves; play, pause, scrub (1.5 / 3.0 / 5.4 s) and MP4 fallback work with a Range-capable server (`tools/serve_site.py`); first screen correct at 1280 and 390 px; final build: 16 local links fetched over HTTP byte-identical, interactive plot 8 curves (4 designs), Limitations section has the 4 required topics |
+| Clean-checkout receipts | done | `release/receipts/receipts.json` | clean clone of `d9f6957`: 24 tests pass, 0 fail; release and viewer builds pass; Stage 5 fixture identical; both layouts rebuild byte-identical and pass `check_layout.py` |
 | Layout of the release design | done (pass) | `release/bend80_certificate.json` | nominal: 0 violations, 0 symmetric difference; eroded: 4 width; dilated: 2 width, 2 gap (reported); negative control 178 cells |
 
 ## Phase 4: range
@@ -67,3 +67,8 @@ Paths under `out/` are local working outputs. The release copies are under
 | Synthesis figures | not measured | none | no synthesis tool |
 | Lean proof (optional) | blocked | none | Lean 4 not installed; install needs approval |
 | Outreach drafts (5, including Waterloo) | done (drafts, not sent) | `out/outreach/emails.md` (not committed) | contacts and research connections checked on official pages |
+
+## Commits
+
+- Code and results tested by the receipts: `d9f6957`.
+- After it: `release/receipts/`, `release/release.json` (test count), `release/SHA256SUMS`, the benchmark-table header text in `tools/build_site.py`, and this ledger. None of them changes the solver, the tests, or the layout files.
