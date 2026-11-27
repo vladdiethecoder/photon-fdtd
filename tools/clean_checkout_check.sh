@@ -41,6 +41,14 @@ for p in bend80 bend80_phase1; do
   done
 done
 python3 tools/check_layout.py release/bend80 --design-revision clean-checkout > "$OUT/layout_check.log" && python3 tools/check_layout.py release/bend80_phase1 --design-revision clean-checkout >> "$OUT/layout_check.log" || layout_same=false
+rtl=skipped
+if command -v verilator > /dev/null; then
+  verilator --version >> "$OUT/toolchain.log"
+  run rtl_build verilator --binary -j 0 -Wall --top-module tb_yee1d --Mdir "$SCRATCH/obj_dir" rtl/yee1d.sv rtl/tb_yee1d.sv
+  run rtl_nominal "$SCRATCH/obj_dir/Vtb_yee1d" +VEC=rtl/vectors/nominal
+  run rtl_saturate "$SCRATCH/obj_dir/Vtb_yee1d" +VEC=rtl/vectors/saturate
+  rtl=$(grep -h 'tb_yee1d rtl' "$OUT/rtl_nominal.log" "$OUT/rtl_saturate.log" | grep -c 'PASS')
+fi
 passed=$(grep -o 'test result: ok\. [0-9]* passed' "$OUT/test.log" | awk '{s+=$4} END {print s+0}')
 failed=$(grep -o '[0-9]* failed' "$OUT/test.log" | awk '{s+=$1} END {print s+0}')
 cat > "$OUT/receipts.json" <<JSON
@@ -53,7 +61,8 @@ cat > "$OUT/receipts.json" <<JSON
   "tests_failed": $failed,
   "viewer_build": true,
   "stage5_fixture_identical": $( [ -s "$OUT/stage5_fixture.diff" ] && echo false || echo true ),
-  "release_layout_rebuilt_byte_identical": $layout_same
+  "release_layout_rebuilt_byte_identical": $layout_same,
+  "rtl_testbench_cases_passed": "$rtl of 2"
 }
 JSON
 cat "$OUT/receipts.json"
