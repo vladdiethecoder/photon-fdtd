@@ -26,6 +26,40 @@ Paths under `out/` are local working outputs. The release copies are under
 | Baselines re-evaluated (21 designs) | done | `out/stage6/baselines/` | best tested baseline: Bezier k = 0.45, J = 0.3306 dB (robust IL 0.3306 dB, robust RL 23.21 dB); T2 = 0.2306 dB |
 | eta calibration | done | `out/stage6/baselines/eta_calibration.json` | r_f 6: eta_e 0.641366, eta_d 0.358634 |
 
-## Phase 2, 3, 4
+| Phase 1 run (r_f 6, full resolution) | done | `docs/results/stage6/phase1/rf6/` | 96 iterations, 2502 charged (cap 3000), 1596.8 s; best scored mask: iteration 3, J 0.2737 dB |
+| Fallback rule | done | `docs/results/stage6/phase1/decision.txt` | the r_f 6 design meets the training gates, so the r_f 8 fallback did not run |
+| Release gates (training, 61 held-out, half-cell grid) | done (pass) | `docs/results/stage6/phase1/validate/validate.json` | robust IL 0.2737 / 0.2737 / 0.2724 dB; robust RL 22.50 / 22.31 / 22.59 dB; geometry gates pass |
+| Win over the best tested baseline | failed | same file, `win_tests` | gain 0.0569 / 0.0569 / 0.0575 dB, required >= 0.10 dB; best result preserved (phase 1 design) |
+| Measured grid change reported | done | same file, `grid_change_il_db`, `grid_change_rl_db` | IL within +-0.0026 dB; RL -1.31 to +2.18 dB |
+| Length-scale failure recorded | done | `docs/results/stage6/phase1/diagnostic_final/` | 23/25 scored masks fail the 5-cell rule; final iterate 0.0877 dB, not feasible (post-hoc diagnostic) |
+| Layout export (SVG, GDSII, 4 layers) | done | `release/bend80.gds`, `release/bend80.svg`, `release/bend80_meta.json` | byte-identical on a second run |
+| Independent re-import, area, symmetric difference, rules | done (pass) | `release/bend80_certificate.json` | `tools/check_layout.py`: 0 symmetric difference on layers 1 to 3; width, gap and connectivity agree with Rust |
+| Negative controls | done | same certificate; mutated-GDSII check | shifted mask: 176 cells detected; corrupted coordinate: check fails (exit 1) |
 
-Filled in as the steps finish.
+## Phase 2: benchmark
+
+| Gate | Status | Artifact | Evidence |
+|---|---|---|---|
+| Tuning allowance (6 runs, cap 300, seed 0, sharp L) | running | `out/stage6/phase2/tuning/` | adjoint: lr 0.05 (J 18.09) over 0.10 (J 19.61) |
+| Production (15 runs, cap 1200) | open | `out/stage6/phase2/runs/` | |
+| Finalist validation | open | `out/stage6/phase2/validate/` | |
+
+## Phase 3: package and showcase
+
+| Gate | Status | Artifact | Evidence |
+|---|---|---|---|
+| Lead plot: validated spectra | done | `release/spectra_heldout61.svg`, `.png` | `tools/plot_stage6.py spectra`; checked by eye: no curve crosses a gate |
+| Field movie from solver output | done | `out/stage6/movie/` (`field_movie`) | 150 frames, VP9 and H.264, poster; checked by eye: guided field through the bend |
+| Project page and portfolio index | done (draft) | `dist/site/` (`tools/build_site.py`) | 15 local links resolve; downloads byte-identical; JS renders 6 curves; play, pause, scrub (1.5 / 3.0 / 5.4 s) and MP4 fallback work with a Range-capable server (`tools/serve_site.py`); first screen correct at 1280 and 390 px |
+| Lead plot: optimiser trade-offs | open | `release/tradeoff.svg` | needs phase 2 |
+| Clean-checkout receipts | open | `release/receipts/` (`tools/clean_checkout_check.sh`) | runs after phase 2 (uses the GPU) |
+
+## Phase 4: range
+
+| Gate | Status | Artifact | Evidence |
+|---|---|---|---|
+| Fixed-point 1D Yee RTL, reference, testbench | done (RTL not simulated) | `rtl/`, `src/fixed1d.rs`, `docs/rtl.md` | `fixed_point_yee1d_reference_and_vectors`: vectors match the reference; local error E 0.750 LSB (bound 1), H 0.500 LSB (bound 0.5); saturation at step 59 |
+| RTL simulation | blocked | none | no HDL simulator installed; install needs approval |
+| Synthesis figures | not measured | none | no synthesis tool |
+| Lean proof (optional) | blocked | none | Lean 4 not installed; install needs approval |
+| Outreach drafts (5, including Waterloo) | done (drafts, not sent) | `out/outreach/emails.md` (not committed) | contacts and research connections checked on official pages |
