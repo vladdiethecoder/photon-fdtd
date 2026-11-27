@@ -188,6 +188,8 @@ pub struct PortSetup {
     pub port1_x: usize,
     /// Bend DUT only: eps of the design box cells (row-major, b * n + a).
     pub design: Option<std::sync::Arc<(crate::design::DesignBox, Vec<f64>)>>,
+    /// Extra settling time added to `steps` (natural time units).
+    pub extra_time: f64,
 }
 
 /// Raw port data of one run.
@@ -308,6 +310,7 @@ impl PortSetup {
             src_x: 10 + 40 * s,
             port1_x: 10 + 390 * s,
             design: None,
+            extra_time: 0.0,
         }
     }
 
@@ -381,7 +384,7 @@ impl PortSetup {
             Geometry::Straight => (self.port2() - self.src_x) as f64,
             Geometry::Bend => ((self.corner_x() - self.src_x) + (self.port2() - self.j0())).max(2 * (self.corner_x() - self.src_x)) as f64,
         };
-        let t = self.t0() + 4.5 * self.tau() + path / self.vg_min() + 2000.0 * self.scale as f64;
+        let t = self.t0() + 4.5 * self.tau() + path / self.vg_min() + 2000.0 * self.scale as f64 + self.extra_time;
         (t / courant()).ceil() as usize
     }
 
@@ -401,7 +404,7 @@ impl PortSetup {
         (strip - self.src_x) + (strip - self.port1_x) > self.steps()
     }
 
-    fn eps_at(&self, run: Run, i: usize, j: usize) -> f64 {
+    pub fn eps_at(&self, run: Run, i: usize, j: usize) -> f64 {
         let (j0, j1) = (self.j0(), self.j0() + self.core_w);
         let horizontal = (j0..j1).contains(&j);
         let si = match (run, self.geometry) {

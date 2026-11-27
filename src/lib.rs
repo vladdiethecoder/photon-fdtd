@@ -12,6 +12,7 @@
 //! outgoing waves before they reach the PEC wall. Its auxiliary psi arrays
 //! exist only in the boundary strips.
 
+pub mod adjoint;
 pub mod cpml;
 pub mod design;
 pub mod gpu;

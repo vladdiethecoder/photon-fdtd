@@ -157,11 +157,11 @@ extern "C" __global__ void add_source_line(double* ez, int nx, int i, int j0, in
 }
 
 // Soft source with a transverse profile: Ez[i, j0 + s] += amp * prof[s], s in 0..n.
-extern "C" __global__ void add_source_profile(double* ez, const double* __restrict__ prof, int nx, int i, int j0,
-                                              int n, double amp) {
+extern "C" __global__ void add_source_profile(double* ez, const double* __restrict__ prof, unsigned long long start,
+                                              unsigned long long stride, int n, double amp) {
     int s = blockIdx.x * blockDim.x + threadIdx.x;
     if (s >= n) return;
-    size_t k = K(i, j0 + s);
+    size_t k = start + (size_t)s * stride;
     ez[k] = ez[k] + amp * prof[s];
 }
 
@@ -169,11 +169,13 @@ extern "C" __global__ void add_source_profile(double* ez, const double* __restri
 // re[f * n + s] += v cos(w t), im[f * n + s] -= v sin(w t)  (e^{-i w t} convention).
 extern "C" __global__ void dft_line(const double* __restrict__ src, unsigned long long start, unsigned long long stride,
                                     int n, const double* __restrict__ omega, int nf, double t,
-                                    double* __restrict__ re, double* __restrict__ im) {
+                                    double* __restrict__ re, double* __restrict__ im,
+                                    int per_row, unsigned long long row_stride) {
     int s = blockIdx.x * blockDim.x + threadIdx.x;
     int f = blockIdx.y;
     if (s >= n || f >= nf) return;
-    double v = src[start + (unsigned long long)s * stride];
+    unsigned long long x = (unsigned long long)(s % per_row), r = (unsigned long long)(s / per_row);
+    double v = src[start + x * stride + r * row_stride];
     double sn, cs;
     sincos(omega[f] * t, &sn, &cs);
     size_t q = (size_t)f * (size_t)n + (size_t)s;
@@ -208,14 +210,17 @@ pub enum Field {
     Hy,
 }
 
-/// A line of n grid samples (flat index start + s * stride) whose DFT is
-/// accumulated at nf frequencies during a run. Ez samples belong to time
-/// (n + 1) dt after step n; Hx and Hy samples to (n + 1/2) dt.
+/// A set of n grid samples whose DFT is accumulated at nf frequencies during
+/// a run: `rows` rows of `per_row` samples, sample (x, r) at flat index
+/// start + x * stride + r * row_stride. A line has rows = 1. Ez samples belong
+/// to time (n + 1) dt after step n; Hx and Hy samples to (n + 1/2) dt.
 pub struct DftLine {
     pub field: Field,
     pub start: usize,
     pub stride: usize,
     pub n: usize,
+    pub per_row: usize,
+    pub row_stride: usize,
     /// Frequencies in natural units (cycles per time unit).
     pub freqs: Vec<f64>,
     omega: CudaSlice<f64>,
@@ -496,25 +501,10 @@ impl GpuYee {
 
     /// Soft source with a transverse profile: Ez[i, j0 + s] += amp * profile[s].
     pub fn add_source_profile(&mut self, i: usize, j0: usize, profile: &CudaSlice<f64>, amp: f64) -> Result<(), Box<dyn Error>> {
-        let n = profile.len();
-        if j0 + n > self.ny || i >= self.nx {
+        if j0 + profile.len() > self.ny || i >= self.nx {
             return Err("source profile outside the grid".into());
         }
-        let cfg = LaunchConfig { grid_dim: ((n as u32).div_ceil(128), 1, 1), block_dim: (128, 1, 1), shared_mem_bytes: 0 };
-        let (nx, i, j0, n) = (self.nx as i32, i as i32, j0 as i32, n as i32);
-        unsafe {
-            self.stream
-                .launch_builder(&self.f[9])
-                .arg(&mut self.ez)
-                .arg(profile)
-                .arg(&nx)
-                .arg(&i)
-                .arg(&j0)
-                .arg(&n)
-                .arg(&amp)
-                .launch(cfg)?;
-        }
-        Ok(())
+        self.add_source_strided(j0 * self.nx + i, self.nx, profile, amp)
     }
 
     /// A DFT line monitor of `n` samples of `field` starting at cell (i, j),
@@ -537,11 +527,57 @@ impl GpuYee {
             start: j * self.nx + i,
             stride,
             n,
+            per_row: n,
+            row_stride: 0,
             freqs: freqs.to_vec(),
             omega: self.stream.clone_htod(&omega)?,
             re: self.stream.alloc_zeros::<f64>(n * freqs.len())?,
             im: self.stream.alloc_zeros::<f64>(n * freqs.len())?,
         })
+    }
+
+    /// A DFT monitor of the w x h cell rectangle with lower-left cell (i, j),
+    /// sample (a, b) = cell (i + a, j + b), stored at index b * w + a.
+    pub fn dft_rect(&self, field: Field, (i, j): (usize, usize), w: usize, h: usize, freqs: &[f64]) -> Result<DftLine, Box<dyn Error>> {
+        if w == 0 || h == 0 || i + w > self.nx || j + h > self.ny {
+            return Err("monitor outside the grid".into());
+        }
+        let omega: Vec<f64> = freqs.iter().map(|f| 2.0 * std::f64::consts::PI * f).collect();
+        let n = w * h;
+        Ok(DftLine {
+            field,
+            start: j * self.nx + i,
+            stride: 1,
+            n,
+            per_row: w,
+            row_stride: self.nx,
+            freqs: freqs.to_vec(),
+            omega: self.stream.clone_htod(&omega)?,
+            re: self.stream.alloc_zeros::<f64>(n * freqs.len())?,
+            im: self.stream.alloc_zeros::<f64>(n * freqs.len())?,
+        })
+    }
+
+    /// Soft source along any line: Ez[start + s * stride] += amp * profile[s].
+    pub fn add_source_strided(&mut self, start: usize, stride: usize, profile: &CudaSlice<f64>, amp: f64) -> Result<(), Box<dyn Error>> {
+        let n = profile.len();
+        if n == 0 || start + (n - 1) * stride >= self.nx * self.ny {
+            return Err("source outside the grid".into());
+        }
+        let cfg = LaunchConfig { grid_dim: ((n as u32).div_ceil(128), 1, 1), block_dim: (128, 1, 1), shared_mem_bytes: 0 };
+        let (start, stride, n) = (start as u64, stride as u64, n as i32);
+        unsafe {
+            self.stream
+                .launch_builder(&self.f[9])
+                .arg(&mut self.ez)
+                .arg(profile)
+                .arg(&start)
+                .arg(&stride)
+                .arg(&n)
+                .arg(&amp)
+                .launch(cfg)?;
+        }
+        Ok(())
     }
 
     /// Add the current samples of a monitor to its DFT, with sample time `t`.
@@ -557,6 +593,7 @@ impl GpuYee {
             shared_mem_bytes: 0,
         };
         let (start, stride, n, nf) = (m.start as u64, m.stride as u64, m.n as i32, m.freqs.len() as i32);
+        let (per_row, row_stride) = (m.per_row as i32, m.row_stride as u64);
         unsafe {
             self.stream
                 .launch_builder(&self.f[10])
@@ -569,6 +606,8 @@ impl GpuYee {
                 .arg(&t)
                 .arg(&mut m.re)
                 .arg(&mut m.im)
+                .arg(&per_row)
+                .arg(&row_stride)
                 .launch(cfg)?;
         }
         Ok(())

@@ -1,0 +1,19 @@
+steps 11688
+adjoint basis: 11 vectors, max residual 7.05e-7
+forward + adjoint: 4.8 s; T at k=0,7,14: 0.82433 0.88676 0.92428
+block cells (a, b) from (20, 23), h = 0.001
+  lambda0  200.0: cosine 1.0000000, |adj|/|fd| 0.998950, per-cell ratio 0.99805..0.99928, signs 16/16
+  lambda0  165.1: cosine 1.0000000, |adj|/|fd| 1.000133, per-cell ratio 1.00006..1.00022, signs 16/16
+  lambda0  146.0: cosine 1.0000000, |adj|/|fd| 0.999861, per-cell ratio 0.99977..0.99992, signs 16/16
+  lambda0  130.9: cosine 1.0000000, |adj|/|fd| 1.000249, per-cell ratio 1.00018..1.00038, signs 16/16
+  lambda0  115.0: cosine 1.0000000, |adj|/|fd| 0.999347, per-cell ratio 0.99904..0.99981, signs 16/16
+directional (block), ratio adjoint / central difference:
+  h 1e-1: 200.0: 5.22689012  146.0: 0.99972871  115.0: 1.00035589
+  h 1e-2: 200.0: 5.22721766  146.0: 0.99972841  115.0: 1.00035575
+  h 1e-3: 200.0: 5.22773945  146.0: 0.99972817  115.0: 1.00035579
+  h 1e-4: 200.0: 5.23028181  146.0: 0.99972956  115.0: 1.00035619
+full chain rho -> F (F = 0.141158), ratio adjoint / central difference:
+  h 1e-2: adjoint -4.48219090e-3, fd -4.48056019e-3, ratio 1.00036395
+  h 1e-3: adjoint -4.48219090e-3, fd -4.48051574e-3, ratio 1.00037388
+  h 1e-4: adjoint -4.48219090e-3, fd -4.48051529e-3, ratio 1.00037398
+  h 1e-5: adjoint -4.48219090e-3, fd -4.48051528e-3, ratio 1.00037398
