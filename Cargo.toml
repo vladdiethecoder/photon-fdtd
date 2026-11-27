@@ -6,6 +6,16 @@ edition = "2024"
 [dependencies]
 rayon = "1.12"
 cudarc = { version = "0.19.10", default-features = false, features = ["std", "driver", "nvrtc", "dynamic-loading", "cuda-13010"] }
+# GUI dependencies: only the `viewer` binary uses them, and only with `--features gui`.
+eframe = { version = "0.33.3", optional = true, default-features = false, features = ["glow", "wayland", "x11", "default_fonts"] }
+libloading = { version = "0.8", optional = true }
+
+[features]
+gui = ["dep:eframe", "dep:libloading"]
+
+[[bin]]
+name = "viewer"
+required-features = ["gui"]
 
 [profile.release]
 codegen-units = 1

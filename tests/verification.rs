@@ -184,3 +184,41 @@ fn tall_grid_past_cuda_grid_y_limit_matches_cpu() {
     assert!(ez[65535 * nx..].iter().any(|&e| e != 0.0), "no field past row 65535");
     assert_eq!(bit_mismatches(&ez, &cpu.ez), 0);
 }
+
+/// Kernels behind the viewer, without a display: the brush sets exactly the
+/// cells of the disk to the constructor's cb bits, the heat map puts grid row
+/// j at image row ny-1-j with red for +Ez and blue for -Ez, and reset clears
+/// the fields but keeps the geometry.
+#[test]
+fn gpu_viewer_kernels_paint_render_reset() {
+    let (nx, ny) = (64usize, 48usize);
+    let mut g = GpuYee::new(nx, ny, Pml::new(4), courant(), &|_, _| EPS_AIR).unwrap();
+    g.paint_disk(30, 20, 5, EPS_SI).unwrap();
+    let cb = g.download_cb().unwrap();
+    let (si, air) = (photon_fdtd::cb_coeff(courant(), EPS_SI), photon_fdtd::cb_coeff(courant(), EPS_AIR));
+    for j in 0..ny {
+        for i in 0..nx {
+            let inside = (i as i64 - 30).pow(2) + (j as i64 - 20).pow(2) <= 25;
+            let want = if inside { si } else { air };
+            assert_eq!(cb[j * nx + i].to_bits(), want.to_bits(), "cell ({i}, {j})");
+        }
+    }
+    g.set_ez(10 * nx + 40, 1.0).unwrap();
+    g.set_ez(30 * nx + 12, -1.0).unwrap();
+    let mut img = g.stream().alloc_zeros::<u32>(nx * ny).unwrap();
+    g.render_rgba(&mut img, 1.0).unwrap();
+    let img = g.stream().clone_dtoh(&img).unwrap();
+    let px = |i: usize, j: usize| img[(ny - 1 - j) * nx + i];
+    assert_eq!(px(40, 10), 0xFF0000FF, "+Ez is pure red (RGBA8 little endian)");
+    assert_eq!(px(12, 30), 0xFFFF0000, "-Ez is pure blue");
+    let grey = px(30, 20) & 0xFF;
+    assert!(grey > 0 && px(30, 20) == 0xFF000000 | grey << 16 | grey << 8 | grey, "silicon is grey");
+    assert_eq!(px(20, 24), 0xFF000000, "air with Ez = 0 is black");
+    for _ in 0..20 {
+        g.step().unwrap();
+    }
+    assert!(g.download_ez().unwrap().iter().any(|&e| e != 0.0));
+    g.reset_fields().unwrap();
+    assert!(g.download_ez().unwrap().iter().all(|&e| e == 0.0));
+    assert_eq!(bit_mismatches(&g.download_cb().unwrap(), &cb), 0, "reset keeps the geometry");
+}

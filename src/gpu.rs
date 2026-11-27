@@ -8,7 +8,7 @@ use std::error::Error;
 use std::sync::Arc;
 
 use cudarc::driver::sys::CUevent_flags;
-use cudarc::driver::{CudaContext, CudaFunction, CudaSlice, CudaStream, LaunchConfig, PushKernelArg};
+use cudarc::driver::{CudaContext, CudaFunction, CudaSlice, CudaStream, DevicePtrMut, LaunchConfig, PushKernelArg};
 use cudarc::nvrtc::{CompileOptions, compile_ptx_with_opts};
 
 use crate::cpml::Profile;
@@ -115,6 +115,40 @@ extern "C" __global__ void psi_e_y(double* __restrict__ ez, double* __restrict__
     ez[k] = ez[k] - cb[k] * p;
 }
 
+// Set cb (= dt / eps_r) to `value` inside the disk |(i, j) - (cx, cy)| <= r.
+extern "C" __global__ void paint_disk(double* cb, int nx, int ny, int cx, int cy, int r, double value) {
+    int i = cx - r + (int)(blockIdx.x * blockDim.x + threadIdx.x);
+    int j = cy - r + (int)(blockIdx.y * blockDim.y + threadIdx.y);
+    if (i < 0 || i >= nx || j < 0 || j >= ny) return;
+    int dx = i - cx, dy = j - cy;
+    if (dx * dx + dy * dy > r * r) return;
+    cb[K(i, j)] = value;
+}
+
+// Ez heat map into RGBA8 (0xAABBGGRR), row 0 of the image = top row of the grid.
+// Red = +Ez, blue = -Ez, intensity sqrt(|gain Ez|) clipped to 1. Dielectric
+// cells (cb < dt) get a grey base, the CPML strips a dark base.
+extern "C" __global__ void render_rgba(const double* __restrict__ ez, const double* __restrict__ cb,
+                                       unsigned long long out_ptr, int nx, int ny, double gain,
+                                       double dt, int pml) {
+    int i = blockIdx.x * blockDim.x + threadIdx.x;
+    int j = blockIdx.y * blockDim.y + threadIdx.y;
+    if (i >= nx || j >= ny) return;
+    unsigned int* out = (unsigned int*)out_ptr;
+    size_t k = K(i, j);
+    double v = ez[k] * gain;
+    double a = sqrt(fmin(fabs(v), 1.0));
+    double eps = dt / cb[k];
+    int base = eps > 1.0 ? (int)(28.0 + 6.0 * fmin(eps, 13.0)) : 0;
+    int edge = min(min(i, nx - 1 - i), min(j, ny - 1 - j));
+    if (edge < pml) base = max(base, 18);
+    int c = (int)(a * 255.0);
+    int r = v > 0.0 ? max(c, base) : base;
+    int b = v < 0.0 ? max(c, base) : base;
+    int g = base;
+    out[(size_t)(ny - 1 - j) * (size_t)nx + (size_t)i] = 0xFF000000u | ((unsigned)b << 16) | ((unsigned)g << 8) | (unsigned)r;
+}
+
 extern "C" __global__ void add_source_line(double* ez, int nx, int i, int j0, int j1, double amp) {
     int j = j0 + blockIdx.x * blockDim.x + threadIdx.x;
     if (j >= j1) return;
@@ -127,7 +161,8 @@ const BLOCK_X: u32 = 256;
 const STRIP_BLOCK_X: u32 = 32;
 const MAX_GRID_Y: u32 = 65535;
 
-const NAMES: [&str; 7] = ["update_h", "psi_h_x", "psi_h_y", "update_e", "psi_e_x", "psi_e_y", "add_source_line"];
+const NAMES: [&str; 9] =
+    ["update_h", "psi_h_x", "psi_h_y", "update_e", "psi_e_x", "psi_e_y", "add_source_line", "paint_disk", "render_rgba"];
 
 struct DevProfile {
     ik: CudaSlice<f64>,
@@ -147,7 +182,7 @@ pub struct GpuYee {
     pub courant: f64,
     pub layout: CpmlLayout,
     stream: Arc<CudaStream>,
-    f: [CudaFunction; 7],
+    f: [CudaFunction; 9],
     ez: CudaSlice<f64>,
     hx: CudaSlice<f64>,
     hy: CudaSlice<f64>,
@@ -163,7 +198,7 @@ pub struct GpuYee {
 }
 
 impl GpuYee {
-    fn functions(stream: &Arc<CudaStream>) -> Result<[CudaFunction; 7], Box<dyn Error>> {
+    fn functions(stream: &Arc<CudaStream>) -> Result<[CudaFunction; 9], Box<dyn Error>> {
         let ptx = compile_ptx_with_opts(
             KERNELS,
             CompileOptions { fmad: Some(false), arch: Some("sm_120"), ..Default::default() },
@@ -401,6 +436,88 @@ impl GpuYee {
                 .launch(cfg)?;
         }
         Ok(())
+    }
+
+    /// Set the permittivity of every cell inside a disk. `cb` is computed on the
+    /// host with `cb_coeff`, so a painted cell holds the same bits as a cell
+    /// built by the constructors.
+    pub fn paint_disk(&mut self, cx: usize, cy: usize, r: usize, eps: f64) -> Result<(), Box<dyn Error>> {
+        if !(eps >= 1.0) {
+            return Err("eps_r must be >= 1".into());
+        }
+        let value = cb_coeff(self.courant, eps);
+        let side = (2 * r + 1) as u32;
+        let cfg = LaunchConfig { grid_dim: (side.div_ceil(16), side.div_ceil(16), 1), block_dim: (16, 16, 1), shared_mem_bytes: 0 };
+        let (nx, ny, cx, cy, r) = (self.nx as i32, self.ny as i32, cx as i32, cy as i32, r as i32);
+        unsafe {
+            self.stream
+                .launch_builder(&self.f[7])
+                .arg(&mut self.cb)
+                .arg(&nx)
+                .arg(&ny)
+                .arg(&cx)
+                .arg(&cy)
+                .arg(&r)
+                .arg(&value)
+                .launch(cfg)?;
+        }
+        Ok(())
+    }
+
+    /// Write the RGBA8 heat map of Ez (nx * ny u32 values) to device address
+    /// `out`, for example a mapped OpenGL buffer.
+    ///
+    /// # Safety
+    /// `out` must point to at least nx * ny writable u32 values on this device.
+    pub unsafe fn render_rgba_to_ptr(&self, out: u64, gain: f64) -> Result<(), Box<dyn Error>> {
+        let cfg = LaunchConfig {
+            grid_dim: ((self.nx as u32).div_ceil(32), (self.ny as u32).div_ceil(8), 1),
+            block_dim: (32, 8, 1),
+            shared_mem_bytes: 0,
+        };
+        let (nx, ny, pml) = (self.nx as i32, self.ny as i32, self.layout.pml.cells as i32);
+        let dt = self.courant;
+        unsafe {
+            self.stream
+                .launch_builder(&self.f[8])
+                .arg(&self.ez)
+                .arg(&self.cb)
+                .arg(&out)
+                .arg(&nx)
+                .arg(&ny)
+                .arg(&gain)
+                .arg(&dt)
+                .arg(&pml)
+                .launch(cfg)?;
+        }
+        Ok(())
+    }
+
+    /// Write the RGBA8 heat map of Ez into a device buffer of nx * ny u32 values.
+    pub fn render_rgba(&self, out: &mut CudaSlice<u32>, gain: f64) -> Result<(), Box<dyn Error>> {
+        if out.len() < self.nx * self.ny {
+            return Err("image buffer too small".into());
+        }
+        let (ptr, _sync) = out.device_ptr_mut(&self.stream);
+        unsafe { self.render_rgba_to_ptr(ptr, gain) }
+    }
+
+    /// Set all fields and psi arrays to zero. The geometry (`cb`) stays.
+    pub fn reset_fields(&mut self) -> Result<(), Box<dyn Error>> {
+        for a in [&mut self.ez, &mut self.hx, &mut self.hy, &mut self.psi_ezx, &mut self.psi_hyx, &mut self.psi_ezy, &mut self.psi_hxy] {
+            self.stream.memset_zeros(a)?;
+        }
+        Ok(())
+    }
+
+    /// The CUDA stream of this solver (for interop with other APIs).
+    pub fn stream(&self) -> &Arc<CudaStream> {
+        &self.stream
+    }
+
+    /// Download cb (dt / eps_r per cell).
+    pub fn download_cb(&self) -> Result<Vec<f64>, Box<dyn Error>> {
+        Ok(self.stream.clone_dtoh(&self.cb)?)
     }
 
     /// Run `steps` Yee steps and return the GPU time in milliseconds (CUDA events).

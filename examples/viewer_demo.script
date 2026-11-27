@@ -1,0 +1,25 @@
+# Replay with: cargo run --release --features gui --bin viewer -- --script examples/viewer_demo.script
+# Every pointer command goes through egui as pointer events.
+wait 300
+screenshot out/viewer_1_bend.ppm
+# Run / Pause / Step
+ui run
+ui step
+ui step
+ui run
+# Dielectric brush: paint a second silicon strip, then cut the vertical arm of the bend
+ui paint
+drag 300 400 520 400 30
+ui erase
+drag 585 380 635 380 10
+# Source: move it onto the new strip
+ui source
+click 320 400
+# Gain: low end of the slider
+uiat gain 0.4
+wait 1
+uiat gain 0.2
+ui clear
+wait 200
+screenshot out/viewer_2_edited.ppm
+quit
