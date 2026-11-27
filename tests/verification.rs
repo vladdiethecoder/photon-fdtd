@@ -252,7 +252,8 @@ fn slab_mode_grid_dispersion_is_second_order() {
 ///   and the analytic beta within the grid-dispersion error + 1e-4;
 /// - the analytic profile overlaps the grid eigenmode to better than 1 - 1e-5;
 /// - |S11|^2 + |S21|^2 = 1 +- 1e-3 for the modal and for the flux S-parameters;
-/// - modal back-reflection from the 10-cell CPML <= -70 dB.
+/// - modal back-reflection from the 10-cell CPML <= -70 dB;
+/// - the forward/backward mode split puts <= -60 dB of the incident wave into backward.
 #[test]
 fn straight_guide_mode_energy_balance_and_cpml_reflection() {
     let st = PortSetup::standard(Geometry::Straight, 1);
@@ -272,6 +273,7 @@ fn straight_guide_mode_energy_balance_and_cpml_reflection() {
         println!("lambda0 {l:.1}: S11 {:.1} dB, mode sum-1 {:.2e}, flux sum-1 {:.2e}", db(s.s11_mode[k]), mode_sum - 1.0, flux_sum - 1.0);
         assert!((mode_sum - 1.0).abs() <= 1e-3 && (flux_sum - 1.0).abs() <= 1e-3);
         assert!(db(s.s11_mode[k]) <= -70.0, "CPML modal reflection {:.1} dB", db(s.s11_mode[k]));
+        assert!(db(s.inc_backward[k]) <= -60.0, "mode split: incident backward {:.1} dB", db(s.inc_backward[k]));
     }
 }
 

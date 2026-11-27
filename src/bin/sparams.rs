@@ -67,17 +67,21 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         );
     }
     let s = st.sparams(&reference, &dut);
-    println!("{:>9} | {:>10} {:>10} {:>11} | {:>10} {:>10} {:>11}   (flux | mode)", "lambda0", "S11^2 dB", "S21^2", "sum-1", "S11^2 dB", "S21^2", "sum-1");
+    println!(
+        "{:>9} | {:>10} {:>10} {:>11} | {:>10} {:>10} {:>11} | {:>8}   (flux | mode | incident backward dB)",
+        "lambda0", "S11^2 dB", "S21^2", "sum-1", "S11^2 dB", "S21^2", "sum-1", "inc bw"
+    );
     for k in 0..s.freqs.len() {
         println!(
-            "{:>9.1} | {:>10.1} {:>10.6} {:>11.2e} | {:>10.1} {:>10.6} {:>11.2e}",
+            "{:>9.1} | {:>10.1} {:>10.6} {:>11.2e} | {:>10.1} {:>10.6} {:>11.2e} | {:>8.1}",
             1.0 / s.freqs[k],
             db(s.s11[k]),
             s.s21[k],
             s.s11[k] + s.s21[k] - 1.0,
             db(s.s11_mode[k]),
             s.s21_mode[k],
-            s.s11_mode[k] + s.s21_mode[k] - 1.0
+            s.s11_mode[k] + s.s21_mode[k] - 1.0,
+            db(s.inc_backward[k])
         );
     }
     if only_straight {

@@ -214,6 +214,9 @@ pub struct SParams {
     /// amplitudes from the projection of Ez and H on the grid eigenmode.
     pub s11_mode: Vec<f64>,
     pub s21_mode: Vec<f64>,
+    /// |backward|^2 / |forward|^2 of the incident field at port 1 (no subtraction).
+    /// The incident wave travels forward only, so this checks the mode split.
+    pub inc_backward: Vec<f64>,
 }
 
 /// Forward and backward amplitudes of the fundamental mode at a port.
@@ -514,6 +517,7 @@ impl PortSetup {
             s21: vec![],
             s11_mode: vec![],
             s21_mode: vec![],
+            inc_backward: vec![],
         };
         let p = self.pml.cells;
         let (nx, ny) = self.dut_grid();
@@ -543,7 +547,8 @@ impl PortSetup {
             let freq = reference.freqs[f];
             let m1 = discrete_mode(&col, freq, courant());
             let m2 = discrete_mode(&row, freq, courant());
-            let (inc_f, _) = mode_amplitudes(&m1.profile[r0..r1], m1.beta, freq, ia, ib, ih, true);
+            let (inc_f, inc_b) = mode_amplitudes(&m1.profile[r0..r1], m1.beta, freq, ia, ib, ih, true);
+            out.inc_backward.push(norm2(inc_b) / norm2(inc_f));
             let (_, ref_b) = mode_amplitudes(&m1.profile[r0..r1], m1.beta, freq, &ra, &rb, &rh, true);
             let x2 = self.geometry == Geometry::Straight;
             let (out_f, _) = mode_amplitudes(&m2.profile[c0..c1], m2.beta, freq, &p2[0][f], &p2[1][f], &p2[2][f], x2);
