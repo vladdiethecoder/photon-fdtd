@@ -97,7 +97,16 @@ The script sends egui pointer events through `raw_input_hook`. The events go thr
 
 `docs/results/viewer_paths.log` shows that the viewer used CUDA-GL interop by default and the host copy with `--host-copy`.
 
-A real-mouse test was tried and did not work. The desktop automation tool sent XTest drags to the viewer under XWayland, but no input reached the viewer, and the viewer log stayed empty. The first drag used the background route. The tool reported that route as global input, so the drag may have gone to another window on the desktop. No automated test covers real mouse input.
+### Pointer input on KDE Plasma Wayland
+
+The viewer ran as a native Wayland window. `ydotoold` created a uinput virtual mouse, so the events went through the kernel, libinput and KWin, like the events of a physical mouse. `kdotool getmouselocation` read the pointer position back. Pointer acceleration made absolute moves wrong by a factor of about 2. Thus each move was a closed loop of small relative steps until the read-back position was within 1 pixel of the target. `docs/results/viewer_real_mouse.log` shows the effects:
+
+- A silicon drag that started at screen pixel (849, 676) started at cell (299, 102). The planned cell was (300, 100), with an estimated 28-pixel title bar.
+- An erase drag across the vertical arm started at cell (583, 380).
+- A click with **Place source** moved the source to (399, 100).
+- Clicks on **Pause** and **Run** set `running = false` and `running = true`. F12 saved `docs/images/viewer_real_mouse.png`.
+
+Two earlier attempts did not reach the viewer. Under XWayland, the XTest drags of the desktop automation tool had no effect. The first uinput drag used an absolute move, which acceleration put at about (1699, 1079), at the bottom edge of the screen, outside the viewer. That press and drag went to the desktop panel or to the window under the pointer at that position.
 
 ## Absorber reflection
 

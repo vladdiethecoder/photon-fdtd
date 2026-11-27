@@ -1,0 +1,12 @@
+GL: NVIDIA Corporation / NVIDIA GeForce RTX 5090/PCIe/SSE2
+CUDA: NVIDIA GeForce RTX 5090
+image path: CUDA-GL interop: image stays on the GPU
+screenshot out/viewer_f12.ppm at step 162580 (2516 Mcells/s, image path 0.276 ms / frame)
+running = false
+brush eps_r 12.11 r 8 from cell (299, 102)
+brush stroke ended after 565 disks
+brush eps_r 1 r 8 from cell (583, 380)
+brush stroke ended after 291 disks
+source placed at (399, 100)
+running = true
+screenshot out/viewer_f12.ppm at step 289700 (2511 Mcells/s, image path 0.268 ms / frame)

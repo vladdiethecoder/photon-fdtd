@@ -42,7 +42,7 @@ The solver results come from commit `921ccb35809a5872e2981425fb169f3d2dd35507`. 
 | Viewer kernels: brush, heat map orientation and colours, field reset | Verified without a display | `gpu_viewer_kernels_paint_render_reset` |
 | Viewer controls through egui (run, pause, step, brush, erase, source, gain, clear) | Verified by scripted pointer events, log and screenshots | `viewer --script examples/viewer_demo.script` |
 | Viewer image path: CUDA-GL interop with the image on the GPU | Verified on the RTX 5090 (GL renderer NVIDIA) | `docs/results/viewer_paths.log` |
-| Viewer input from a real mouse on KDE Wayland | Open. Not tested by an automated run. | none |
+| Viewer input from a pointer device on KDE Plasma Wayland | Verified with a uinput virtual mouse (ydotool) through libinput, KWin and the native Wayland window: brush, erase, source, Pause and Run | `docs/results/viewer_real_mouse.log`, `docs/images/viewer_real_mouse.png` |
 | Flux, S-parameters | Open. Not implemented. | none |
 | CPML absorption of evanescent waves | Open. Not measured. | none |
 | Device selection, multi-GPU | Open. Device 0 is hard-coded. | none |
@@ -140,7 +140,7 @@ The image time includes the render kernel, the texture update and `glFinish`. Th
 - The GPU backend uses CUDA device 0 only. The kernels compile for `sm_120` only.
 - The CPML is measured for propagating waves in air at three probe cells. Evanescent waves and the reflection of a guided mode in the silicon strip are not measured.
 - No test compares the numerical dispersion with the analytic Yee dispersion relation.
-- No automated run used a real mouse on the viewer. Synthetic XTest input from the desktop automation tool did not reach the viewer window on KDE Wayland. The scripted egui events replace it.
+- The pointer test used a uinput virtual mouse, not a human hand on a physical mouse. The kernel, libinput, KWin and Wayland path is the same. The hardware is not.
 - In the air control, the band-energy fraction at t_end is a ratio of residual energies near 6e-11 of the peak. For the air control, the probe metric is the reliable metric.
 
 ## Documentation
