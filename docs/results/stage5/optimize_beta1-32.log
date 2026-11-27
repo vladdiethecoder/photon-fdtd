@@ -1,0 +1,137 @@
+box 48, r_f 5, iters/beta 20, lr 0.05, p 8, steps 20259, adjoint basis 11
+beta    1 it   0  F 0.122281  worst IL 0.7368 dB  mean T 0.90538  binary 0.655  7 s
+beta    1 it   1  F 0.118863  worst IL 0.7121 dB  mean T 0.90673  binary 0.523  14 s
+beta    1 it   2  F 0.115590  worst IL 0.6888 dB  mean T 0.90851  binary 0.514  21 s
+beta    1 it   3  F 0.112329  worst IL 0.6661 dB  mean T 0.91080  binary 0.511  28 s
+beta    1 it   4  F 0.109027  worst IL 0.6435 dB  mean T 0.91346  binary 0.516  35 s
+beta    1 it   5  F 0.105644  worst IL 0.6209 dB  mean T 0.91635  binary 0.514  42 s
+beta    1 it   6  F 0.102185  worst IL 0.5981 dB  mean T 0.91928  binary 0.516  50 s
+beta    1 it   7  F 0.098639  worst IL 0.5750 dB  mean T 0.92215  binary 0.517  57 s
+beta    1 it   8  F 0.095006  worst IL 0.5518 dB  mean T 0.92495  binary 0.521  64 s
+beta    1 it   9  F 0.091280  worst IL 0.5284 dB  mean T 0.92773  binary 0.524  71 s
+beta    1 it  10  F 0.087472  worst IL 0.5048 dB  mean T 0.93054  binary 0.525  78 s
+beta    1 it  11  F 0.083585  worst IL 0.4812 dB  mean T 0.93346  binary 0.525  85 s
+beta    1 it  12  F 0.079624  worst IL 0.4576 dB  mean T 0.93652  binary 0.529  92 s
+beta    1 it  13  F 0.075627  worst IL 0.4342 dB  mean T 0.93969  binary 0.529  99 s
+beta    1 it  14  F 0.071632  worst IL 0.4111 dB  mean T 0.94290  binary 0.527  106 s
+beta    1 it  15  F 0.067685  worst IL 0.3884 dB  mean T 0.94605  binary 0.528  113 s
+beta    1 it  16  F 0.063874  worst IL 0.3665 dB  mean T 0.94896  binary 0.528  120 s
+beta    1 it  17  F 0.060277  worst IL 0.3455 dB  mean T 0.95147  binary 0.531  127 s
+beta    1 it  18  F 0.057007  worst IL 0.3258 dB  mean T 0.95340  binary 0.534  135 s
+beta    1 it  19  F 0.054307  worst IL 0.3077 dB  mean T 0.95461  binary 0.541  142 s
+beta    2 it   0  F 0.052389  worst IL 0.2900 dB  mean T 0.95575  binary 0.659  149 s
+beta    2 it   1  F 0.052145  worst IL 0.2870 dB  mean T 0.95612  binary 0.672  156 s
+beta    2 it   2  F 0.051492  worst IL 0.2859 dB  mean T 0.95681  binary 0.673  163 s
+beta    2 it   3  F 0.050838  worst IL 0.2857 dB  mean T 0.95757  binary 0.675  170 s
+beta    2 it   4  F 0.050352  worst IL 0.2858 dB  mean T 0.95826  binary 0.671  177 s
+beta    2 it   5  F 0.050057  worst IL 0.2861 dB  mean T 0.95878  binary 0.669  184 s
+beta    2 it   6  F 0.049876  worst IL 0.2866 dB  mean T 0.95915  binary 0.670  191 s
+beta    2 it   7  F 0.049764  worst IL 0.2870 dB  mean T 0.95938  binary 0.671  198 s
+beta    2 it   8  F 0.049690  worst IL 0.2875 dB  mean T 0.95949  binary 0.672  205 s
+beta    2 it   9  F 0.049624  worst IL 0.2877 dB  mean T 0.95955  binary 0.672  213 s
+beta    2 it  10  F 0.049550  worst IL 0.2876 dB  mean T 0.95957  binary 0.670  220 s
+beta    2 it  11  F 0.049458  worst IL 0.2872 dB  mean T 0.95960  binary 0.671  227 s
+beta    2 it  12  F 0.049349  worst IL 0.2866 dB  mean T 0.95962  binary 0.674  234 s
+beta    2 it  13  F 0.049228  worst IL 0.2857 dB  mean T 0.95965  binary 0.676  241 s
+beta    2 it  14  F 0.049111  worst IL 0.2847 dB  mean T 0.95966  binary 0.675  248 s
+beta    2 it  15  F 0.049003  worst IL 0.2837 dB  mean T 0.95966  binary 0.678  255 s
+beta    2 it  16  F 0.048906  worst IL 0.2825 dB  mean T 0.95966  binary 0.680  262 s
+beta    2 it  17  F 0.048823  worst IL 0.2814 dB  mean T 0.95963  binary 0.683  269 s
+beta    2 it  18  F 0.048758  worst IL 0.2803 dB  mean T 0.95961  binary 0.681  276 s
+beta    2 it  19  F 0.048713  worst IL 0.2795 dB  mean T 0.95958  binary 0.682  283 s
+beta    4 it   0  F 0.046926  worst IL 0.2676 dB  mean T 0.96110  binary 0.748  291 s
+beta    4 it   1  F 0.046887  worst IL 0.2672 dB  mean T 0.96108  binary 0.750  298 s
+beta    4 it   2  F 0.046837  worst IL 0.2670 dB  mean T 0.96108  binary 0.752  305 s
+beta    4 it   3  F 0.046790  worst IL 0.2670 dB  mean T 0.96107  binary 0.752  312 s
+beta    4 it   4  F 0.046744  worst IL 0.2671 dB  mean T 0.96107  binary 0.754  319 s
+beta    4 it   5  F 0.046702  worst IL 0.2672 dB  mean T 0.96107  binary 0.751  326 s
+beta    4 it   6  F 0.046668  worst IL 0.2675 dB  mean T 0.96107  binary 0.752  333 s
+beta    4 it   7  F 0.046642  worst IL 0.2677 dB  mean T 0.96107  binary 0.752  340 s
+beta    4 it   8  F 0.046623  worst IL 0.2680 dB  mean T 0.96107  binary 0.752  347 s
+beta    4 it   9  F 0.046608  worst IL 0.2682 dB  mean T 0.96107  binary 0.754  354 s
+beta    4 it  10  F 0.046594  worst IL 0.2684 dB  mean T 0.96107  binary 0.757  361 s
+beta    4 it  11  F 0.046581  worst IL 0.2684 dB  mean T 0.96108  binary 0.756  368 s
+beta    4 it  12  F 0.046566  worst IL 0.2684 dB  mean T 0.96110  binary 0.755  375 s
+beta    4 it  13  F 0.046549  worst IL 0.2683 dB  mean T 0.96112  binary 0.755  383 s
+beta    4 it  14  F 0.046532  worst IL 0.2682 dB  mean T 0.96114  binary 0.754  390 s
+beta    4 it  15  F 0.046514  worst IL 0.2679 dB  mean T 0.96117  binary 0.755  397 s
+beta    4 it  16  F 0.046499  worst IL 0.2677 dB  mean T 0.96120  binary 0.756  404 s
+beta    4 it  17  F 0.046485  worst IL 0.2674 dB  mean T 0.96122  binary 0.756  411 s
+beta    4 it  18  F 0.046473  worst IL 0.2672 dB  mean T 0.96125  binary 0.758  418 s
+beta    4 it  19  F 0.046463  worst IL 0.2669 dB  mean T 0.96127  binary 0.759  425 s
+beta    8 it   0  F 0.045046  worst IL 0.2576 dB  mean T 0.96235  binary 0.869  432 s
+beta    8 it   1  F 0.045042  worst IL 0.2575 dB  mean T 0.96236  binary 0.869  439 s
+beta    8 it   2  F 0.045035  worst IL 0.2574 dB  mean T 0.96235  binary 0.869  446 s
+beta    8 it   3  F 0.045025  worst IL 0.2573 dB  mean T 0.96234  binary 0.870  454 s
+beta    8 it   4  F 0.045014  worst IL 0.2573 dB  mean T 0.96233  binary 0.871  461 s
+beta    8 it   5  F 0.045002  worst IL 0.2573 dB  mean T 0.96231  binary 0.870  468 s
+beta    8 it   6  F 0.044991  worst IL 0.2574 dB  mean T 0.96228  binary 0.870  475 s
+beta    8 it   7  F 0.044982  worst IL 0.2575 dB  mean T 0.96225  binary 0.871  482 s
+beta    8 it   8  F 0.044975  worst IL 0.2576 dB  mean T 0.96222  binary 0.870  489 s
+beta    8 it   9  F 0.044971  worst IL 0.2577 dB  mean T 0.96219  binary 0.869  496 s
+beta    8 it  10  F 0.044968  worst IL 0.2578 dB  mean T 0.96216  binary 0.869  503 s
+beta    8 it  11  F 0.044966  worst IL 0.2579 dB  mean T 0.96215  binary 0.869  510 s
+beta    8 it  12  F 0.044963  worst IL 0.2579 dB  mean T 0.96214  binary 0.869  517 s
+beta    8 it  13  F 0.044960  worst IL 0.2580 dB  mean T 0.96213  binary 0.870  525 s
+beta    8 it  14  F 0.044956  worst IL 0.2580 dB  mean T 0.96214  binary 0.870  532 s
+beta    8 it  15  F 0.044952  worst IL 0.2580 dB  mean T 0.96215  binary 0.871  539 s
+beta    8 it  16  F 0.044948  worst IL 0.2580 dB  mean T 0.96216  binary 0.871  546 s
+beta    8 it  17  F 0.044944  worst IL 0.2579 dB  mean T 0.96217  binary 0.871  553 s
+beta    8 it  18  F 0.044940  worst IL 0.2579 dB  mean T 0.96219  binary 0.872  560 s
+beta    8 it  19  F 0.044937  worst IL 0.2578 dB  mean T 0.96221  binary 0.872  567 s
+beta   16 it   0  F 0.044391  worst IL 0.2540 dB  mean T 0.96254  binary 0.937  574 s
+beta   16 it   1  F 0.044390  worst IL 0.2540 dB  mean T 0.96255  binary 0.937  581 s
+beta   16 it   2  F 0.044388  worst IL 0.2539 dB  mean T 0.96255  binary 0.937  588 s
+beta   16 it   3  F 0.044385  worst IL 0.2539 dB  mean T 0.96255  binary 0.938  595 s
+beta   16 it   4  F 0.044382  worst IL 0.2539 dB  mean T 0.96254  binary 0.938  603 s
+beta   16 it   5  F 0.044379  worst IL 0.2540 dB  mean T 0.96253  binary 0.938  610 s
+beta   16 it   6  F 0.044375  worst IL 0.2540 dB  mean T 0.96251  binary 0.938  617 s
+beta   16 it   7  F 0.044373  worst IL 0.2540 dB  mean T 0.96249  binary 0.938  624 s
+beta   16 it   8  F 0.044371  worst IL 0.2541 dB  mean T 0.96247  binary 0.937  631 s
+beta   16 it   9  F 0.044370  worst IL 0.2542 dB  mean T 0.96246  binary 0.937  638 s
+beta   16 it  10  F 0.044370  worst IL 0.2542 dB  mean T 0.96245  binary 0.937  645 s
+beta   16 it  11  F 0.044369  worst IL 0.2542 dB  mean T 0.96244  binary 0.937  652 s
+beta   16 it  12  F 0.044368  worst IL 0.2543 dB  mean T 0.96244  binary 0.937  659 s
+beta   16 it  13  F 0.044367  worst IL 0.2543 dB  mean T 0.96244  binary 0.937  666 s
+beta   16 it  14  F 0.044366  worst IL 0.2543 dB  mean T 0.96245  binary 0.937  673 s
+beta   16 it  15  F 0.044365  worst IL 0.2543 dB  mean T 0.96245  binary 0.936  681 s
+beta   16 it  16  F 0.044364  worst IL 0.2543 dB  mean T 0.96246  binary 0.936  688 s
+beta   16 it  17  F 0.044363  worst IL 0.2542 dB  mean T 0.96247  binary 0.936  695 s
+beta   16 it  18  F 0.044362  worst IL 0.2542 dB  mean T 0.96248  binary 0.936  702 s
+beta   16 it  19  F 0.044361  worst IL 0.2542 dB  mean T 0.96249  binary 0.936  709 s
+beta   32 it   0  F 0.044230  worst IL 0.2531 dB  mean T 0.96257  binary 0.976  716 s
+beta   32 it   1  F 0.044230  worst IL 0.2531 dB  mean T 0.96257  binary 0.976  723 s
+beta   32 it   2  F 0.044229  worst IL 0.2531 dB  mean T 0.96257  binary 0.976  731 s
+beta   32 it   3  F 0.044228  worst IL 0.2531 dB  mean T 0.96256  binary 0.975  738 s
+beta   32 it   4  F 0.044227  worst IL 0.2532 dB  mean T 0.96255  binary 0.975  745 s
+beta   32 it   5  F 0.044226  worst IL 0.2532 dB  mean T 0.96254  binary 0.975  752 s
+beta   32 it   6  F 0.044226  worst IL 0.2532 dB  mean T 0.96253  binary 0.976  759 s
+beta   32 it   7  F 0.044225  worst IL 0.2532 dB  mean T 0.96252  binary 0.976  766 s
+beta   32 it   8  F 0.044225  worst IL 0.2533 dB  mean T 0.96251  binary 0.976  773 s
+beta   32 it   9  F 0.044225  worst IL 0.2533 dB  mean T 0.96251  binary 0.975  780 s
+beta   32 it  10  F 0.044224  worst IL 0.2533 dB  mean T 0.96251  binary 0.975  788 s
+beta   32 it  11  F 0.044224  worst IL 0.2533 dB  mean T 0.96251  binary 0.975  795 s
+beta   32 it  12  F 0.044223  worst IL 0.2533 dB  mean T 0.96251  binary 0.975  802 s
+beta   32 it  13  F 0.044223  worst IL 0.2533 dB  mean T 0.96252  binary 0.976  809 s
+beta   32 it  14  F 0.044223  worst IL 0.2533 dB  mean T 0.96252  binary 0.976  816 s
+beta   32 it  15  F 0.044222  worst IL 0.2533 dB  mean T 0.96253  binary 0.977  823 s
+beta   32 it  16  F 0.044222  worst IL 0.2533 dB  mean T 0.96253  binary 0.977  830 s
+beta   32 it  17  F 0.044222  worst IL 0.2533 dB  mean T 0.96254  binary 0.976  837 s
+beta   32 it  18  F 0.044222  worst IL 0.2533 dB  mean T 0.96254  binary 0.976  844 s
+beta   32 it  19  F 0.044221  worst IL 0.2532 dB  mean T 0.96254  binary 0.976  851 s
+final: binary before threshold 0.9761, islands 0, L_min violations open 0 close 0, worst IL 0.2586 dB, worst RL 23.41 dB
+  lambda0  200.0  IL 0.2586  RL 37.06
+  lambda0  190.0  IL 0.2346  RL 34.07
+  lambda0  180.9  IL 0.2221  RL 27.93
+  lambda0  172.7  IL 0.2022  RL 25.15
+  lambda0  165.1  IL 0.1913  RL 23.91
+  lambda0  158.2  IL 0.1788  RL 23.41
+  lambda0  151.9  IL 0.1629  RL 23.41
+  lambda0  146.0  IL 0.1552  RL 23.83
+  lambda0  140.6  IL 0.1483  RL 24.43
+  lambda0  135.6  IL 0.1402  RL 25.23
+  lambda0  130.9  IL 0.1397  RL 26.24
+  lambda0  126.5  IL 0.1451  RL 27.31
+  lambda0  122.4  IL 0.1561  RL 28.65
+  lambda0  118.6  IL 0.1793  RL 30.65
+  lambda0  115.0  IL 0.1845  RL 34.44

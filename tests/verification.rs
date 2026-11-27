@@ -397,3 +397,149 @@ fn design_box_forward_evaluation_and_baselines() {
         assert!((il - il_max).abs() < 0.01 && (rl - rl_min).abs() < 0.1);
     }
 }
+
+// ---- Stage 5: adjoint gradient and baselines ----
+
+use photon_fdtd::adjoint::{Objective, forward, gradient, pnorm_loss};
+use photon_fdtd::design::{disk, feature_violations};
+
+/// Adjoint dT_k/deps against finite differences on a grey design (filtered
+/// arc, beta 4, latent 0.15..0.85) in the 48 x 48 box, Stage 5 run length:
+/// 4 x 4 block per cell (cosine > 0.999, |adj|/|fd| within 1e-3, 16/16 signs),
+/// directional derivatives (steps 1e-2 and 1e-3, ratio within 1e-3) at three
+/// wavelengths, and the full chain latent rho -> F (ratio within 1e-4).
+#[test]
+fn adjoint_gradient_matches_finite_differences() {
+    let mut base = PortSetup::standard(Geometry::Bend, 1);
+    base.extra_time = 6000.0;
+    let bx = DesignBox::for_bend(&base, 48, 8);
+    let n = bx.n;
+    let filt = ConicFilter::new(5.0);
+    let rho0: Vec<f64> = bx.circular_arc().iter().map(|v| 0.15 + 0.7 * v).collect();
+    let rho_bar = densities(&bx, &filt, &rho0, 4.0);
+    let reference = base.run(Run::Reference).unwrap();
+    let setup = base.clone().with_design(&bx, &rho_bar);
+    let obj = Objective::new(&setup, &reference);
+    let fwd = forward(&setup, &obj, &bx).unwrap();
+    let grad = gradient(&setup, &obj, &bx, &fwd).unwrap();
+    let eps0: Vec<f64> = rho_bar.iter().map(|&r| DesignBox::eps(r)).collect();
+    let eval = |eps: &[f64]| {
+        let rb: Vec<f64> = eps.iter().map(|&e| (e - EPS_AIR) / (EPS_SI - EPS_AIR)).collect();
+        forward(&base.clone().with_design(&bx, &rb), &obj, &bx).unwrap().t
+    };
+    let r = bx.arc_radius() as f64;
+    let (ca, cb) = ((r * 0.7071) as usize - 2, (n as f64 - r * 0.7071) as usize - 2);
+    let cells: Vec<usize> = (0..16).map(|q| (cb + q / 4) * n + ca + q % 4).collect();
+    let ks = [0usize, 7, 14];
+    let mut fd = vec![vec![0.0; 16]; 15];
+    for (q, &c) in cells.iter().enumerate() {
+        let (mut p, mut m) = (eps0.clone(), eps0.clone());
+        p[c] += 1e-3;
+        m[c] -= 1e-3;
+        let (tp, tm) = (eval(&p), eval(&m));
+        for k in 0..15 {
+            fd[k][q] = (tp[k] - tm[k]) / 2e-3;
+        }
+    }
+    for &k in &ks {
+        let ad: Vec<f64> = cells.iter().map(|&c| grad[k][c]).collect();
+        let dot: f64 = ad.iter().zip(&fd[k]).map(|(a, b)| a * b).sum();
+        let (na, nb) = (ad.iter().map(|x| x * x).sum::<f64>().sqrt(), fd[k].iter().map(|x| x * x).sum::<f64>().sqrt());
+        println!("lambda0 {:.1}: cosine {:.8}, |adj|/|fd| {:.6}", 1.0 / obj.freqs[k], dot / (na * nb), na / nb);
+        assert!(dot / (na * nb) > 0.999);
+        assert!((na / nb - 1.0).abs() < 1e-3);
+        assert!(ad.iter().zip(&fd[k]).all(|(a, b)| a.signum() == b.signum()));
+    }
+    let mut seed = 11u64;
+    let d: Vec<f64> = (0..16).map(|_| lcg(&mut seed) - 0.5).collect();
+    for &h in &[1e-2, 1e-3] {
+        let (mut p, mut m) = (eps0.clone(), eps0.clone());
+        for (q, &c) in cells.iter().enumerate() {
+            p[c] += h * d[q];
+            m[c] -= h * d[q];
+        }
+        let (tp, tm) = (eval(&p), eval(&m));
+        for &k in &ks {
+            let adj: f64 = cells.iter().zip(&d).map(|(&c, dq)| grad[k][c] * dq).sum();
+            let ratio = adj / ((tp[k] - tm[k]) / (2.0 * h));
+            println!("directional h {h:.0e} lambda0 {:.1}: ratio {ratio:.8}", 1.0 / obj.freqs[k]);
+            assert!((ratio - 1.0).abs() < 1e-3);
+        }
+    }
+    let (_, dfdt) = pnorm_loss(&fwd.t, 8.0);
+    let mut g_bar = vec![0.0; n * n];
+    for (k, w) in dfdt.iter().enumerate() {
+        for (gb, gk) in g_bar.iter_mut().zip(&grad[k]) {
+            *gb += w * gk * (EPS_SI - EPS_AIR);
+        }
+    }
+    let g_rho = pullback(&bx, &filt, &rho0, 4.0, &g_bar);
+    let dr: Vec<f64> = (0..n * n).map(|_| lcg(&mut seed) - 0.5).collect();
+    let adj: f64 = g_rho.iter().zip(&dr).map(|(a, b)| a * b).sum();
+    let f_at = |s: f64| {
+        let r: Vec<f64> = rho0.iter().zip(&dr).map(|(a, b)| a + s * 1e-3 * b).collect();
+        pnorm_loss(&forward(&base.clone().with_design(&bx, &densities(&bx, &filt, &r, 4.0)), &obj, &bx).unwrap().t, 8.0).0
+    };
+    let ratio = adj / ((f_at(1.0) - f_at(-1.0)) / 2e-3);
+    println!("full chain: ratio {ratio:.8}");
+    assert!((ratio - 1.0).abs() < 1e-4);
+}
+
+/// The L_min check detects a 3-cell silicon line and a 3-cell air gap, and
+/// passes the arc. The best conventional baseline of the protocol (Bezier
+/// k = 0.40) keeps its measured worst-case IL of 0.5933 dB.
+#[test]
+fn stage5_feature_check_and_best_baseline() {
+    let mut base = PortSetup::standard(Geometry::Bend, 1);
+    base.extra_time = 6000.0;
+    let bx = DesignBox::for_bend(&base, 48, 8);
+    let n = bx.n;
+    assert_eq!(feature_violations(&bx, &bx.circular_arc(), &disk(4)), (0, 0));
+    let mut thin = bx.sharp_l();
+    for a in 5..20 {
+        for b in 30..33 {
+            thin[b * n + a] = 1.0;
+        }
+    }
+    assert!(feature_violations(&bx, &thin, &disk(4)).0 > 0, "thin silicon not detected");
+    let mut gap = bx.sharp_l();
+    for b in bx.margin..bx.margin + bx.core_w {
+        for a in 10..13 {
+            gap[b * n + a] = 0.0;
+        }
+    }
+    assert!(feature_violations(&bx, &gap, &disk(4)).1 > 0, "narrow air gap not detected");
+    let reference = base.run(Run::Reference).unwrap();
+    let st = base.clone().with_design(&bx, &bx.rasterise(&bx.bezier_centreline(0.40)));
+    let s = st.sparams(&reference, &st.run(Run::Dut).unwrap());
+    let il = s.s21_mode.iter().map(|v| -db(*v)).fold(0.0, f64::max);
+    assert!((il - 0.5933).abs() < 0.0005, "Bezier k=0.40 worst IL {il}");
+}
+
+/// The committed optimised 48 x 48 design (docs/results/stage5/rho_final.txt,
+/// threshold of the filtered density, r_f = 5) meets the Stage 5 gates on the
+/// 15 frequencies: worst-case IL < 0.50 dB and RL > 20 dB, L_min and islands,
+/// with the recorded worst-case IL 0.2586 dB.
+#[test]
+fn stage5_optimised_design_meets_gates() {
+    let mut base = PortSetup::standard(Geometry::Bend, 1);
+    base.extra_time = 6000.0;
+    let bx = DesignBox::for_bend(&base, 48, 8);
+    let rho: Vec<f64> = std::fs::read_to_string(concat!(env!("CARGO_MANIFEST_DIR"), "/docs/results/stage5/rho_final.txt"))
+        .unwrap()
+        .lines()
+        .map(|l| l.trim().parse().unwrap())
+        .collect();
+    let filt = ConicFilter::new(5.0);
+    assert!(binary_fraction(&densities(&bx, &filt, &rho, 128.0)) >= 0.99);
+    let bin: Vec<f64> = filt.apply(&bx, &rho).iter().map(|&v| if v >= 0.5 { 1.0 } else { 0.0 }).collect();
+    assert_eq!(single_cell_islands(&bx, &bin), 0);
+    assert_eq!(feature_violations(&bx, &bin, &disk(4)), (0, 0));
+    let reference = base.run(Run::Reference).unwrap();
+    let st = base.clone().with_design(&bx, &bin);
+    let s = st.sparams(&reference, &st.run(Run::Dut).unwrap());
+    let il = s.s21_mode.iter().map(|v| -db(*v)).fold(0.0, f64::max);
+    let rl = s.s11_mode.iter().map(|v| -db(*v)).fold(f64::INFINITY, f64::min);
+    println!("optimised: worst IL {il:.4} dB, worst RL {rl:.2} dB");
+    assert!(il < 0.5 && rl > 20.0 && (il - 0.2586).abs() < 0.002);
+}
