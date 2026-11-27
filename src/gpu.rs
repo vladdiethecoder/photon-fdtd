@@ -1,7 +1,8 @@
 //! CUDA backend: the same flat f64 arrays and the same update, one thread per cell.
 //!
 //! The kernels are compiled with `--fmad=false` and keep the CPU operation
-//! order, so CPU and GPU results are bitwise identical.
+//! order, so CPU and GPU results are bitwise identical. The CPML tables and
+//! the strip geometry come from the same `CpmlLayout` as the CPU solver.
 
 use std::error::Error;
 use std::sync::Arc;
@@ -10,151 +11,273 @@ use cudarc::driver::sys::CUevent_flags;
 use cudarc::driver::{CudaContext, CudaFunction, CudaSlice, CudaStream, LaunchConfig, PushKernelArg};
 use cudarc::nvrtc::{CompileOptions, compile_ptx_with_opts};
 
-use crate::{Yee2d, cell_coeffs, check_setup};
+use crate::cpml::Profile;
+use crate::{CpmlLayout, Pml, Yee2d, cb_coeff, check_setup};
 
 const KERNELS: &str = r#"
+#define K(i, j) ((size_t)(j) * (size_t)nx + (size_t)(i))
+
+// Main H update. Grid-stride over rows: gridDim.y is capped at 65535 by CUDA.
 extern "C" __global__ void update_h(double* __restrict__ hx, double* __restrict__ hy,
-                                    const double* __restrict__ ez, const double* __restrict__ ca,
-                                    const double* __restrict__ hb, int nx, int ny) {
+                                    const double* __restrict__ ez,
+                                    const double* __restrict__ ikx_h, const double* __restrict__ iky_h,
+                                    double dt, int nx, int ny) {
     int i = blockIdx.x * blockDim.x + threadIdx.x;
     if (i >= nx - 1) return;
-    // Grid-stride over rows: gridDim.y is capped at 65535 by CUDA.
+    double ikx = ikx_h[i];
     for (int j = blockIdx.y; j < ny - 1; j += gridDim.y) {
-        size_t k = (size_t)j * (size_t)nx + (size_t)i;
+        size_t k = K(i, j);
         double e = ez[k];
-        double a = ca[k];
-        double b = hb[k];
-        hx[k] = a * hx[k] - b * (ez[k + nx] - e);
-        hy[k] = a * hy[k] + b * (ez[k + 1] - e);
+        hx[k] = hx[k] - dt * ((ez[k + nx] - e) * iky_h[j]);
+        hy[k] = hy[k] + dt * ((ez[k + 1] - e) * ikx);
     }
 }
 
+// x strips, Hy: psi = b psi + a dEz/dx ; Hy += dt psi.  c in 0..2w.
+extern "C" __global__ void psi_h_x(double* __restrict__ hy, double* __restrict__ psi,
+                                   const double* __restrict__ ez,
+                                   const double* __restrict__ a, const double* __restrict__ b,
+                                   double dt, int nx, int ny, int w) {
+    int c = blockIdx.x * blockDim.x + threadIdx.x;
+    if (c >= 2 * w) return;
+    int i = c < w ? c : nx - 2 * w + c;
+    if (i >= nx - 1) return;
+    for (int j = blockIdx.y; j < ny - 1; j += gridDim.y) {
+        size_t k = K(i, j);
+        size_t s = (size_t)j * (size_t)(2 * w) + (size_t)c;
+        double p = b[i] * psi[s] + a[i] * (ez[k + 1] - ez[k]);
+        psi[s] = p;
+        hy[k] = hy[k] + dt * p;
+    }
+}
+
+// y strips, Hx: psi = b psi + a dEz/dy ; Hx -= dt psi.  r = blockIdx.y in 0..2w.
+extern "C" __global__ void psi_h_y(double* __restrict__ hx, double* __restrict__ psi,
+                                   const double* __restrict__ ez,
+                                   const double* __restrict__ a, const double* __restrict__ b,
+                                   double dt, int nx, int ny, int w) {
+    int i = blockIdx.x * blockDim.x + threadIdx.x;
+    int r = blockIdx.y;
+    int j = r < w ? r : ny - 2 * w + r;
+    if (i >= nx - 1 || j >= ny - 1) return;
+    size_t k = K(i, j);
+    size_t s = (size_t)r * (size_t)nx + (size_t)i;
+    double p = b[j] * psi[s] + a[j] * (ez[k + nx] - ez[k]);
+    psi[s] = p;
+    hx[k] = hx[k] - dt * p;
+}
+
+// Main Ez update.
 extern "C" __global__ void update_e(double* __restrict__ ez, const double* __restrict__ hx,
-                                    const double* __restrict__ hy, const double* __restrict__ ca,
-                                    const double* __restrict__ cb, int nx, int ny) {
+                                    const double* __restrict__ hy, const double* __restrict__ cb,
+                                    const double* __restrict__ ikx_e, const double* __restrict__ iky_e,
+                                    int nx, int ny) {
     int i = blockIdx.x * blockDim.x + threadIdx.x;
     if (i < 1 || i >= nx - 1) return;
+    double ikx = ikx_e[i];
     for (int j = 1 + blockIdx.y; j < ny - 1; j += gridDim.y) {
-        size_t k = (size_t)j * (size_t)nx + (size_t)i;
-        ez[k] = ca[k] * ez[k] + cb[k] * ((hy[k] - hy[k - 1]) - (hx[k] - hx[k - nx]));
+        size_t k = K(i, j);
+        ez[k] = ez[k] + cb[k] * ((hy[k] - hy[k - 1]) * ikx - (hx[k] - hx[k - nx]) * iky_e[j]);
     }
+}
+
+// x strips, Ez: psi = b psi + a dHy/dx ; Ez += cb psi.
+extern "C" __global__ void psi_e_x(double* __restrict__ ez, double* __restrict__ psi,
+                                   const double* __restrict__ hy, const double* __restrict__ cb,
+                                   const double* __restrict__ a, const double* __restrict__ b,
+                                   int nx, int ny, int w) {
+    int c = blockIdx.x * blockDim.x + threadIdx.x;
+    if (c >= 2 * w) return;
+    int i = c < w ? c : nx - 2 * w + c;
+    if (i < 1 || i >= nx - 1) return;
+    for (int j = 1 + blockIdx.y; j < ny - 1; j += gridDim.y) {
+        size_t k = K(i, j);
+        size_t s = (size_t)j * (size_t)(2 * w) + (size_t)c;
+        double p = b[i] * psi[s] + a[i] * (hy[k] - hy[k - 1]);
+        psi[s] = p;
+        ez[k] = ez[k] + cb[k] * p;
+    }
+}
+
+// y strips, Ez: psi = b psi + a dHx/dy ; Ez -= cb psi.
+extern "C" __global__ void psi_e_y(double* __restrict__ ez, double* __restrict__ psi,
+                                   const double* __restrict__ hx, const double* __restrict__ cb,
+                                   const double* __restrict__ a, const double* __restrict__ b,
+                                   int nx, int ny, int w) {
+    int i = blockIdx.x * blockDim.x + threadIdx.x;
+    int r = blockIdx.y;
+    int j = r < w ? r : ny - 2 * w + r;
+    if (i < 1 || i >= nx - 1 || j < 1 || j >= ny - 1) return;
+    size_t k = K(i, j);
+    size_t s = (size_t)r * (size_t)nx + (size_t)i;
+    double p = b[j] * psi[s] + a[j] * (hx[k] - hx[k - nx]);
+    psi[s] = p;
+    ez[k] = ez[k] - cb[k] * p;
 }
 
 extern "C" __global__ void add_source_line(double* ez, int nx, int i, int j0, int j1, double amp) {
     int j = j0 + blockIdx.x * blockDim.x + threadIdx.x;
     if (j >= j1) return;
-    size_t k = (size_t)j * (size_t)nx + (size_t)i;
+    size_t k = K(i, j);
     ez[k] = ez[k] + amp;
 }
 "#;
 
 const BLOCK_X: u32 = 256;
+const STRIP_BLOCK_X: u32 = 32;
 const MAX_GRID_Y: u32 = 65535;
+
+const NAMES: [&str; 7] = ["update_h", "psi_h_x", "psi_h_y", "update_e", "psi_e_x", "psi_e_y", "add_source_line"];
+
+struct DevProfile {
+    ik: CudaSlice<f64>,
+    a: CudaSlice<f64>,
+    b: CudaSlice<f64>,
+}
+
+impl DevProfile {
+    fn upload(stream: &Arc<CudaStream>, p: &Profile) -> Result<Self, Box<dyn Error>> {
+        Ok(Self { ik: stream.clone_htod(&p.ik)?, a: stream.clone_htod(&p.a)?, b: stream.clone_htod(&p.b)? })
+    }
+}
 
 pub struct GpuYee {
     pub nx: usize,
     pub ny: usize,
+    pub courant: f64,
+    pub layout: CpmlLayout,
     stream: Arc<CudaStream>,
-    update_h: CudaFunction,
-    update_e: CudaFunction,
-    add_src: CudaFunction,
+    f: [CudaFunction; 7],
     ez: CudaSlice<f64>,
     hx: CudaSlice<f64>,
     hy: CudaSlice<f64>,
-    ca: CudaSlice<f64>,
     cb: CudaSlice<f64>,
-    hb: CudaSlice<f64>,
+    x_int: DevProfile,
+    x_half: DevProfile,
+    y_int: DevProfile,
+    y_half: DevProfile,
+    psi_ezx: CudaSlice<f64>,
+    psi_hyx: CudaSlice<f64>,
+    psi_ezy: CudaSlice<f64>,
+    psi_hxy: CudaSlice<f64>,
 }
 
 impl GpuYee {
-    fn functions(stream: &Arc<CudaStream>) -> Result<[CudaFunction; 3], Box<dyn Error>> {
+    fn functions(stream: &Arc<CudaStream>) -> Result<[CudaFunction; 7], Box<dyn Error>> {
         let ptx = compile_ptx_with_opts(
             KERNELS,
             CompileOptions { fmad: Some(false), arch: Some("sm_120"), ..Default::default() },
         )?;
         let module = stream.context().load_module(ptx)?;
-        Ok([
-            module.load_function("update_h")?,
-            module.load_function("update_e")?,
-            module.load_function("add_source_line")?,
-        ])
+        let mut out = Vec::with_capacity(NAMES.len());
+        for n in NAMES {
+            out.push(module.load_function(n)?);
+        }
+        Ok(out.try_into().map_err(|_| "kernel count")?)
     }
 
-    /// Upload the fields and coefficients of a CPU solver.
-    pub fn from_cpu(sim: &Yee2d) -> Result<Self, Box<dyn Error>> {
-        let stream = CudaContext::new(0)?.default_stream();
-        let [update_h, update_e, add_src] = Self::functions(&stream)?;
+    #[allow(clippy::too_many_arguments)]
+    fn assemble(
+        stream: Arc<CudaStream>,
+        layout: CpmlLayout,
+        courant: f64,
+        ez: CudaSlice<f64>,
+        hx: CudaSlice<f64>,
+        hy: CudaSlice<f64>,
+        cb: CudaSlice<f64>,
+        psi: [CudaSlice<f64>; 4],
+    ) -> Result<Self, Box<dyn Error>> {
+        if layout.nx > i32::MAX as usize || layout.ny > i32::MAX as usize {
+            return Err("nx and ny must fit in i32".into());
+        }
+        if 2 * layout.w > MAX_GRID_Y as usize {
+            return Err("PML too thick for one y-strip launch".into());
+        }
+        let [psi_ezx, psi_hyx, psi_ezy, psi_hxy] = psi;
         Ok(Self {
-            nx: sim.nx,
-            ny: sim.ny,
-            update_h,
-            update_e,
-            add_src,
-            ez: stream.clone_htod(&sim.ez)?,
-            hx: stream.clone_htod(&sim.hx)?,
-            hy: stream.clone_htod(&sim.hy)?,
-            ca: stream.clone_htod(&sim.ca)?,
-            cb: stream.clone_htod(&sim.cb)?,
-            hb: stream.clone_htod(&sim.hb)?,
+            nx: layout.nx,
+            ny: layout.ny,
+            courant,
+            f: Self::functions(&stream)?,
+            x_int: DevProfile::upload(&stream, &layout.x_int)?,
+            x_half: DevProfile::upload(&stream, &layout.x_half)?,
+            y_int: DevProfile::upload(&stream, &layout.y_int)?,
+            y_half: DevProfile::upload(&stream, &layout.y_half)?,
+            layout,
+            ez,
+            hx,
+            hy,
+            cb,
+            psi_ezx,
+            psi_hyx,
+            psi_ezy,
+            psi_hxy,
             stream,
         })
     }
 
+    /// Upload the fields, coefficients, CPML layout and psi arrays of a CPU solver.
+    pub fn from_cpu(sim: &Yee2d) -> Result<Self, Box<dyn Error>> {
+        let stream = CudaContext::new(0)?.default_stream();
+        let psi = [
+            stream.clone_htod(&sim.psi_ezx)?,
+            stream.clone_htod(&sim.psi_hyx)?,
+            stream.clone_htod(&sim.psi_ezy)?,
+            stream.clone_htod(&sim.psi_hxy)?,
+        ];
+        Self::assemble(
+            stream.clone(),
+            sim.layout.clone(),
+            sim.courant,
+            stream.clone_htod(&sim.ez)?,
+            stream.clone_htod(&sim.hx)?,
+            stream.clone_htod(&sim.hy)?,
+            stream.clone_htod(&sim.cb)?,
+            psi,
+        )
+    }
+
     /// Build directly on the device, without a full-size host copy: fields
-    /// start at zero, coefficients are computed on the host in row blocks
-    /// with the same `cell_coeffs` as the CPU solver. Use this for grids that
-    /// do not fit in host RAM.
+    /// start at zero, and `cb` is computed on the host in row blocks with the
+    /// same `cb_coeff` as the CPU solver. Use this for grids that do not fit
+    /// in host RAM.
     pub fn new(
         nx: usize,
         ny: usize,
-        sponge: usize,
+        pml: Pml,
         courant: f64,
         eps_r: &dyn Fn(usize, usize) -> f64,
     ) -> Result<Self, Box<dyn Error>> {
         check_setup(nx, ny, courant)?;
-        if nx > i32::MAX as usize || ny > i32::MAX as usize {
-            return Err("nx and ny must fit in i32".into());
-        }
+        let layout = CpmlLayout::new(nx, ny, pml, courant)?;
         let n = nx * ny;
         let stream = CudaContext::new(0)?.default_stream();
-        let [update_h, update_e, add_src] = Self::functions(&stream)?;
-        let (mut ca, mut cb, mut hb) =
-            (stream.alloc_zeros::<f64>(n)?, stream.alloc_zeros::<f64>(n)?, stream.alloc_zeros::<f64>(n)?);
+        let mut cb = stream.alloc_zeros::<f64>(n)?;
         let rows = (1usize << 22).div_ceil(nx).max(1); // ~32 MiB per host block
-        let (mut ba, mut bb, mut bh) = (Vec::new(), Vec::new(), Vec::new());
+        let mut block = Vec::new();
         for j0 in (0..ny).step_by(rows) {
             let j1 = (j0 + rows).min(ny);
-            ba.clear();
-            bb.clear();
-            bh.clear();
+            block.clear();
             for j in j0..j1 {
                 for i in 0..nx {
-                    let (a, b, h) = cell_coeffs(i, j, nx, ny, sponge, courant, eps_r(i, j));
-                    ba.push(a);
-                    bb.push(b);
-                    bh.push(h);
+                    let e = eps_r(i, j);
+                    if !(e >= 1.0) {
+                        return Err("eps_r must be >= 1".into());
+                    }
+                    block.push(cb_coeff(courant, e));
                 }
             }
-            let r = j0 * nx..j1 * nx;
-            stream.memcpy_htod(&ba, &mut ca.try_slice_mut(r.clone()).unwrap())?;
-            stream.memcpy_htod(&bb, &mut cb.try_slice_mut(r.clone()).unwrap())?;
-            stream.memcpy_htod(&bh, &mut hb.try_slice_mut(r).unwrap())?;
-            stream.synchronize()?; // host blocks are reused
+            stream.memcpy_htod(&block, &mut cb.try_slice_mut(j0 * nx..j1 * nx).unwrap())?;
+            stream.synchronize()?; // the host block is reused
         }
-        Ok(Self {
-            nx,
-            ny,
-            update_h,
-            update_e,
-            add_src,
-            ez: stream.alloc_zeros::<f64>(n)?,
-            hx: stream.alloc_zeros::<f64>(n)?,
-            hy: stream.alloc_zeros::<f64>(n)?,
-            ca,
-            cb,
-            hb,
-            stream,
-        })
+        let psi = [
+            stream.alloc_zeros::<f64>(layout.x_strip_len())?,
+            stream.alloc_zeros::<f64>(layout.x_strip_len())?,
+            stream.alloc_zeros::<f64>(layout.y_strip_len())?,
+            stream.alloc_zeros::<f64>(layout.y_strip_len())?,
+        ];
+        let (ez, hx, hy) = (stream.alloc_zeros::<f64>(n)?, stream.alloc_zeros::<f64>(n)?, stream.alloc_zeros::<f64>(n)?);
+        Self::assemble(stream, layout, courant, ez, hx, hy, cb, psi)
     }
 
     /// Overwrite Ez at flat index `k`.
@@ -173,39 +296,91 @@ impl GpuYee {
         self.stream.context().name().unwrap_or_else(|_| "unknown".into())
     }
 
-    fn cfg(&self) -> LaunchConfig {
-        LaunchConfig {
+    /// Enqueue one Yee step (asynchronous): main H, H psi (x, y), main E, E psi (x, y).
+    pub fn step(&mut self) -> Result<(), Box<dyn Error>> {
+        let (nx, ny, w) = (self.nx as i32, self.ny as i32, self.layout.w as i32);
+        let dt = self.courant;
+        let main = LaunchConfig {
             grid_dim: ((self.nx as u32).div_ceil(BLOCK_X), (self.ny as u32).min(MAX_GRID_Y), 1),
             block_dim: (BLOCK_X, 1, 1),
             shared_mem_bytes: 0,
-        }
-    }
-
-    /// Enqueue one Yee step (asynchronous).
-    pub fn step(&mut self) -> Result<(), Box<dyn Error>> {
-        let cfg = self.cfg();
-        let (nx, ny) = (self.nx as i32, self.ny as i32);
+        };
+        let xs = LaunchConfig {
+            grid_dim: ((2 * w as u32).div_ceil(STRIP_BLOCK_X), (self.ny as u32).min(MAX_GRID_Y), 1),
+            block_dim: (STRIP_BLOCK_X, 1, 1),
+            shared_mem_bytes: 0,
+        };
+        let ys = LaunchConfig {
+            grid_dim: ((self.nx as u32).div_ceil(BLOCK_X), 2 * w as u32, 1),
+            block_dim: (BLOCK_X, 1, 1),
+            shared_mem_bytes: 0,
+        };
+        let s = &self.stream;
         unsafe {
-            self.stream
-                .launch_builder(&self.update_h)
+            s.launch_builder(&self.f[0])
                 .arg(&mut self.hx)
                 .arg(&mut self.hy)
                 .arg(&self.ez)
-                .arg(&self.ca)
-                .arg(&self.hb)
+                .arg(&self.x_half.ik)
+                .arg(&self.y_half.ik)
+                .arg(&dt)
                 .arg(&nx)
                 .arg(&ny)
-                .launch(cfg)?;
-            self.stream
-                .launch_builder(&self.update_e)
+                .launch(main)?;
+            s.launch_builder(&self.f[1])
+                .arg(&mut self.hy)
+                .arg(&mut self.psi_hyx)
+                .arg(&self.ez)
+                .arg(&self.x_half.a)
+                .arg(&self.x_half.b)
+                .arg(&dt)
+                .arg(&nx)
+                .arg(&ny)
+                .arg(&w)
+                .launch(xs)?;
+            s.launch_builder(&self.f[2])
+                .arg(&mut self.hx)
+                .arg(&mut self.psi_hxy)
+                .arg(&self.ez)
+                .arg(&self.y_half.a)
+                .arg(&self.y_half.b)
+                .arg(&dt)
+                .arg(&nx)
+                .arg(&ny)
+                .arg(&w)
+                .launch(ys)?;
+            s.launch_builder(&self.f[3])
                 .arg(&mut self.ez)
                 .arg(&self.hx)
                 .arg(&self.hy)
-                .arg(&self.ca)
                 .arg(&self.cb)
+                .arg(&self.x_int.ik)
+                .arg(&self.y_int.ik)
                 .arg(&nx)
                 .arg(&ny)
-                .launch(cfg)?;
+                .launch(main)?;
+            s.launch_builder(&self.f[4])
+                .arg(&mut self.ez)
+                .arg(&mut self.psi_ezx)
+                .arg(&self.hy)
+                .arg(&self.cb)
+                .arg(&self.x_int.a)
+                .arg(&self.x_int.b)
+                .arg(&nx)
+                .arg(&ny)
+                .arg(&w)
+                .launch(xs)?;
+            s.launch_builder(&self.f[5])
+                .arg(&mut self.ez)
+                .arg(&mut self.psi_ezy)
+                .arg(&self.hx)
+                .arg(&self.cb)
+                .arg(&self.y_int.a)
+                .arg(&self.y_int.b)
+                .arg(&nx)
+                .arg(&ny)
+                .arg(&w)
+                .launch(ys)?;
         }
         Ok(())
     }
@@ -216,7 +391,7 @@ impl GpuYee {
         let (nx, i, j0, j1) = (self.nx as i32, i as i32, j0 as i32, j1 as i32);
         unsafe {
             self.stream
-                .launch_builder(&self.add_src)
+                .launch_builder(&self.f[6])
                 .arg(&mut self.ez)
                 .arg(&nx)
                 .arg(&i)

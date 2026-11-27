@@ -4,15 +4,15 @@
 //! (src/verify.rs). GPU tests need CUDA device 0 (an sm_120 card).
 
 use photon_fdtd::gpu::GpuYee;
-use photon_fdtd::verify::{AbsorberCheck, EPS_AIR, EPS_SI, Strip, bit_mismatches, courant, trapped};
-use photon_fdtd::{COURANT_MAX_2D, Yee2d, check_setup};
+use photon_fdtd::verify::{AbsorberCheck, EPS_AIR, EPS_SI, STANDARD_PML, Strip, bit_mismatches, courant, trapped};
+use photon_fdtd::{COURANT_MAX_2D, Pml, Yee2d, check_setup, gaussian_sine};
 
 #[test]
 fn cfl_guard_rejects_courant_above_2d_limit() {
     assert!(check_setup(8, 8, COURANT_MAX_2D).is_ok());
     assert!(check_setup(8, 8, 1.001 * COURANT_MAX_2D).is_err());
-    assert!(Yee2d::new(8, 8, vec![1.0; 64], 0, 1.001 * COURANT_MAX_2D).is_err());
-    assert!(GpuYee::new(8, 8, 0, 1.001 * COURANT_MAX_2D, &|_, _| 1.0).is_err());
+    assert!(Yee2d::new(8, 8, vec![1.0; 64], Pml::new(0), 1.001 * COURANT_MAX_2D).is_err());
+    assert!(GpuYee::new(8, 8, Pml::new(0), 1.001 * COURANT_MAX_2D, &|_, _| 1.0).is_err());
 }
 
 /// Confinement in silicon vs an all-air control, then GPU vs CPU bit parity
@@ -49,39 +49,92 @@ fn bit_parity_serial_parallel_gpu_512x256() {
     assert_eq!(bit_mismatches(&s.run_gpu_ez(500).expect("CUDA run"), &serial), 0, "GPU differs from serial");
 }
 
-/// Regression gate on the measured sponge reflection (see docs/verification.md).
-/// Gates sit 1 dB above the values measured at the recorded commit.
+/// Corner-heavy CPML parity: point source near the low corner of a
+/// non-square grid, so the x strips, the y strips and their overlap all carry
+/// field. Serial CPU, rayon CPU and GPU must agree bit for bit.
 #[test]
-fn absorber_reflection_db() {
-    let c = AbsorberCheck::standard(40);
-    assert!(c.reference_is_clean());
-    let r = c.measure(&c.reference());
-    for p in &r {
-        println!("{}: {:.1} dB time max, {:.1} dB at f0", p.name, p.r_db, p.r_f0_db);
+fn bit_parity_cpml_corner_non_square_300x170() {
+    let (nx, ny, steps) = (300usize, 170usize, 800usize);
+    let mut serial = Yee2d::new(nx, ny, vec![EPS_AIR; nx * ny], Pml::new(STANDARD_PML), courant()).unwrap();
+    let mut par = Yee2d::new(nx, ny, vec![EPS_AIR; nx * ny], Pml::new(STANDARD_PML), courant()).unwrap();
+    let mut gpu = GpuYee::from_cpu(&serial).expect("CUDA init");
+    let (si, sj) = (20usize, 18usize);
+    for n in 0..steps {
+        let a = gaussian_sine((n + 1) as f64 * courant(), 1.0 / 20.0, 60.0, 20.0);
+        serial.step_serial();
+        serial.add_source_line(si, sj, sj + 1, a);
+        par.step_parallel();
+        par.add_source_line(si, sj, sj + 1, a);
+        gpu.step().unwrap();
+        gpu.add_source_line(si, sj, sj + 1, a).unwrap();
     }
-    assert!(r[0].r_db < -25.0, "normal-incidence reflection {:.1} dB", r[0].r_db);
-    assert!(r[1].r_db < -14.0, "corner reflection {:.1} dB", r[1].r_db);
+    assert!(serial.psi_ezx.iter().any(|&p| p != 0.0) && serial.psi_ezy.iter().any(|&p| p != 0.0));
+    assert_eq!(bit_mismatches(&par.ez, &serial.ez), 0, "rayon differs from serial");
+    for (a, b) in [(&par.psi_ezx, &serial.psi_ezx), (&par.psi_ezy, &serial.psi_ezy), (&par.psi_hxy, &serial.psi_hxy), (&par.psi_hyx, &serial.psi_hyx)] {
+        assert_eq!(bit_mismatches(a, b), 0, "rayon psi differs from serial");
+    }
+    assert_eq!(bit_mismatches(&gpu.download_ez().unwrap(), &serial.ez), 0, "GPU differs from serial");
 }
 
-/// 16384 x 20000 grid (3.28e8 cells, 2.62 GB per f64 array, 15.7 GB of VRAM):
+/// CPML reflection gates: <= -60 dB at normal incidence and <= -50 dB at the
+/// corner, for both source pulses, at the standard thickness.
+#[test]
+fn absorber_reflection_db() {
+    for c in [AbsorberCheck::standard(Pml::new(STANDARD_PML)), AbsorberCheck::standard(Pml::new(STANDARD_PML)).zero_dc()] {
+        assert!(c.reference_is_clean());
+        let r = c.measure(&c.reference().unwrap()).unwrap();
+        for p in &r {
+            println!("{:?} N={}: {}: {:.1} dB time max, {:.1} dB at f0", c.pulse, c.pml.cells, p.name, p.r_db, p.r_f0_db);
+        }
+        assert!(r[0].r_db <= -60.0, "{:?} normal-incidence reflection {:.1} dB", c.pulse, r[0].r_db);
+        assert!(r[1].r_db <= -50.0, "{:?} corner reflection {:.1} dB", c.pulse, r[1].r_db);
+    }
+}
+
+/// Grazing incidence (about 81 degrees from the wall normal) is the hardest
+/// case for a PML. Gate: <= -50 dB for both pulses at the standard thickness.
+#[test]
+fn absorber_reflection_grazing_db() {
+    for c in [AbsorberCheck::grazing(Pml::new(STANDARD_PML)), AbsorberCheck::grazing(Pml::new(STANDARD_PML)).zero_dc()] {
+        assert!(c.reference_is_clean());
+        let r = c.measure(&c.reference().unwrap()).unwrap();
+        println!("{:?} N={}: {}: {:.1} dB time max, {:.1} dB at f0", c.pulse, c.pml.cells, r[0].name, r[0].r_db, r[0].r_f0_db);
+        assert!(r[0].r_db <= -50.0, "{:?} grazing reflection {:.1} dB", c.pulse, r[0].r_db);
+    }
+}
+
+/// Control for the metric: with no PML (bare PEC walls) the same measurement
+/// must report a strong reflection, so a low dB value cannot come from a
+/// broken probe or reference.
+#[test]
+fn absorber_metric_detects_bare_pec() {
+    let c = AbsorberCheck::standard(Pml::new(0));
+    assert!(c.reference_is_clean());
+    let r = c.measure(&c.reference().unwrap()).unwrap();
+    println!("PEC control: normal {:.1} dB, corner {:.1} dB", r[0].r_db, r[1].r_db);
+    assert!(r[0].r_db > -6.0 && r[1].r_db > -6.0);
+}
+
+/// 16384 x 20000 grid (3.28e8 cells, 2.62 GB per f64 array, 10.5 GB of VRAM):
 /// byte offsets of updated cells pass 2^31 (16384 x 16385 would not: only its
 /// last row, a PEC row that is never updated, lies past 2^31 bytes).
 /// Impulses near both corners must evolve bitwise like the same impulses on a
 /// 64 x 64 CPU grid, whose coefficients match near the corners because the
-/// sponge depends only on the nearest-edge distance.
+/// CPML profiles and strips depend only on the distance to the nearest walls.
 #[test]
 fn large_grid_16384x20000_gpu_corners_match_cpu() {
-    let (nx, ny, sponge, steps, n, p) = (16384usize, 20000usize, 16usize, 8usize, 64usize, 25usize);
+    let (nx, ny, steps, n, p) = (16384usize, 20000usize, 8usize, 64usize, 25usize);
+    let pml = Pml::new(16);
     let lo = (12usize, 12usize);
     let hi_big = (nx - 13, ny - 13);
     let hi_small = (n - 13, n - 13);
     let k_hi = hi_big.1 * nx + hi_big.0;
     assert!(k_hi * 8 > i32::MAX as usize, "test must cross the 2^31 byte offset");
 
-    let mut gpu = GpuYee::new(nx, ny, sponge, courant(), &|_, _| 1.0).expect("16384 x 16385 GPU grid");
+    let mut gpu = GpuYee::new(nx, ny, pml, courant(), &|_, _| 1.0).expect("16384 x 20000 GPU grid");
     gpu.set_ez(lo.1 * nx + lo.0, 1.0).unwrap();
     gpu.set_ez(k_hi, 1.0).unwrap();
-    let mut cpu = Yee2d::new(n, n, vec![1.0; n * n], sponge, courant()).unwrap();
+    let mut cpu = Yee2d::new(n, n, vec![1.0; n * n], pml, courant()).unwrap();
     cpu.ez[lo.1 * n + lo.0] = 1.0;
     cpu.ez[hi_small.1 * n + hi_small.0] = 1.0;
     for _ in 0..steps {
@@ -111,7 +164,7 @@ fn large_grid_16384x20000_gpu_corners_match_cpu() {
 /// are reached only by the grid-stride loop in the kernels.
 #[test]
 fn tall_grid_past_cuda_grid_y_limit_matches_cpu() {
-    let s = Strip { src_x: 20, probe_x: 40, sponge: 8, ..Strip::standard(EPS_SI) }.with_grid(64, 70000);
+    let s = Strip { src_x: 20, probe_x: 40, pml: Pml::new(8), ..Strip::standard(EPS_SI) }.with_grid(64, 70000);
     let (nx, ny) = (s.nx, s.ny);
     // Second source far past row 65535 so those rows carry real field values.
     let mut cpu = s.build();

@@ -7,14 +7,14 @@
 use std::time::Instant;
 
 use photon_fdtd::gpu::GpuYee;
-use photon_fdtd::{COURANT_MAX_2D, Yee2d};
+use photon_fdtd::{COURANT_MAX_2D, Pml, Yee2d};
 
-/// Minimum DRAM traffic per cell per step: H pass 5 reads (ez, hx, hy, ca, hb) + 2 writes,
-/// E pass 5 reads (ez, hx, hy, ca, cb) + 1 write.
-const BYTES_PER_CELL: f64 = 13.0 * 8.0;
+/// Minimum DRAM traffic per cell per step outside the PML strips:
+/// H pass 3 reads (ez, hx, hy) + 2 writes, E pass 4 reads (ez, hx, hy, cb) + 1 write.
+const BYTES_PER_CELL: f64 = 10.0 * 8.0;
 
 fn make(n: usize) -> Yee2d {
-    let mut sim = Yee2d::new(n, n, vec![1.0; n * n], 32, 0.99 * COURANT_MAX_2D).unwrap();
+    let mut sim = Yee2d::new(n, n, vec![1.0; n * n], Pml::new(12), 0.99 * COURANT_MAX_2D).unwrap();
     // Non-zero O(1) field so no step runs on trivial zeros.
     let mut s = 0x9E3779B97F4A7C15u64;
     for e in sim.ez.iter_mut() {
@@ -35,7 +35,7 @@ fn print(label: &str, n: usize, steps: usize, mut rates: Vec<f64>) {
     let med = rates[rates.len() / 2];
     println!(
         "{label:<26} {n:>5}^2 {:>7.0} MiB {steps:>5} steps x{}  {med:>8.1} Mcells/s  [{:.1}..{:.1}]  {:>5.0} GB/s eff.",
-        (n * n * 6 * 8) as f64 / (1u64 << 20) as f64,
+        (n * n * 4 * 8) as f64 / (1u64 << 20) as f64,
         rates.len(),
         rates[0],
         rates[rates.len() - 1],
@@ -90,7 +90,7 @@ fn main() {
     let cpu_ns = list(&args, "--cpu", &[2048, 4096]);
     let gpu_ns = list(&args, "--gpu", &[4096, 8192]);
     let trials = list(&args, "--trials", &[3])[0];
-    println!("f64, TM_z Yee, {BYTES_PER_CELL} B/cell/step minimum traffic; MiB = 6 f64 arrays");
+    println!("f64, TM_z Yee, {BYTES_PER_CELL} B/cell/step minimum traffic; MiB = 4 full-grid f64 arrays");
     for &n in &cpu_ns {
         cpu(n, false, trials);
     }

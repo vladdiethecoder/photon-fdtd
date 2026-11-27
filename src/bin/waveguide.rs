@@ -11,8 +11,13 @@
 use std::fs;
 use std::io::Write;
 
-use photon_fdtd::verify::{AbsorberCheck, EPS_AIR, EPS_SI, Strip, StripReport, bit_mismatches, courant, trapped};
-use photon_fdtd::{COURANT_MAX_2D, Yee2d};
+use std::collections::HashMap;
+
+use photon_fdtd::verify::{
+    AbsorberCheck, EPS_AIR, EPS_SI, Geometry, ProbeReflection, Pulse, STANDARD_PML, Strip, StripReport, bit_mismatches, courant,
+    trapped,
+};
+use photon_fdtd::{COURANT_MAX_2D, Pml, Yee2d};
 
 fn write_ppm(path: &str, s: &Strip, sim: &Yee2d) {
     let (nx, ny) = (s.nx, s.ny);
@@ -25,7 +30,7 @@ fn write_ppm(path: &str, s: &Strip, sim: &Yee2d) {
             let v = sim.ez[k] / max;
             let px = (v.abs().sqrt() * 255.0) as u8;
             let bg = if sim.eps_r[k] > 1.0 { 45u8 } else { 0 };
-            let edge = i.min(nx - 1 - i).min(j).min(ny - 1 - j) < s.sponge;
+            let edge = i.min(nx - 1 - i).min(j).min(ny - 1 - j) < s.pml.cells;
             let bg = if edge { bg.max(20) } else { bg };
             let rgb = if v >= 0.0 { [px.max(bg), bg, bg] } else { [bg, bg, px.max(bg)] };
             buf.extend_from_slice(&rgb);
@@ -54,11 +59,11 @@ fn waveguide() -> bool {
     let air = Strip::standard(EPS_AIR);
     let (j0, j1) = si.core();
     println!(
-        "grid {} x {}, sponge {}, strip rows {j0}..{j1} (width {}), lambda0 {} cells, pulse t0 {} tau {}",
-        si.nx, si.ny, si.sponge, si.core_w, si.lambda0, si.t0, si.tau
+        "grid {} x {}, CPML {:?}, strip rows {j0}..{j1} (width {}), lambda0 {} cells, pulse t0 {} tau {}",
+        si.nx, si.ny, si.pml, si.core_w, si.lambda0, si.t0, si.tau
     );
     println!("Courant S = {:.6} (limit 1/sqrt(2) = {COURANT_MAX_2D:.6}), steps = {}", courant(), si.steps());
-    let cfl_ok = match Yee2d::new(8, 8, vec![1.0; 64], 0, 1.001 * COURANT_MAX_2D) {
+    let cfl_ok = match Yee2d::new(8, 8, vec![1.0; 64], Pml::new(0), 1.001 * COURANT_MAX_2D) {
         Err(e) => {
             println!("CFL guard: S = 1.001/sqrt(2) rejected -> {e}");
             true
@@ -92,35 +97,108 @@ fn waveguide() -> bool {
     cfl_ok && ok_trap && gpu_mis == 0 && par_mis == 0
 }
 
-fn check_pml() -> bool {
-    let base = AbsorberCheck::standard(40);
+type Measured = (AbsorberCheck, Vec<ProbeReflection>);
+
+/// Reflection of every case. One reference run per (geometry, pulse) covers
+/// the probe cells of every PML thickness.
+fn reflections(cases: &[AbsorberCheck]) -> Vec<Measured> {
+    let mut refs: HashMap<(Geometry, bool, usize, usize), Vec<f64>> = HashMap::new();
+    for geometry in [Geometry::Square, Geometry::Grazing] {
+        for pulse in [Pulse::GaussSine, Pulse::GaussDerivative] {
+            let mine: Vec<&AbsorberCheck> = cases.iter().filter(|c| c.pulse == pulse && c.geometry == geometry).collect();
+            let Some(first) = mine.first() else { continue };
+            assert!(mine.iter().all(|c| c.reference_is_clean()), "reference reached by its own walls");
+            assert!(mine.iter().all(|c| c.reference_frame() == first.reference_frame() && c.steps == first.steps));
+            let mut cells: Vec<(usize, usize)> = mine.iter().flat_map(|c| c.reference_cells()).collect();
+            cells.sort();
+            cells.dedup();
+            let traces = first.reference_at(&cells).expect("CUDA reference");
+            for (cell, t) in cells.into_iter().zip(traces) {
+                refs.insert((geometry, pulse == Pulse::GaussSine, cell.0, cell.1), t);
+            }
+        }
+    }
+    cases
+        .iter()
+        .map(|c| {
+            let key = |&(i, j): &(usize, usize)| (c.geometry, c.pulse == Pulse::GaussSine, i, j);
+            let r: Vec<Vec<f64>> = c.reference_cells().iter().map(|p| refs[&key(p)].clone()).collect();
+            (c.clone(), c.measure(&r).expect("CUDA test run"))
+        })
+        .collect()
+}
+
+fn check_pml(sweep: bool) -> bool {
+    let sq = AbsorberCheck::standard(Pml::new(STANDARD_PML));
+    let gr = AbsorberCheck::grazing(Pml::new(STANDARD_PML));
+    let zd = sq.clone().zero_dc();
+    println!("square:  test 512 x 512, reference 2048 x 2048, source (256,256), {} steps", sq.steps);
+    println!("grazing: test 1024 x 256, reference {:?}, source (150,128), {} steps", gr.reference_frame().1, gr.steps);
+    println!("probes {} cells inside the PML interface", sq.gap);
+    println!("pulse A: Gaussian sine, lambda0 {} cells, t0 {} tau {}", sq.lambda0, sq.t0, sq.tau);
+    println!("pulse B: Gaussian derivative (no DC), t0 {:.2} tau {:.2}; DFT metric at 1/{} cells^-1", zd.t0, zd.tau, zd.lambda0);
+    let mut pmls = Vec::new();
+    if sweep {
+        for cells in [8, 10, 12, 16] {
+            for kappa_max in [1.0, 3.0, 5.0, 7.0, 11.0] {
+                for alpha_max in [0.0, 0.05, 0.1, 0.2] {
+                    for m in [3.0, 4.0] {
+                        pmls.push(Pml { kappa_max, alpha_max, m, sigma_max: 0.8 * (m + 1.0), ..Pml::new(cells) });
+                    }
+                }
+            }
+        }
+    } else {
+        // N = 0 is the control: a bare PEC wall must reflect about 0 dB.
+        for cells in [0, 4, 6, 7, 8, 9, 10, 12, 14, 16, 20] {
+            pmls.push(Pml::new(cells));
+        }
+    }
+    let mut cases = Vec::new();
+    for &p in &pmls {
+        for c in [AbsorberCheck::standard(p), AbsorberCheck::grazing(p)] {
+            cases.push(c.clone());
+            cases.push(c.zero_dc());
+        }
+    }
+    let results = reflections(&cases);
     println!(
-        "absorber reflection: test {0} x {0}, reference {1} x {1}, {2} steps, point source at centre,",
-        base.n, base.n_ref, base.steps
-    );
-    println!(
-        "Gaussian-sine lambda0 {} cells, t0 {} tau {}; probes {} cells inside the absorber interface",
-        base.lambda0, base.t0, base.tau, base.gap
+        "{:>3} {:>3} {:>5} {:>5} {:>5} | {:>8} {:>8} {:>8} {:>8} {:>8} {:>8}   (dB, time max / DFT at f0)",
+        "N", "m", "kmax", "amax", "pulse", "norm t", "norm f0", "corn t", "corn f0", "graz t", "graz f0"
     );
     let mut ok = true;
-    for sponge in [10, 20, 40, 80] {
-        let c = AbsorberCheck { sponge, ..base.clone() };
-        // Probe cells move with the sponge thickness, so each case gets its own reference run.
-        let clean = c.reference_is_clean();
-        ok &= clean;
-        println!("sponge {sponge} cells: reference exactly independent of its own walls (1 cell/step bound): {clean}");
-        for p in c.measure(&c.reference()) {
+    for &p in &pmls {
+        for pulse in [Pulse::GaussSine, Pulse::GaussDerivative] {
+            let pick = |g: Geometry| {
+                results.iter().find(|(c, _)| c.pml == p && c.pulse == pulse && c.geometry == g).map(|(_, r)| r).unwrap()
+            };
+            let (s, g) = (pick(Geometry::Square), pick(Geometry::Grazing));
             println!(
-                "  {:<18} cell ({:>3},{:>3})  incident {:.3e}  max|diff| {:.3e}  R = {:>6.1} dB (time max)  {:>6.1} dB (at f0)",
-                p.name, p.i, p.j, p.incident_peak, p.max_diff, p.r_db, p.r_f0_db
+                "{:>3} {:>3} {:>5} {:>5} {:>5} | {:>8.1} {:>8.1} {:>8.1} {:>8.1} {:>8.1} {:>8.1}",
+                p.cells,
+                p.m,
+                p.kappa_max,
+                p.alpha_max,
+                if pulse == Pulse::GaussSine { "A" } else { "B" },
+                s[0].r_db,
+                s[0].r_f0_db,
+                s[1].r_db,
+                s[1].r_f0_db,
+                g[0].r_db,
+                g[0].r_f0_db
             );
-            ok &= p.r_db.is_finite();
+            ok &= s.iter().chain(g).all(|x| x.r_db.is_finite());
         }
     }
     ok
 }
 
 fn main() {
-    let ok = if std::env::args().any(|a| a == "--check-pml") { check_pml() } else { waveguide() };
+    let args: Vec<String> = std::env::args().collect();
+    let ok = if args.iter().any(|a| a == "--check-pml") {
+        check_pml(args.iter().any(|a| a == "--sweep"))
+    } else {
+        waveguide()
+    };
     std::process::exit(if ok { 0 } else { 1 });
 }
