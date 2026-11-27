@@ -1,0 +1,71 @@
+rep Grid(20), r_f 6, lr 0.05, betas [2.0, 4.0, 8.0, 16.0, 32.0, 64.0] x 6 then hold, score every 2, cap 1200, init I3, eta [0.641366102192773, 0.5, 0.3586338978072273]
+adjoint basis: port 2 11, port 1 12; physical solves per iteration 26, charged 26
+it   0 beta    2  F 0.082960  F_v [0.08296 0.06828 0.05816]  worst 0  charged 26  fwd 2.1 s adj 14.5 s
+it   1 beta    2  F 0.075142  F_v [0.07514 0.06208 0.05377]  worst 0  charged 52  fwd 2.2 s adj 14.4 s
+  score it 1: J 1.7729  best 1.7729  charged 55
+it   2 beta    2  F 0.068128  F_v [0.06813 0.05694 0.05084]  worst 0  charged 81  fwd 2.2 s adj 14.6 s
+it   3 beta    2  F 0.062005  F_v [0.06201 0.05268 0.05506]  worst 0  charged 107  fwd 2.2 s adj 14.7 s
+  score it 3: J 0.3377  best 0.3377  charged 110
+it   4 beta    2  F 0.058291  F_v [0.05652 0.04852 0.05829]  worst 2  charged 136  fwd 2.2 s adj 14.7 s
+it   5 beta    2  F 0.057427  F_v [0.05743 0.04639 0.04041]  worst 0  charged 162  fwd 2.2 s adj 14.7 s
+  score it 5: J 1.8572  best 0.3377  charged 165
+it   6 beta    4  F 0.145032  F_v [0.14503 0.04215 0.05041]  worst 0  charged 191  fwd 2.2 s adj 14.6 s
+it   7 beta    4  F 0.062444  F_v [0.06244 0.04088 0.05415]  worst 0  charged 217  fwd 2.2 s adj 14.7 s
+  score it 7: J 0.3074  best 0.3074  charged 220
+it   8 beta    4  F 0.058547  F_v [0.05855 0.04080 0.05849]  worst 0  charged 246  fwd 2.2 s adj 14.7 s
+it   9 beta    4  F 0.065765  F_v [0.05928 0.04128 0.06577]  worst 2  charged 272  fwd 2.2 s adj 14.6 s
+  score it 9: J 102.0000  best 0.3074  charged 272
+it  10 beta    4  F 0.062613  F_v [0.06261 0.04270 0.05728]  worst 0  charged 298  fwd 2.2 s adj 14.7 s
+it  11 beta    4  F 0.068999  F_v [0.06112 0.04862 0.06900]  worst 2  charged 324  fwd 2.2 s adj 14.6 s
+  score it 11: J 1.9662  best 0.3074  charged 327
+it  12 beta    8  F 0.080048  F_v [0.05691 0.04109 0.08005]  worst 2  charged 353  fwd 2.2 s adj 14.6 s
+it  13 beta    8  F 0.065556  F_v [0.05633 0.03926 0.06556]  worst 2  charged 379  fwd 2.2 s adj 14.6 s
+  score it 13: J 1.9783  best 0.3074  charged 382
+it  14 beta    8  F 0.056260  F_v [0.05626 0.03856 0.04590]  worst 0  charged 408  fwd 2.2 s adj 14.7 s
+it  15 beta    8  F 0.060952  F_v [0.06095 0.03783 0.04072]  worst 0  charged 434  fwd 2.2 s adj 14.6 s
+  score it 15: J 104.0000  best 0.3074  charged 434
+it  16 beta    8  F 0.056105  F_v [0.05611 0.03649 0.03429]  worst 0  charged 460  fwd 2.2 s adj 14.6 s
+it  17 beta    8  F 0.055645  F_v [0.05564 0.03545 0.03355]  worst 0  charged 486  fwd 2.2 s adj 14.6 s
+  score it 17: J 0.2754  best 0.2754  charged 489
+it  18 beta   16  F 0.050537  F_v [0.05054 0.03444 0.03751]  worst 0  charged 515  fwd 2.2 s adj 14.6 s
+it  19 beta   16  F 0.049786  F_v [0.04979 0.03355 0.03978]  worst 0  charged 541  fwd 2.2 s adj 14.5 s
+  score it 19: J 106.0000  best 0.2754  charged 541
+it  20 beta   16  F 0.049291  F_v [0.04929 0.03274 0.04201]  worst 0  charged 567  fwd 2.1 s adj 14.4 s
+it  21 beta   16  F 0.048867  F_v [0.04887 0.03198 0.04387]  worst 0  charged 593  fwd 2.2 s adj 14.4 s
+  score it 21: J 0.2612  best 0.2612  charged 596
+it  22 beta   16  F 0.048341  F_v [0.04834 0.03123 0.04508]  worst 0  charged 622  fwd 2.2 s adj 14.4 s
+it  23 beta   16  F 0.047539  F_v [0.04754 0.03049 0.04558]  worst 0  charged 648  fwd 2.2 s adj 14.4 s
+  score it 23: J 102.0000  best 0.2612  charged 648
+it  24 beta   32  F 0.050445  F_v [0.04636 0.02974 0.05045]  worst 2  charged 674  fwd 2.1 s adj 14.4 s
+it  25 beta   32  F 0.045808  F_v [0.04581 0.02878 0.03885]  worst 0  charged 700  fwd 2.1 s adj 14.4 s
+  score it 25: J 106.0000  best 0.2612  charged 700
+it  26 beta   32  F 0.045108  F_v [0.04511 0.02785 0.03133]  worst 0  charged 726  fwd 2.2 s adj 14.4 s
+it  27 beta   32  F 0.043525  F_v [0.04353 0.02699 0.02824]  worst 0  charged 752  fwd 2.2 s adj 14.4 s
+  score it 27: J 105.0000  best 0.2612  charged 752
+it  28 beta   32  F 0.042038  F_v [0.04204 0.02622 0.02761]  worst 0  charged 778  fwd 2.1 s adj 14.4 s
+it  29 beta   32  F 0.040880  F_v [0.04088 0.02554 0.02727]  worst 0  charged 804  fwd 2.2 s adj 14.3 s
+  score it 29: J 104.0000  best 0.2612  charged 804
+it  30 beta   64  F 0.039873  F_v [0.03987 0.02524 0.02806]  worst 0  charged 830  fwd 2.2 s adj 14.4 s
+it  31 beta   64  F 0.037845  F_v [0.03784 0.02466 0.02674]  worst 0  charged 856  fwd 2.1 s adj 14.4 s
+  score it 31: J 122.0000  best 0.2612  charged 856
+it  32 beta   64  F 0.037222  F_v [0.03722 0.02413 0.02573]  worst 0  charged 882  fwd 2.2 s adj 14.4 s
+it  33 beta   64  F 0.036037  F_v [0.03604 0.02374 0.02589]  worst 0  charged 908  fwd 2.2 s adj 14.4 s
+  score it 33: J 110.0000  best 0.2612  charged 908
+it  34 beta   64  F 0.035078  F_v [0.03508 0.02346 0.02785]  worst 0  charged 934  fwd 2.1 s adj 14.6 s
+it  35 beta   64  F 0.034168  F_v [0.03417 0.02330 0.03019]  worst 0  charged 960  fwd 2.2 s adj 14.4 s
+  score it 35: J 109.0000  best 0.2612  charged 960
+it  36 beta   64  F 0.033292  F_v [0.03329 0.02317 0.03187]  worst 0  charged 986  fwd 2.2 s adj 14.4 s
+it  37 beta   64  F 0.032941  F_v [0.03250 0.02318 0.03294]  worst 2  charged 1012  fwd 2.2 s adj 14.4 s
+  score it 37: J 108.0000  best 0.2612  charged 1012
+it  38 beta   64  F 0.031658  F_v [0.03166 0.02272 0.02444]  worst 0  charged 1038  fwd 2.1 s adj 14.4 s
+it  39 beta   64  F 0.030748  F_v [0.03075 0.02239 0.02388]  worst 0  charged 1064  fwd 2.2 s adj 14.4 s
+  score it 39: J 108.0000  best 0.2612  charged 1064
+it  40 beta   64  F 0.029880  F_v [0.02988 0.02218 0.02434]  worst 0  charged 1090  fwd 2.2 s adj 14.4 s
+it  41 beta   64  F 0.029308  F_v [0.02931 0.02226 0.02534]  worst 0  charged 1116  fwd 2.1 s adj 14.4 s
+  score it 41: J 108.0000  best 0.2612  charged 1116
+it  42 beta   64  F 0.028746  F_v [0.02875 0.02275 0.02714]  worst 0  charged 1142  fwd 2.1 s adj 14.4 s
+it  43 beta   64  F 0.029307  F_v [0.02731 0.02352 0.02931]  worst 2  charged 1168  fwd 2.2 s adj 14.4 s
+  score it 43: J 107.0000  best 0.2612  charged 1168
+it  44 beta   64  F 0.027142  F_v [0.02659 0.02267 0.02714]  worst 2  charged 1194  fwd 2.2 s adj 14.5 s
+  score final: J 105.0000  best 0.2612  charged 1194
+done: best J 0.2612, charged 1194, forward 159 adjoint 1035 solves, 0 cache hits

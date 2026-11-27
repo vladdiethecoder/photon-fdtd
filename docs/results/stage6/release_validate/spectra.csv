@@ -1,0 +1,1639 @@
+design,set,variant,lambda0,il_db,rl_db
+phase1 r_f 6,train15,eroded,200.0000,0.273725,30.1288
+phase1 r_f 6,train15,eroded,189.9705,0.217558,27.9773
+phase1 r_f 6,train15,eroded,180.8989,0.180286,28.3847
+phase1 r_f 6,train15,eroded,172.6542,0.137161,31.1400
+phase1 r_f 6,train15,eroded,165.1282,0.101774,38.3711
+phase1 r_f 6,train15,eroded,158.2310,0.082434,48.8142
+phase1 r_f 6,train15,eroded,151.8868,0.062649,38.3784
+phase1 r_f 6,train15,eroded,146.0317,0.045835,38.8424
+phase1 r_f 6,train15,eroded,140.6114,0.039384,52.8437
+phase1 r_f 6,train15,eroded,135.5789,0.029909,37.4286
+phase1 r_f 6,train15,eroded,130.8943,0.027015,30.7560
+phase1 r_f 6,train15,eroded,126.5226,0.029551,28.2951
+phase1 r_f 6,train15,eroded,122.4335,0.025408,28.2451
+phase1 r_f 6,train15,eroded,118.6004,0.025121,30.7494
+phase1 r_f 6,train15,eroded,115.0000,0.023668,38.7629
+phase1 r_f 6,train15,nominal,200.0000,0.200568,39.7636
+phase1 r_f 6,train15,nominal,189.9705,0.160407,38.1476
+phase1 r_f 6,train15,nominal,180.8989,0.133266,42.5356
+phase1 r_f 6,train15,nominal,172.6542,0.104895,46.0608
+phase1 r_f 6,train15,nominal,165.1282,0.080107,35.3369
+phase1 r_f 6,train15,nominal,158.2310,0.068041,30.8469
+phase1 r_f 6,train15,nominal,151.8868,0.054440,28.8986
+phase1 r_f 6,train15,nominal,146.0317,0.040735,28.7777
+phase1 r_f 6,train15,nominal,140.6114,0.035860,30.3538
+phase1 r_f 6,train15,nominal,135.5789,0.026119,33.9521
+phase1 r_f 6,train15,nominal,130.8943,0.022061,41.0975
+phase1 r_f 6,train15,nominal,126.5226,0.022655,58.1282
+phase1 r_f 6,train15,nominal,122.4335,0.019558,44.0250
+phase1 r_f 6,train15,nominal,118.6004,0.022947,43.4080
+phase1 r_f 6,train15,nominal,115.0000,0.025735,47.2615
+phase1 r_f 6,train15,dilated,200.0000,0.179877,24.8775
+phase1 r_f 6,train15,dilated,189.9705,0.146284,26.1048
+phase1 r_f 6,train15,dilated,180.8989,0.116822,33.1736
+phase1 r_f 6,train15,dilated,172.6542,0.094947,35.4664
+phase1 r_f 6,train15,dilated,165.1282,0.082729,25.7694
+phase1 r_f 6,train15,dilated,158.2310,0.082629,22.7290
+phase1 r_f 6,train15,dilated,151.8868,0.070681,22.5028
+phase1 r_f 6,train15,dilated,146.0317,0.049107,24.8572
+phase1 r_f 6,train15,dilated,140.6114,0.037639,31.4815
+phase1 r_f 6,train15,dilated,135.5789,0.030586,44.5793
+phase1 r_f 6,train15,dilated,130.8943,0.034387,30.5495
+phase1 r_f 6,train15,dilated,126.5226,0.039024,28.2425
+phase1 r_f 6,train15,dilated,122.4335,0.036198,30.0793
+phase1 r_f 6,train15,dilated,118.6004,0.039984,38.2205
+phase1 r_f 6,train15,dilated,115.0000,0.049163,39.9270
+phase1 r_f 6,heldout61,eroded,200.0000,0.273725,30.1288
+phase1 r_f 6,heldout61,eroded,197.5662,0.257579,29.3347
+phase1 r_f 6,heldout61,eroded,195.1909,0.243272,28.7413
+phase1 r_f 6,heldout61,eroded,192.8721,0.230931,28.3149
+phase1 r_f 6,heldout61,eroded,190.6077,0.220330,28.0331
+phase1 r_f 6,heldout61,eroded,188.3959,0.210999,27.8839
+phase1 r_f 6,heldout61,eroded,186.2348,0.202408,27.8625
+phase1 r_f 6,heldout61,eroded,184.1227,0.194046,27.9677
+phase1 r_f 6,heldout61,eroded,182.0580,0.185443,28.1979
+phase1 r_f 6,heldout61,eroded,180.0391,0.176282,28.5508
+phase1 r_f 6,heldout61,eroded,178.0645,0.166516,29.0251
+phase1 r_f 6,heldout61,eroded,176.1327,0.156322,29.6253
+phase1 r_f 6,heldout61,eroded,174.2424,0.145955,30.3675
+phase1 r_f 6,heldout61,eroded,172.3923,0.135721,31.2830
+phase1 r_f 6,heldout61,eroded,170.5810,0.125995,32.4200
+phase1 r_f 6,heldout61,eroded,168.8073,0.117127,33.8452
+phase1 r_f 6,heldout61,eroded,167.0702,0.109322,35.6513
+phase1 r_f 6,heldout61,eroded,165.3685,0.102640,37.9822
+phase1 r_f 6,heldout61,eroded,163.7011,0.097018,41.1097
+phase1 r_f 6,heldout61,eroded,162.0669,0.092268,45.6640
+phase1 r_f 6,heldout61,eroded,160.4651,0.088085,52.9145
+phase1 r_f 6,heldout61,eroded,158.8946,0.084133,51.7854
+phase1 r_f 6,heldout61,eroded,157.3546,0.080116,45.8249
+phase1 r_f 6,heldout61,eroded,155.8442,0.075819,42.4135
+phase1 r_f 6,heldout61,eroded,154.3624,0.071163,40.3073
+phase1 r_f 6,heldout61,eroded,152.9086,0.066231,38.9821
+phase1 r_f 6,heldout61,eroded,151.4819,0.061227,38.2029
+phase1 r_f 6,heldout61,eroded,150.0816,0.056422,37.8445
+phase1 r_f 6,heldout61,eroded,148.7069,0.052118,37.8378
+phase1 r_f 6,heldout61,eroded,147.3572,0.048560,38.1602
+phase1 r_f 6,heldout61,eroded,146.0317,0.045835,38.8424
+phase1 r_f 6,heldout61,eroded,144.7299,0.043850,39.9880
+phase1 r_f 6,heldout61,eroded,143.4511,0.042388,41.8175
+phase1 r_f 6,heldout61,eroded,142.1947,0.041152,44.8141
+phase1 r_f 6,heldout61,eroded,140.9602,0.039819,50.3343
+phase1 r_f 6,heldout61,eroded,139.7468,0.038155,57.1583
+phase1 r_f 6,heldout61,eroded,138.5542,0.036083,47.7341
+phase1 r_f 6,heldout61,eroded,137.3818,0.033690,42.3719
+phase1 r_f 6,heldout61,eroded,136.2290,0.031221,38.9429
+phase1 r_f 6,heldout61,eroded,135.0954,0.029023,36.4365
+phase1 r_f 6,heldout61,eroded,133.9806,0.027408,34.4806
+phase1 r_f 6,heldout61,eroded,132.8840,0.026558,32.9102
+phase1 r_f 6,heldout61,eroded,131.8052,0.026510,31.6419
+phase1 r_f 6,heldout61,eroded,130.7437,0.027135,30.6244
+phase1 r_f 6,heldout61,eroded,129.6992,0.028095,29.8169
+phase1 r_f 6,heldout61,eroded,128.6713,0.028990,29.1840
+phase1 r_f 6,heldout61,eroded,127.6596,0.029540,28.6967
+phase1 r_f 6,heldout61,eroded,126.6636,0.029591,28.3367
+phase1 r_f 6,heldout61,eroded,125.6831,0.029065,28.0975
+phase1 r_f 6,heldout61,eroded,124.7176,0.028053,27.9818
+phase1 r_f 6,heldout61,eroded,123.7668,0.026854,27.9953
+phase1 r_f 6,heldout61,eroded,122.8304,0.025782,28.1416
+phase1 r_f 6,heldout61,eroded,121.9081,0.025008,28.4210
+phase1 r_f 6,heldout61,eroded,120.9996,0.024624,28.8342
+phase1 r_f 6,heldout61,eroded,120.1044,0.024653,29.3896
+phase1 r_f 6,heldout61,eroded,119.2225,0.024932,30.1104
+phase1 r_f 6,heldout61,eroded,118.3533,0.025170,31.0393
+phase1 r_f 6,heldout61,eroded,117.4968,0.025164,32.2406
+phase1 r_f 6,heldout61,eroded,116.6526,0.024870,33.8071
+phase1 r_f 6,heldout61,eroded,115.8204,0.024325,35.8857
+phase1 r_f 6,heldout61,eroded,115.0000,0.023668,38.7629
+phase1 r_f 6,heldout61,nominal,200.0000,0.200568,39.7636
+phase1 r_f 6,heldout61,nominal,197.5662,0.189304,38.9611
+phase1 r_f 6,heldout61,nominal,195.1909,0.179223,38.4093
+phase1 r_f 6,heldout61,nominal,192.8721,0.170323,38.1163
+phase1 r_f 6,heldout61,nominal,190.6077,0.162482,38.0991
+phase1 r_f 6,heldout61,nominal,188.3959,0.155480,38.3781
+phase1 r_f 6,heldout61,nominal,186.2348,0.149034,38.9810
+phase1 r_f 6,heldout61,nominal,184.1227,0.142874,39.9593
+phase1 r_f 6,heldout61,nominal,182.0580,0.136784,41.4164
+phase1 r_f 6,heldout61,nominal,180.0391,0.130591,43.5535
+phase1 r_f 6,heldout61,nominal,178.0645,0.124183,46.7119
+phase1 r_f 6,heldout61,nominal,176.1327,0.117543,50.6811
+phase1 r_f 6,heldout61,nominal,174.2424,0.110746,49.9885
+phase1 r_f 6,heldout61,nominal,172.3923,0.103926,45.4509
+phase1 r_f 6,heldout61,nominal,170.5810,0.097282,41.8747
+phase1 r_f 6,heldout61,nominal,168.8073,0.091061,39.2414
+phase1 r_f 6,heldout61,nominal,167.0702,0.085489,37.2028
+phase1 r_f 6,heldout61,nominal,165.3685,0.080718,35.5493
+phase1 r_f 6,heldout61,nominal,163.7011,0.076817,34.1652
+phase1 r_f 6,heldout61,nominal,162.0669,0.073738,32.9905
+phase1 r_f 6,heldout61,nominal,160.4651,0.071252,31.9947
+phase1 r_f 6,heldout61,nominal,158.8946,0.069011,31.1595
+phase1 r_f 6,heldout61,nominal,157.3546,0.066687,30.4689
+phase1 r_f 6,heldout61,nominal,155.8442,0.064037,29.9052
+phase1 r_f 6,heldout61,nominal,154.3624,0.060893,29.4515
+phase1 r_f 6,heldout61,nominal,152.9086,0.057242,29.0956
+phase1 r_f 6,heldout61,nominal,151.4819,0.053306,28.8333
+phase1 r_f 6,heldout61,nominal,150.0816,0.049426,28.6673
+phase1 r_f 6,heldout61,nominal,148.7069,0.045897,28.6023
+phase1 r_f 6,heldout61,nominal,147.3572,0.042944,28.6404
+phase1 r_f 6,heldout61,nominal,146.0317,0.040735,28.7777
+phase1 r_f 6,heldout61,nominal,144.7299,0.039260,29.0062
+phase1 r_f 6,heldout61,nominal,143.4511,0.038256,29.3182
+phase1 r_f 6,heldout61,nominal,142.1947,0.037353,29.7124
+phase1 r_f 6,heldout61,nominal,140.9602,0.036246,30.1968
+phase1 r_f 6,heldout61,nominal,139.7468,0.034712,30.7862
+phase1 r_f 6,heldout61,nominal,138.5542,0.032637,31.4967
+phase1 r_f 6,heldout61,nominal,137.3818,0.030130,32.3402
+phase1 r_f 6,heldout61,nominal,136.2290,0.027516,33.3240
+phase1 r_f 6,heldout61,nominal,135.0954,0.025163,34.4567
+phase1 r_f 6,heldout61,nominal,133.9806,0.023352,35.7610
+phase1 r_f 6,heldout61,nominal,132.8840,0.022257,37.2891
+phase1 r_f 6,heldout61,nominal,131.8052,0.021902,39.1379
+phase1 r_f 6,heldout61,nominal,130.7437,0.022115,41.4687
+phase1 r_f 6,heldout61,nominal,129.6992,0.022587,44.5614
+phase1 r_f 6,heldout61,nominal,128.6713,0.022995,49.0120
+phase1 r_f 6,heldout61,nominal,127.6596,0.023087,56.5064
+phase1 r_f 6,heldout61,nominal,126.6636,0.022740,59.4701
+phase1 r_f 6,heldout61,nominal,125.6831,0.021999,52.1092
+phase1 r_f 6,heldout61,nominal,124.7176,0.021061,48.2975
+phase1 r_f 6,heldout61,nominal,123.7668,0.020190,45.9889
+phase1 r_f 6,heldout61,nominal,122.8304,0.019645,44.4885
+phase1 r_f 6,heldout61,nominal,121.9081,0.019599,43.5486
+phase1 r_f 6,heldout61,nominal,120.9996,0.020085,43.0591
+phase1 r_f 6,heldout61,nominal,120.1044,0.020987,42.9450
+phase1 r_f 6,heldout61,nominal,119.2225,0.022117,43.1320
+phase1 r_f 6,heldout61,nominal,118.3533,0.023264,43.5455
+phase1 r_f 6,heldout61,nominal,117.4968,0.024240,44.1335
+phase1 r_f 6,heldout61,nominal,116.6526,0.024945,44.8969
+phase1 r_f 6,heldout61,nominal,115.8204,0.025406,45.9014
+phase1 r_f 6,heldout61,nominal,115.0000,0.025735,47.2615
+phase1 r_f 6,heldout61,dilated,200.0000,0.179877,24.8775
+phase1 r_f 6,heldout61,dilated,197.5662,0.172103,24.8474
+phase1 r_f 6,heldout61,dilated,195.1909,0.164228,24.9955
+phase1 r_f 6,heldout61,dilated,192.8721,0.156300,25.3378
+phase1 r_f 6,heldout61,dilated,190.6077,0.148479,25.8994
+phase1 r_f 6,heldout61,dilated,188.3959,0.140892,26.7168
+phase1 r_f 6,heldout61,dilated,186.2348,0.133599,27.8476
+phase1 r_f 6,heldout61,dilated,184.1227,0.126692,29.3909
+phase1 r_f 6,heldout61,dilated,182.0580,0.120272,31.5360
+phase1 r_f 6,heldout61,dilated,180.0391,0.114328,34.6991
+phase1 r_f 6,heldout61,dilated,178.0645,0.108785,40.0663
+phase1 r_f 6,heldout61,dilated,176.1327,0.103605,50.4008
+phase1 r_f 6,heldout61,dilated,174.2424,0.098786,40.6613
+phase1 r_f 6,heldout61,dilated,172.3923,0.094336,34.8358
+phase1 r_f 6,heldout61,dilated,170.5810,0.090355,31.4123
+phase1 r_f 6,heldout61,dilated,168.8073,0.087034,29.0527
+phase1 r_f 6,heldout61,dilated,167.0702,0.084521,27.2975
+phase1 r_f 6,heldout61,dilated,165.3685,0.082888,25.9383
+phase1 r_f 6,heldout61,dilated,163.7011,0.082167,24.8666
+phase1 r_f 6,heldout61,dilated,162.0669,0.082218,24.0224
+phase1 r_f 6,heldout61,dilated,160.4651,0.082596,23.3705
+phase1 r_f 6,heldout61,dilated,158.8946,0.082745,22.8881
+phase1 r_f 6,heldout61,dilated,157.3546,0.082246,22.5586
+phase1 r_f 6,heldout61,dilated,155.8442,0.080779,22.3689
+phase1 r_f 6,heldout61,dilated,154.3624,0.078067,22.3095
+phase1 r_f 6,heldout61,dilated,152.9086,0.074097,22.3765
+phase1 r_f 6,heldout61,dilated,151.4819,0.069225,22.5722
+phase1 r_f 6,heldout61,dilated,150.0816,0.063910,22.9048
+phase1 r_f 6,heldout61,dilated,148.7069,0.058524,23.3863
+phase1 r_f 6,heldout61,dilated,147.3572,0.053459,24.0312
+phase1 r_f 6,heldout61,dilated,146.0317,0.049107,24.8572
+phase1 r_f 6,heldout61,dilated,144.7299,0.045597,25.8886
+phase1 r_f 6,heldout61,dilated,143.4511,0.042756,27.1651
+phase1 r_f 6,heldout61,dilated,142.1947,0.040357,28.7563
+phase1 r_f 6,heldout61,dilated,140.9602,0.038224,30.7895
+phase1 r_f 6,heldout61,dilated,139.7468,0.036196,33.5146
+phase1 r_f 6,heldout61,dilated,138.5542,0.034219,37.5180
+phase1 r_f 6,heldout61,dilated,137.3818,0.032437,44.8855
+phase1 r_f 6,heldout61,dilated,136.2290,0.031086,53.5600
+phase1 r_f 6,heldout61,dilated,135.0954,0.030367,41.1396
+phase1 r_f 6,heldout61,dilated,133.9806,0.030432,36.4160
+phase1 r_f 6,heldout61,dilated,132.8840,0.031307,33.6198
+phase1 r_f 6,heldout61,dilated,131.8052,0.032815,31.7281
+phase1 r_f 6,heldout61,dilated,130.7437,0.034659,30.3839
+phase1 r_f 6,heldout61,dilated,129.6992,0.036519,29.4286
+phase1 r_f 6,heldout61,dilated,128.6713,0.038038,28.7824
+phase1 r_f 6,heldout61,dilated,127.6596,0.038906,28.3987
+phase1 r_f 6,heldout61,dilated,126.6636,0.039054,28.2467
+phase1 r_f 6,heldout61,dilated,125.6831,0.038643,28.3048
+phase1 r_f 6,heldout61,dilated,124.7176,0.037883,28.5620
+phase1 r_f 6,heldout61,dilated,123.7668,0.037012,29.0220
+phase1 r_f 6,heldout61,dilated,122.8304,0.036349,29.7071
+phase1 r_f 6,heldout61,dilated,121.9081,0.036151,30.6596
+phase1 r_f 6,heldout61,dilated,120.9996,0.036495,31.9449
+phase1 r_f 6,heldout61,dilated,120.1044,0.037371,33.6642
+phase1 r_f 6,heldout61,dilated,119.2225,0.038749,35.9937
+phase1 r_f 6,heldout61,dilated,118.3533,0.040521,39.3033
+phase1 r_f 6,heldout61,dilated,117.4968,0.042523,44.5447
+phase1 r_f 6,heldout61,dilated,116.6526,0.044655,51.7391
+phase1 r_f 6,heldout61,dilated,115.8204,0.046878,45.1610
+phase1 r_f 6,heldout61,dilated,115.0000,0.049163,39.9270
+phase1 r_f 6,scale2,eroded,400.0000,0.272418,29.3420
+phase1 r_f 6,scale2,eroded,379.9410,0.216383,27.8595
+phase1 r_f 6,scale2,eroded,361.7978,0.178801,28.8145
+phase1 r_f 6,scale2,eroded,345.3083,0.136109,32.4166
+phase1 r_f 6,scale2,eroded,330.2564,0.101348,42.7657
+phase1 r_f 6,scale2,eroded,316.4619,0.082661,40.7293
+phase1 r_f 6,scale2,eroded,303.7736,0.063524,35.2787
+phase1 r_f 6,scale2,eroded,292.0635,0.046281,36.3236
+phase1 r_f 6,scale2,eroded,281.2227,0.039126,47.7325
+phase1 r_f 6,scale2,eroded,271.1579,0.029662,36.9981
+phase1 r_f 6,scale2,eroded,261.7886,0.026945,29.8534
+phase1 r_f 6,scale2,eroded,253.0452,0.030336,27.1156
+phase1 r_f 6,scale2,eroded,244.8669,0.026881,26.6700
+phase1 r_f 6,scale2,eroded,237.2007,0.025907,28.3084
+phase1 r_f 6,scale2,eroded,230.0000,0.023153,33.0053
+phase1 r_f 6,scale2,nominal,400.0000,0.199888,41.4551
+phase1 r_f 6,scale2,nominal,379.9410,0.160387,37.9843
+phase1 r_f 6,scale2,nominal,361.7978,0.133636,40.4737
+phase1 r_f 6,scale2,nominal,345.3083,0.105590,49.7685
+phase1 r_f 6,scale2,nominal,330.2564,0.080480,37.5515
+phase1 r_f 6,scale2,nominal,316.4619,0.067949,32.0644
+phase1 r_f 6,scale2,nominal,303.7736,0.054636,29.5973
+phase1 r_f 6,scale2,nominal,292.0635,0.041136,29.0483
+phase1 r_f 6,scale2,nominal,281.2227,0.036467,30.0624
+phase1 r_f 6,scale2,nominal,271.1579,0.026963,32.6161
+phase1 r_f 6,scale2,nominal,261.7886,0.022190,36.8773
+phase1 r_f 6,scale2,nominal,253.0452,0.022231,43.7216
+phase1 r_f 6,scale2,nominal,244.8669,0.019072,51.2072
+phase1 r_f 6,scale2,nominal,237.2007,0.022473,49.6526
+phase1 r_f 6,scale2,nominal,230.0000,0.025846,43.6220
+phase1 r_f 6,scale2,dilated,400.0000,0.179496,25.1025
+phase1 r_f 6,scale2,dilated,379.9410,0.147161,26.0397
+phase1 r_f 6,scale2,dilated,361.7978,0.118122,32.4696
+phase1 r_f 6,scale2,dilated,345.3083,0.096078,36.8856
+phase1 r_f 6,scale2,dilated,330.2564,0.083221,26.2542
+phase1 r_f 6,scale2,dilated,316.4619,0.083035,22.9846
+phase1 r_f 6,scale2,dilated,303.7736,0.072343,22.5883
+phase1 r_f 6,scale2,dilated,292.0635,0.051661,24.6869
+phase1 r_f 6,scale2,dilated,281.2227,0.040076,30.4811
+phase1 r_f 6,scale2,dilated,271.1579,0.032207,52.2679
+phase1 r_f 6,scale2,dilated,261.7886,0.034548,32.7417
+phase1 r_f 6,scale2,dilated,253.0452,0.038921,30.2168
+phase1 r_f 6,scale2,dilated,244.8669,0.037441,32.9353
+phase1 r_f 6,scale2,dilated,237.2007,0.043288,51.3236
+phase1 r_f 6,scale2,dilated,230.0000,0.055806,33.8302
+adjoint seed 5,train15,eroded,200.0000,0.171125,23.5218
+adjoint seed 5,train15,eroded,189.9705,0.139520,28.8951
+adjoint seed 5,train15,eroded,180.8989,0.121672,39.2238
+adjoint seed 5,train15,eroded,172.6542,0.108453,28.8146
+adjoint seed 5,train15,eroded,165.1282,0.099476,25.2325
+adjoint seed 5,train15,eroded,158.2310,0.097746,24.9458
+adjoint seed 5,train15,eroded,151.8868,0.092980,27.3360
+adjoint seed 5,train15,eroded,146.0317,0.081403,33.7284
+adjoint seed 5,train15,eroded,140.6114,0.076624,40.3837
+adjoint seed 5,train15,eroded,135.5789,0.066243,33.1791
+adjoint seed 5,train15,eroded,130.8943,0.061680,33.1893
+adjoint seed 5,train15,eroded,126.5226,0.074552,43.3612
+adjoint seed 5,train15,eroded,122.4335,0.120287,34.0035
+adjoint seed 5,train15,eroded,118.6004,0.170985,26.1120
+adjoint seed 5,train15,eroded,115.0000,0.153982,22.9928
+adjoint seed 5,train15,nominal,200.0000,0.146399,40.8870
+adjoint seed 5,train15,nominal,189.9705,0.132163,39.8999
+adjoint seed 5,train15,nominal,180.8989,0.118759,40.7788
+adjoint seed 5,train15,nominal,172.6542,0.099768,43.5270
+adjoint seed 5,train15,nominal,165.1282,0.084443,44.6179
+adjoint seed 5,train15,nominal,158.2310,0.085000,43.1551
+adjoint seed 5,train15,nominal,151.8868,0.080810,39.8371
+adjoint seed 5,train15,nominal,146.0317,0.073806,37.0169
+adjoint seed 5,train15,nominal,140.6114,0.075085,35.4887
+adjoint seed 5,train15,nominal,135.5789,0.076207,34.7043
+adjoint seed 5,train15,nominal,130.8943,0.094683,34.2344
+adjoint seed 5,train15,nominal,126.5226,0.113831,33.6689
+adjoint seed 5,train15,nominal,122.4335,0.113793,32.4008
+adjoint seed 5,train15,nominal,118.6004,0.116358,30.3782
+adjoint seed 5,train15,nominal,115.0000,0.106113,28.2391
+adjoint seed 5,train15,dilated,200.0000,0.158473,29.0209
+adjoint seed 5,train15,dilated,189.9705,0.138872,39.0992
+adjoint seed 5,train15,dilated,180.8989,0.124429,34.0064
+adjoint seed 5,train15,dilated,172.6542,0.111394,28.0543
+adjoint seed 5,train15,dilated,165.1282,0.099825,27.9225
+adjoint seed 5,train15,dilated,158.2310,0.093771,32.2863
+adjoint seed 5,train15,dilated,151.8868,0.085694,40.9505
+adjoint seed 5,train15,dilated,146.0317,0.091444,30.0658
+adjoint seed 5,train15,dilated,140.6114,0.109758,26.7323
+adjoint seed 5,train15,dilated,135.5789,0.105007,26.8344
+adjoint seed 5,train15,dilated,130.8943,0.093867,29.4556
+adjoint seed 5,train15,dilated,126.5226,0.097906,35.4594
+adjoint seed 5,train15,dilated,122.4335,0.110663,46.1682
+adjoint seed 5,train15,dilated,118.6004,0.106308,47.9864
+adjoint seed 5,train15,dilated,115.0000,0.072213,35.8501
+adjoint seed 5,heldout61,eroded,200.0000,0.171125,23.5218
+adjoint seed 5,heldout61,eroded,197.5662,0.161620,24.3564
+adjoint seed 5,heldout61,eroded,195.1909,0.153518,25.4044
+adjoint seed 5,heldout61,eroded,192.8721,0.146744,26.7113
+adjoint seed 5,heldout61,eroded,190.6077,0.141009,28.3507
+adjoint seed 5,heldout61,eroded,188.3959,0.136033,30.4397
+adjoint seed 5,heldout61,eroded,186.2348,0.131604,33.1530
+adjoint seed 5,heldout61,eroded,184.1227,0.127542,36.6016
+adjoint seed 5,heldout61,eroded,182.0580,0.123740,39.4996
+adjoint seed 5,heldout61,eroded,180.0391,0.120170,38.0891
+adjoint seed 5,heldout61,eroded,178.0645,0.116821,34.8357
+adjoint seed 5,heldout61,eroded,176.1327,0.113684,32.1697
+adjoint seed 5,heldout61,eroded,174.2424,0.110772,30.1581
+adjoint seed 5,heldout61,eroded,172.3923,0.108080,28.6179
+adjoint seed 5,heldout61,eroded,170.5810,0.105567,27.4218
+adjoint seed 5,heldout61,eroded,168.8073,0.103252,26.4951
+adjoint seed 5,heldout61,eroded,167.0702,0.101256,25.7940
+adjoint seed 5,heldout61,eroded,165.3685,0.099669,25.2898
+adjoint seed 5,heldout61,eroded,163.7011,0.098503,24.9604
+adjoint seed 5,heldout61,eroded,162.0669,0.097801,24.7873
+adjoint seed 5,heldout61,eroded,160.4651,0.097593,24.7564
+adjoint seed 5,heldout61,eroded,158.8946,0.097698,24.8602
+adjoint seed 5,heldout61,eroded,157.3546,0.097739,25.0991
+adjoint seed 5,heldout61,eroded,155.8442,0.097378,25.4804
+adjoint seed 5,heldout61,eroded,154.3624,0.096409,26.0163
+adjoint seed 5,heldout61,eroded,152.9086,0.094685,26.7207
+adjoint seed 5,heldout61,eroded,151.4819,0.092207,27.6101
+adjoint seed 5,heldout61,eroded,150.0816,0.089254,28.7067
+adjoint seed 5,heldout61,eroded,148.7069,0.086259,30.0467
+adjoint seed 5,heldout61,eroded,147.3572,0.083569,31.6899
+adjoint seed 5,heldout61,eroded,146.0317,0.081403,33.7284
+adjoint seed 5,heldout61,eroded,144.7299,0.079865,36.2747
+adjoint seed 5,heldout61,eroded,143.4511,0.078840,39.2936
+adjoint seed 5,heldout61,eroded,142.1947,0.078003,41.6749
+adjoint seed 5,heldout61,eroded,140.9602,0.076989,41.0230
+adjoint seed 5,heldout61,eroded,139.7468,0.075513,38.6198
+adjoint seed 5,heldout61,eroded,138.5542,0.073415,36.4434
+adjoint seed 5,heldout61,eroded,137.3818,0.070760,34.8134
+adjoint seed 5,heldout61,eroded,136.2290,0.067857,33.6580
+adjoint seed 5,heldout61,eroded,135.0954,0.065109,32.8984
+adjoint seed 5,heldout61,eroded,133.9806,0.062888,32.4906
+adjoint seed 5,heldout61,eroded,132.8840,0.061509,32.4173
+adjoint seed 5,heldout61,eroded,131.8052,0.061164,32.6805
+adjoint seed 5,heldout61,eroded,130.7437,0.061832,33.3014
+adjoint seed 5,heldout61,eroded,129.6992,0.063392,34.3357
+adjoint seed 5,heldout61,eroded,128.6713,0.065805,35.9132
+adjoint seed 5,heldout61,eroded,127.6596,0.069172,38.3433
+adjoint seed 5,heldout61,eroded,126.6636,0.073769,42.4961
+adjoint seed 5,heldout61,eroded,125.6831,0.080087,52.7612
+adjoint seed 5,heldout61,eroded,124.7176,0.088705,48.3879
+adjoint seed 5,heldout61,eroded,123.7668,0.099983,39.8460
+adjoint seed 5,heldout61,eroded,122.8304,0.113785,35.4117
+adjoint seed 5,heldout61,eroded,121.9081,0.129234,32.4075
+adjoint seed 5,heldout61,eroded,120.9996,0.144620,30.1589
+adjoint seed 5,heldout61,eroded,120.1044,0.157838,28.3911
+adjoint seed 5,heldout61,eroded,119.2225,0.167181,26.9655
+adjoint seed 5,heldout61,eroded,118.3533,0.171817,25.8037
+adjoint seed 5,heldout61,eroded,117.4968,0.171807,24.8565
+adjoint seed 5,heldout61,eroded,116.6526,0.167989,24.0899
+adjoint seed 5,heldout61,eroded,115.8204,0.161652,23.4766
+adjoint seed 5,heldout61,eroded,115.0000,0.153982,22.9928
+adjoint seed 5,heldout61,nominal,200.0000,0.146399,40.8870
+adjoint seed 5,heldout61,nominal,197.5662,0.142323,40.8834
+adjoint seed 5,heldout61,nominal,195.1909,0.138838,40.5728
+adjoint seed 5,heldout61,nominal,192.8721,0.135782,40.2071
+adjoint seed 5,heldout61,nominal,190.6077,0.132955,39.9456
+adjoint seed 5,heldout61,nominal,188.3959,0.130168,39.8463
+adjoint seed 5,heldout61,nominal,186.2348,0.127274,39.9128
+adjoint seed 5,heldout61,nominal,184.1227,0.124184,40.1347
+adjoint seed 5,heldout61,nominal,182.0580,0.120826,40.5043
+adjoint seed 5,heldout61,nominal,180.0391,0.117130,41.0125
+adjoint seed 5,heldout61,nominal,178.0645,0.113056,41.6344
+adjoint seed 5,heldout61,nominal,176.1327,0.108623,42.3206
+adjoint seed 5,heldout61,nominal,174.2424,0.103910,43.0020
+adjoint seed 5,heldout61,nominal,172.3923,0.099080,43.6063
+adjoint seed 5,heldout61,nominal,170.5810,0.094405,44.0782
+adjoint seed 5,heldout61,nominal,168.8073,0.090237,44.3944
+adjoint seed 5,heldout61,nominal,167.0702,0.086915,44.5658
+adjoint seed 5,heldout61,nominal,165.3685,0.084670,44.6190
+adjoint seed 5,heldout61,nominal,163.7011,0.083563,44.5638
+adjoint seed 5,heldout61,nominal,162.0669,0.083454,44.3750
+adjoint seed 5,heldout61,nominal,160.4651,0.084002,44.0088
+adjoint seed 5,heldout61,nominal,158.8946,0.084742,43.4476
+adjoint seed 5,heldout61,nominal,157.3546,0.085207,42.7298
+adjoint seed 5,heldout61,nominal,155.8442,0.085043,41.9324
+adjoint seed 5,heldout61,nominal,154.3624,0.084081,41.1293
+adjoint seed 5,heldout61,nominal,152.9086,0.082364,40.3610
+adjoint seed 5,heldout61,nominal,151.4819,0.080148,39.6321
+adjoint seed 5,heldout61,nominal,150.0816,0.077837,38.9286
+adjoint seed 5,heldout61,nominal,148.7069,0.075845,38.2447
+adjoint seed 5,heldout61,nominal,147.3572,0.074464,37.5970
+adjoint seed 5,heldout61,nominal,146.0317,0.073806,37.0169
+adjoint seed 5,heldout61,nominal,144.7299,0.073802,36.5301
+adjoint seed 5,heldout61,nominal,143.4511,0.074215,36.1399
+adjoint seed 5,heldout61,nominal,142.1947,0.074716,35.8264
+adjoint seed 5,heldout61,nominal,140.9602,0.075041,35.5598
+adjoint seed 5,heldout61,nominal,139.7468,0.075106,35.3184
+adjoint seed 5,heldout61,nominal,138.5542,0.075011,35.0993
+adjoint seed 5,heldout61,nominal,137.3818,0.075013,34.9132
+adjoint seed 5,heldout61,nominal,136.2290,0.075515,34.7691
+adjoint seed 5,heldout61,nominal,135.0954,0.076979,34.6618
+adjoint seed 5,heldout61,nominal,133.9806,0.079749,34.5709
+adjoint seed 5,heldout61,nominal,132.8840,0.083928,34.4714
+adjoint seed 5,heldout61,nominal,131.8052,0.089358,34.3505
+adjoint seed 5,heldout61,nominal,130.7437,0.095600,34.2147
+adjoint seed 5,heldout61,nominal,129.6992,0.101922,34.0809
+adjoint seed 5,heldout61,nominal,128.6713,0.107436,33.9585
+adjoint seed 5,heldout61,nominal,127.6596,0.111428,33.8381
+adjoint seed 5,heldout61,nominal,126.6636,0.113649,33.6932
+adjoint seed 5,heldout61,nominal,125.6831,0.114356,33.4970
+adjoint seed 5,heldout61,nominal,124.7176,0.114146,33.2378
+adjoint seed 5,heldout61,nominal,123.7668,0.113726,32.9224
+adjoint seed 5,heldout61,nominal,122.8304,0.113654,32.5648
+adjoint seed 5,heldout61,nominal,121.9081,0.114130,32.1723
+adjoint seed 5,heldout61,nominal,120.9996,0.114991,31.7423
+adjoint seed 5,heldout61,nominal,120.1044,0.115888,31.2697
+adjoint seed 5,heldout61,nominal,119.2225,0.116423,30.7583
+adjoint seed 5,heldout61,nominal,118.3533,0.116194,30.2249
+adjoint seed 5,heldout61,nominal,117.4968,0.114923,29.6931
+adjoint seed 5,heldout61,nominal,116.6526,0.112623,29.1818
+adjoint seed 5,heldout61,nominal,115.8204,0.109569,28.6983
+adjoint seed 5,heldout61,nominal,115.0000,0.106113,28.2391
+adjoint seed 5,heldout61,dilated,200.0000,0.158473,29.0209
+adjoint seed 5,heldout61,dilated,197.5662,0.153678,30.2438
+adjoint seed 5,heldout61,dilated,195.1909,0.148919,31.9150
+adjoint seed 5,heldout61,dilated,192.8721,0.144339,34.2600
+adjoint seed 5,heldout61,dilated,190.6077,0.140042,37.7555
+adjoint seed 5,heldout61,dilated,188.3959,0.136069,43.5374
+adjoint seed 5,heldout61,dilated,186.2348,0.132451,47.2267
+adjoint seed 5,heldout61,dilated,184.1227,0.129167,40.2182
+adjoint seed 5,heldout61,dilated,182.0580,0.126116,35.7664
+adjoint seed 5,heldout61,dilated,180.0391,0.123177,32.9238
+adjoint seed 5,heldout61,dilated,178.0645,0.120266,30.9631
+adjoint seed 5,heldout61,dilated,176.1327,0.117285,29.5776
+adjoint seed 5,heldout61,dilated,174.2424,0.114156,28.6138
+adjoint seed 5,heldout61,dilated,172.3923,0.110934,27.9819
+adjoint seed 5,heldout61,dilated,170.5810,0.107788,27.6227
+adjoint seed 5,heldout61,dilated,168.8073,0.104856,27.4959
+adjoint seed 5,heldout61,dilated,167.0702,0.102249,27.5784
+adjoint seed 5,heldout61,dilated,165.3685,0.100091,27.8645
+adjoint seed 5,heldout61,dilated,163.7011,0.098422,28.3666
+adjoint seed 5,heldout61,dilated,162.0669,0.097081,29.1140
+adjoint seed 5,heldout61,dilated,160.4651,0.095817,30.1532
+adjoint seed 5,heldout61,dilated,158.8946,0.094434,31.5526
+adjoint seed 5,heldout61,dilated,157.3546,0.092804,33.4145
+adjoint seed 5,heldout61,dilated,155.8442,0.090874,35.8884
+adjoint seed 5,heldout61,dilated,154.3624,0.088765,39.0524
+adjoint seed 5,heldout61,dilated,152.9086,0.086791,41.6504
+adjoint seed 5,heldout61,dilated,151.4819,0.085369,40.1020
+adjoint seed 5,heldout61,dilated,150.0816,0.084922,36.6834
+adjoint seed 5,heldout61,dilated,148.7069,0.085770,33.8352
+adjoint seed 5,heldout61,dilated,147.3572,0.088000,31.6840
+adjoint seed 5,heldout61,dilated,146.0317,0.091444,30.0658
+adjoint seed 5,heldout61,dilated,144.7299,0.095779,28.8494
+adjoint seed 5,heldout61,dilated,143.4511,0.100534,27.9433
+adjoint seed 5,heldout61,dilated,142.1947,0.105106,27.2839
+adjoint seed 5,heldout61,dilated,140.9602,0.108892,26.8287
+adjoint seed 5,heldout61,dilated,139.7468,0.111385,26.5523
+adjoint seed 5,heldout61,dilated,138.5542,0.112096,26.4398
+adjoint seed 5,heldout61,dilated,137.3818,0.110686,26.4814
+adjoint seed 5,heldout61,dilated,136.2290,0.107392,26.6672
+adjoint seed 5,heldout61,dilated,135.0954,0.103148,26.9875
+adjoint seed 5,heldout61,dilated,133.9806,0.099098,27.4347
+adjoint seed 5,heldout61,dilated,132.8840,0.096056,28.0088
+adjoint seed 5,heldout61,dilated,131.8052,0.094344,28.7203
+adjoint seed 5,heldout61,dilated,130.7437,0.093860,29.5907
+adjoint seed 5,heldout61,dilated,129.6992,0.094213,30.6481
+adjoint seed 5,heldout61,dilated,128.6713,0.095018,31.9206
+adjoint seed 5,heldout61,dilated,127.6596,0.096138,33.4296
+adjoint seed 5,heldout61,dilated,126.6636,0.097650,35.1876
+adjoint seed 5,heldout61,dilated,125.6831,0.099693,37.2017
+adjoint seed 5,heldout61,dilated,124.7176,0.102374,39.4837
+adjoint seed 5,heldout61,dilated,123.7668,0.105658,42.0514
+adjoint seed 5,heldout61,dilated,122.8304,0.109214,44.8946
+adjoint seed 5,heldout61,dilated,121.9081,0.112359,47.8511
+adjoint seed 5,heldout61,dilated,120.9996,0.114170,50.3462
+adjoint seed 5,heldout61,dilated,120.1044,0.113725,51.2658
+adjoint seed 5,heldout61,dilated,119.2225,0.110428,49.9216
+adjoint seed 5,heldout61,dilated,118.3533,0.104296,47.1076
+adjoint seed 5,heldout61,dilated,117.4968,0.096061,43.9403
+adjoint seed 5,heldout61,dilated,116.6526,0.087008,40.9437
+adjoint seed 5,heldout61,dilated,115.8204,0.078625,38.2474
+adjoint seed 5,heldout61,dilated,115.0000,0.072213,35.8501
+adjoint seed 5,scale2,eroded,400.0000,0.168787,23.9669
+adjoint seed 5,scale2,eroded,379.9410,0.137925,29.6291
+adjoint seed 5,scale2,eroded,361.7978,0.121495,38.1963
+adjoint seed 5,scale2,eroded,345.3083,0.108966,28.7163
+adjoint seed 5,scale2,eroded,330.2564,0.099628,25.5498
+adjoint seed 5,scale2,eroded,316.4619,0.096930,25.5728
+adjoint seed 5,scale2,eroded,303.7736,0.092376,28.4805
+adjoint seed 5,scale2,eroded,292.0635,0.081541,37.1023
+adjoint seed 5,scale2,eroded,281.2227,0.077513,40.0553
+adjoint seed 5,scale2,eroded,271.1579,0.067587,32.3329
+adjoint seed 5,scale2,eroded,261.7886,0.060624,32.6248
+adjoint seed 5,scale2,eroded,253.0452,0.068126,42.2703
+adjoint seed 5,scale2,eroded,244.8669,0.104601,34.6446
+adjoint seed 5,scale2,eroded,237.2007,0.160666,26.4521
+adjoint seed 5,scale2,eroded,230.0000,0.158165,23.2352
+adjoint seed 5,scale2,nominal,400.0000,0.146231,39.7014
+adjoint seed 5,scale2,nominal,379.9410,0.132217,38.5120
+adjoint seed 5,scale2,nominal,361.7978,0.119418,40.8772
+adjoint seed 5,scale2,nominal,345.3083,0.101269,49.8474
+adjoint seed 5,scale2,nominal,330.2564,0.086036,60.3256
+adjoint seed 5,scale2,nominal,316.4619,0.085805,53.2340
+adjoint seed 5,scale2,nominal,303.7736,0.081585,57.3008
+adjoint seed 5,scale2,nominal,292.0635,0.074061,44.6416
+adjoint seed 5,scale2,nominal,281.2227,0.074709,39.5408
+adjoint seed 5,scale2,nominal,271.1579,0.074108,36.8398
+adjoint seed 5,scale2,nominal,261.7886,0.086105,35.2071
+adjoint seed 5,scale2,nominal,253.0452,0.103643,34.0330
+adjoint seed 5,scale2,nominal,244.8669,0.112304,32.5063
+adjoint seed 5,scale2,nominal,237.2007,0.124036,30.5105
+adjoint seed 5,scale2,nominal,230.0000,0.118360,28.5497
+adjoint seed 5,scale2,dilated,400.0000,0.158998,28.6107
+adjoint seed 5,scale2,dilated,379.9410,0.139498,38.6226
+adjoint seed 5,scale2,dilated,361.7978,0.125878,33.8694
+adjoint seed 5,scale2,dilated,345.3083,0.113916,27.5599
+adjoint seed 5,scale2,dilated,330.2564,0.102542,27.1326
+adjoint seed 5,scale2,dilated,316.4619,0.095642,30.8467
+adjoint seed 5,scale2,dilated,303.7736,0.086421,49.7734
+adjoint seed 5,scale2,dilated,292.0635,0.089992,31.9811
+adjoint seed 5,scale2,dilated,281.2227,0.105911,27.6241
+adjoint seed 5,scale2,dilated,271.1579,0.099018,27.3739
+adjoint seed 5,scale2,dilated,261.7886,0.089163,29.7908
+adjoint seed 5,scale2,dilated,253.0452,0.099806,35.6848
+adjoint seed 5,scale2,dilated,244.8669,0.120663,46.3775
+adjoint seed 5,scale2,dilated,237.2007,0.120818,51.6012
+adjoint seed 5,scale2,dilated,230.0000,0.076876,37.7569
+cma seed 5,train15,eroded,200.0000,0.578043,25.6706
+cma seed 5,train15,eroded,189.9705,0.482452,25.4608
+cma seed 5,train15,eroded,180.8989,0.419944,24.1562
+cma seed 5,train15,eroded,172.6542,0.334593,25.2969
+cma seed 5,train15,eroded,165.1282,0.278107,30.1339
+cma seed 5,train15,eroded,158.2310,0.237640,43.8916
+cma seed 5,train15,eroded,151.8868,0.197935,30.7145
+cma seed 5,train15,eroded,146.0317,0.183829,26.0587
+cma seed 5,train15,eroded,140.6114,0.177237,23.8323
+cma seed 5,train15,eroded,135.5789,0.175689,22.4536
+cma seed 5,train15,eroded,130.8943,0.188294,21.7653
+cma seed 5,train15,eroded,126.5226,0.203399,22.2598
+cma seed 5,train15,eroded,122.4335,0.224929,24.2913
+cma seed 5,train15,eroded,118.6004,0.282100,26.0647
+cma seed 5,train15,eroded,115.0000,0.368348,23.4955
+cma seed 5,train15,nominal,200.0000,0.430457,25.8757
+cma seed 5,train15,nominal,189.9705,0.363848,28.8278
+cma seed 5,train15,nominal,180.8989,0.317356,28.7910
+cma seed 5,train15,nominal,172.6542,0.260932,28.7301
+cma seed 5,train15,nominal,165.1282,0.227418,30.3640
+cma seed 5,train15,nominal,158.2310,0.199583,31.6718
+cma seed 5,train15,nominal,151.8868,0.173717,28.6451
+cma seed 5,train15,nominal,146.0317,0.169436,25.4221
+cma seed 5,train15,nominal,140.6114,0.173685,23.7479
+cma seed 5,train15,nominal,135.5789,0.183933,23.4242
+cma seed 5,train15,nominal,130.8943,0.215057,24.2468
+cma seed 5,train15,nominal,126.5226,0.261848,26.0903
+cma seed 5,train15,nominal,122.4335,0.316925,28.8131
+cma seed 5,train15,nominal,118.6004,0.374272,31.4405
+cma seed 5,train15,nominal,115.0000,0.383811,30.8215
+cma seed 5,train15,dilated,200.0000,0.365689,23.7499
+cma seed 5,train15,dilated,189.9705,0.311429,30.0223
+cma seed 5,train15,dilated,180.8989,0.276350,30.0550
+cma seed 5,train15,dilated,172.6542,0.242403,25.5233
+cma seed 5,train15,dilated,165.1282,0.222604,24.2995
+cma seed 5,train15,dilated,158.2310,0.198244,25.0906
+cma seed 5,train15,dilated,151.8868,0.174927,25.9470
+cma seed 5,train15,dilated,146.0317,0.177277,24.8819
+cma seed 5,train15,dilated,140.6114,0.197995,23.7508
+cma seed 5,train15,dilated,135.5789,0.229927,24.2096
+cma seed 5,train15,dilated,130.8943,0.277822,26.9068
+cma seed 5,train15,dilated,126.5226,0.311661,32.3871
+cma seed 5,train15,dilated,122.4335,0.300143,36.6842
+cma seed 5,train15,dilated,118.6004,0.252230,38.0150
+cma seed 5,train15,dilated,115.0000,0.187231,39.6032
+cma seed 5,heldout61,eroded,200.0000,0.578043,25.6706
+cma seed 5,heldout61,eroded,197.5662,0.547918,26.1926
+cma seed 5,heldout61,eroded,195.1909,0.522939,26.2827
+cma seed 5,heldout61,eroded,192.8721,0.502827,26.0316
+cma seed 5,heldout61,eroded,190.6077,0.486582,25.5974
+cma seed 5,heldout61,eroded,188.3959,0.472735,25.1223
+cma seed 5,heldout61,eroded,186.2348,0.459644,24.7010
+cma seed 5,heldout61,eroded,184.1227,0.445765,24.3858
+cma seed 5,heldout61,eroded,182.0580,0.429984,24.2005
+cma seed 5,heldout61,eroded,180.0391,0.411956,24.1527
+cma seed 5,heldout61,eroded,178.0645,0.392133,24.2431
+cma seed 5,heldout61,eroded,176.1327,0.371451,24.4724
+cma seed 5,heldout61,eroded,174.2424,0.351026,24.8475
+cma seed 5,heldout61,eroded,172.3923,0.332000,25.3843
+cma seed 5,heldout61,eroded,170.5810,0.315270,26.1094
+cma seed 5,heldout61,eroded,168.8073,0.301166,27.0606
+cma seed 5,heldout61,eroded,167.0702,0.289426,28.2899
+cma seed 5,heldout61,eroded,165.3685,0.279435,29.8727
+cma seed 5,heldout61,eroded,163.7011,0.270410,31.9311
+cma seed 5,heldout61,eroded,162.0669,0.261518,34.6836
+cma seed 5,heldout61,eroded,160.4651,0.252143,38.5130
+cma seed 5,heldout61,eroded,158.8946,0.242103,43.1724
+cma seed 5,heldout61,eroded,157.3546,0.231615,42.2071
+cma seed 5,heldout61,eroded,155.8442,0.221164,37.7153
+cma seed 5,heldout61,eroded,154.3624,0.211406,34.3987
+cma seed 5,heldout61,eroded,152.9086,0.202960,32.0297
+cma seed 5,heldout61,eroded,151.4819,0.196174,30.2537
+cma seed 5,heldout61,eroded,150.0816,0.191123,28.8676
+cma seed 5,heldout61,eroded,148.7069,0.187672,27.7514
+cma seed 5,heldout61,eroded,147.3572,0.185427,26.8309
+cma seed 5,heldout61,eroded,146.0317,0.183829,26.0587
+cma seed 5,heldout61,eroded,144.7299,0.182441,25.4040
+cma seed 5,heldout61,eroded,143.4511,0.181037,24.8452
+cma seed 5,heldout61,eroded,142.1947,0.179467,24.3641
+cma seed 5,heldout61,eroded,140.9602,0.177728,23.9436
+cma seed 5,heldout61,eroded,139.7468,0.176119,23.5678
+cma seed 5,heldout61,eroded,138.5542,0.175019,23.2239
+cma seed 5,heldout61,eroded,137.3818,0.174612,22.9046
+cma seed 5,heldout61,eroded,136.2290,0.175020,22.6094
+cma seed 5,heldout61,eroded,135.0954,0.176413,22.3442
+cma seed 5,heldout61,eroded,133.9806,0.178752,22.1185
+cma seed 5,heldout61,eroded,132.8840,0.181732,21.9415
+cma seed 5,heldout61,eroded,131.8052,0.185123,21.8206
+cma seed 5,heldout61,eroded,130.7437,0.188838,21.7606
+cma seed 5,heldout61,eroded,129.6992,0.192646,21.7649
+cma seed 5,heldout61,eroded,128.6713,0.196248,21.8378
+cma seed 5,heldout61,eroded,127.6596,0.199614,21.9864
+cma seed 5,heldout61,eroded,126.6636,0.202922,22.2192
+cma seed 5,heldout61,eroded,125.6831,0.206330,22.5432
+cma seed 5,heldout61,eroded,124.7176,0.210146,22.9602
+cma seed 5,heldout61,eroded,123.7668,0.214992,23.4631
+cma seed 5,heldout61,eroded,122.8304,0.221515,24.0336
+cma seed 5,heldout61,eroded,121.9081,0.230105,24.6393
+cma seed 5,heldout61,eroded,120.9996,0.240972,25.2294
+cma seed 5,heldout61,eroded,120.1044,0.254227,25.7268
+cma seed 5,heldout61,eroded,119.2225,0.269776,26.0280
+cma seed 5,heldout61,eroded,118.3533,0.287269,26.0310
+cma seed 5,heldout61,eroded,117.4968,0.306240,25.6958
+cma seed 5,heldout61,eroded,116.6526,0.326274,25.0818
+cma seed 5,heldout61,eroded,115.8204,0.347066,24.3099
+cma seed 5,heldout61,eroded,115.0000,0.368348,23.4955
+cma seed 5,heldout61,nominal,200.0000,0.430457,25.8757
+cma seed 5,heldout61,nominal,197.5662,0.409542,26.7589
+cma seed 5,heldout61,nominal,195.1909,0.392274,27.5693
+cma seed 5,heldout61,nominal,192.8721,0.378300,28.2464
+cma seed 5,heldout61,nominal,190.6077,0.366818,28.7303
+cma seed 5,heldout61,nominal,188.3959,0.356749,28.9923
+cma seed 5,heldout61,nominal,186.2348,0.346938,29.0570
+cma seed 5,heldout61,nominal,184.1227,0.336416,28.9906
+cma seed 5,heldout61,nominal,182.0580,0.324651,28.8661
+cma seed 5,heldout61,nominal,180.0391,0.311662,28.7385
+cma seed 5,heldout61,nominal,178.0645,0.297923,28.6420
+cma seed 5,heldout61,nominal,176.1327,0.284141,28.5990
+cma seed 5,heldout61,nominal,174.2424,0.271068,28.6297
+cma seed 5,heldout61,nominal,172.3923,0.259362,28.7543
+cma seed 5,heldout61,nominal,170.5810,0.249407,28.9882
+cma seed 5,heldout61,nominal,168.8073,0.241179,29.3346
+cma seed 5,heldout61,nominal,167.0702,0.234305,29.7792
+cma seed 5,heldout61,nominal,165.3685,0.228250,30.2886
+cma seed 5,heldout61,nominal,163.7011,0.222451,30.8127
+cma seed 5,heldout61,nominal,162.0669,0.216415,31.2852
+cma seed 5,heldout61,nominal,160.4651,0.209840,31.6216
+cma seed 5,heldout61,nominal,158.8946,0.202728,31.7227
+cma seed 5,heldout61,nominal,157.3546,0.195383,31.5073
+cma seed 5,heldout61,nominal,155.8442,0.188282,30.9682
+cma seed 5,heldout61,nominal,154.3624,0.181914,30.1891
+cma seed 5,heldout61,nominal,152.9086,0.176655,29.2950
+cma seed 5,heldout61,nominal,151.4819,0.172747,28.3896
+cma seed 5,heldout61,nominal,150.0816,0.170275,27.5325
+cma seed 5,heldout61,nominal,148.7069,0.169115,26.7482
+cma seed 5,heldout61,nominal,147.3572,0.168947,26.0438
+cma seed 5,heldout61,nominal,146.0317,0.169436,25.4221
+cma seed 5,heldout61,nominal,144.7299,0.170335,24.8866
+cma seed 5,heldout61,nominal,143.4511,0.171404,24.4407
+cma seed 5,heldout61,nominal,142.1947,0.172419,24.0841
+cma seed 5,heldout61,nominal,140.9602,0.173385,23.8115
+cma seed 5,heldout61,nominal,139.7468,0.174552,23.6141
+cma seed 5,heldout61,nominal,138.5542,0.176169,23.4830
+cma seed 5,heldout61,nominal,137.3818,0.178419,23.4125
+cma seed 5,heldout61,nominal,136.2290,0.181584,23.4022
+cma seed 5,heldout61,nominal,135.0954,0.185982,23.4546
+cma seed 5,heldout61,nominal,133.9806,0.191721,23.5722
+cma seed 5,heldout61,nominal,132.8840,0.198739,23.7540
+cma seed 5,heldout61,nominal,131.8052,0.207015,23.9959
+cma seed 5,heldout61,nominal,130.7437,0.216470,24.2923
+cma seed 5,heldout61,nominal,129.6992,0.226789,24.6399
+cma seed 5,heldout61,nominal,128.6713,0.237600,25.0398
+cma seed 5,heldout61,nominal,127.6596,0.248739,25.4960
+cma seed 5,heldout61,nominal,126.6636,0.260188,26.0118
+cma seed 5,heldout61,nominal,125.6831,0.271953,26.5847
+cma seed 5,heldout61,nominal,124.7176,0.284172,27.2044
+cma seed 5,heldout61,nominal,123.7668,0.297096,27.8558
+cma seed 5,heldout61,nominal,122.8304,0.310832,28.5242
+cma seed 5,heldout61,nominal,121.9081,0.325172,29.1992
+cma seed 5,heldout61,nominal,120.9996,0.339677,29.8719
+cma seed 5,heldout61,nominal,120.1044,0.353730,30.5227
+cma seed 5,heldout61,nominal,119.2225,0.366491,31.1062
+cma seed 5,heldout61,nominal,118.3533,0.376983,31.5466
+cma seed 5,heldout61,nominal,117.4968,0.384329,31.7597
+cma seed 5,heldout61,nominal,116.6526,0.387964,31.6958
+cma seed 5,heldout61,nominal,115.8204,0.387716,31.3651
+cma seed 5,heldout61,nominal,115.0000,0.383811,30.8215
+cma seed 5,heldout61,dilated,200.0000,0.365689,23.7499
+cma seed 5,heldout61,dilated,197.5662,0.348963,24.9093
+cma seed 5,heldout61,dilated,195.1909,0.334961,26.2671
+cma seed 5,heldout61,dilated,192.8721,0.323447,27.8302
+cma seed 5,heldout61,dilated,190.6077,0.313898,29.5361
+cma seed 5,heldout61,dilated,188.3959,0.305568,31.1364
+cma seed 5,heldout61,dilated,186.2348,0.297693,32.0876
+cma seed 5,heldout61,dilated,184.1227,0.289695,31.9073
+cma seed 5,heldout61,dilated,182.0580,0.281306,30.8330
+cma seed 5,heldout61,dilated,180.0391,0.272595,29.4607
+cma seed 5,heldout61,dilated,178.0645,0.263894,28.1514
+cma seed 5,heldout61,dilated,176.1327,0.255609,27.0323
+cma seed 5,heldout61,dilated,174.2424,0.248077,26.1301
+cma seed 5,heldout61,dilated,172.3923,0.241535,25.4363
+cma seed 5,heldout61,dilated,170.5810,0.236068,24.9301
+cma seed 5,heldout61,dilated,168.8073,0.231481,24.5869
+cma seed 5,heldout61,dilated,167.0702,0.227343,24.3835
+cma seed 5,heldout61,dilated,165.3685,0.223214,24.3019
+cma seed 5,heldout61,dilated,163.7011,0.218746,24.3303
+cma seed 5,heldout61,dilated,162.0669,0.213642,24.4593
+cma seed 5,heldout61,dilated,160.4651,0.207734,24.6762
+cma seed 5,heldout61,dilated,158.8946,0.201162,24.9582
+cma seed 5,heldout61,dilated,157.3546,0.194361,25.2695
+cma seed 5,heldout61,dilated,155.8442,0.187842,25.5643
+cma seed 5,heldout61,dilated,154.3624,0.182048,25.7961
+cma seed 5,heldout61,dilated,152.9086,0.177377,25.9276
+cma seed 5,heldout61,dilated,151.4819,0.174180,25.9363
+cma seed 5,heldout61,dilated,150.0816,0.172660,25.8157
+cma seed 5,heldout61,dilated,148.7069,0.172796,25.5770
+cma seed 5,heldout61,dilated,147.3572,0.174407,25.2507
+cma seed 5,heldout61,dilated,146.0317,0.177277,24.8819
+cma seed 5,heldout61,dilated,144.7299,0.181176,24.5191
+cma seed 5,heldout61,dilated,143.4511,0.185804,24.2012
+cma seed 5,heldout61,dilated,142.1947,0.190878,23.9522
+cma seed 5,heldout61,dilated,140.9602,0.196342,23.7835
+cma seed 5,heldout61,dilated,139.7468,0.202342,23.7003
+cma seed 5,heldout61,dilated,138.5542,0.208996,23.7079
+cma seed 5,heldout61,dilated,137.3818,0.216380,23.8149
+cma seed 5,heldout61,dilated,136.2290,0.224683,24.0320
+cma seed 5,heldout61,dilated,135.0954,0.234108,24.3695
+cma seed 5,heldout61,dilated,133.9806,0.244613,24.8347
+cma seed 5,heldout61,dilated,132.8840,0.255935,25.4317
+cma seed 5,heldout61,dilated,131.8052,0.267729,26.1648
+cma seed 5,heldout61,dilated,130.7437,0.279467,27.0412
+cma seed 5,heldout61,dilated,129.6992,0.290360,28.0730
+cma seed 5,heldout61,dilated,128.6713,0.299623,29.2733
+cma seed 5,heldout61,dilated,127.6596,0.306706,30.6458
+cma seed 5,heldout61,dilated,126.6636,0.311237,32.1629
+cma seed 5,heldout61,dilated,125.6831,0.313011,33.7302
+cma seed 5,heldout61,dilated,124.7176,0.312091,35.1504
+cma seed 5,heldout61,dilated,123.7668,0.308725,36.1604
+cma seed 5,heldout61,dilated,122.8304,0.303153,36.6239
+cma seed 5,heldout61,dilated,121.9081,0.295590,36.6916
+cma seed 5,heldout61,dilated,120.9996,0.286228,36.6721
+cma seed 5,heldout61,dilated,120.1044,0.275142,36.8338
+cma seed 5,heldout61,dilated,119.2225,0.262344,37.3559
+cma seed 5,heldout61,dilated,118.3533,0.247986,38.3521
+cma seed 5,heldout61,dilated,117.4968,0.232448,39.8420
+cma seed 5,heldout61,dilated,116.6526,0.216398,41.4490
+cma seed 5,heldout61,dilated,115.8204,0.200884,41.6983
+cma seed 5,heldout61,dilated,115.0000,0.187231,39.6032
+cma seed 5,scale2,eroded,400.0000,0.585999,22.8686
+cma seed 5,scale2,eroded,379.9410,0.494323,22.3586
+cma seed 5,scale2,eroded,361.7978,0.434262,21.6795
+cma seed 5,scale2,eroded,345.3083,0.348582,22.7147
+cma seed 5,scale2,eroded,330.2564,0.288879,26.3324
+cma seed 5,scale2,eroded,316.4619,0.244208,34.3951
+cma seed 5,scale2,eroded,303.7736,0.202730,30.1369
+cma seed 5,scale2,eroded,292.0635,0.192022,24.3999
+cma seed 5,scale2,eroded,281.2227,0.191900,21.5446
+cma seed 5,scale2,eroded,271.1579,0.194236,20.1180
+cma seed 5,scale2,eroded,261.7886,0.204100,19.7529
+cma seed 5,scale2,eroded,253.0452,0.210321,20.5563
+cma seed 5,scale2,eroded,244.8669,0.220527,22.6372
+cma seed 5,scale2,eroded,237.2007,0.266060,24.5370
+cma seed 5,scale2,eroded,230.0000,0.341351,22.8600
+cma seed 5,scale2,nominal,400.0000,0.441762,22.9582
+cma seed 5,scale2,nominal,379.9410,0.377190,24.0302
+cma seed 5,scale2,nominal,361.7978,0.329897,24.6594
+cma seed 5,scale2,nominal,345.3083,0.269775,26.2519
+cma seed 5,scale2,nominal,330.2564,0.232488,30.1277
+cma seed 5,scale2,nominal,316.4619,0.203498,33.0299
+cma seed 5,scale2,nominal,303.7736,0.180164,27.1643
+cma seed 5,scale2,nominal,292.0635,0.180686,23.3145
+cma seed 5,scale2,nominal,281.2227,0.187570,21.6041
+cma seed 5,scale2,nominal,271.1579,0.195549,21.3729
+cma seed 5,scale2,nominal,261.7886,0.219258,22.3258
+cma seed 5,scale2,nominal,253.0452,0.256328,24.2229
+cma seed 5,scale2,nominal,244.8669,0.302866,26.6663
+cma seed 5,scale2,nominal,237.2007,0.354412,28.5951
+cma seed 5,scale2,nominal,230.0000,0.362996,28.5603
+cma seed 5,scale2,dilated,400.0000,0.378350,21.8373
+cma seed 5,scale2,dilated,379.9410,0.323418,25.2758
+cma seed 5,scale2,dilated,361.7978,0.284966,27.0620
+cma seed 5,scale2,dilated,345.3083,0.246824,25.6453
+cma seed 5,scale2,dilated,330.2564,0.225543,24.9320
+cma seed 5,scale2,dilated,316.4619,0.203030,25.2003
+cma seed 5,scale2,dilated,303.7736,0.183661,24.6165
+cma seed 5,scale2,dilated,292.0635,0.189383,22.9309
+cma seed 5,scale2,dilated,281.2227,0.209227,21.9253
+cma seed 5,scale2,dilated,271.1579,0.236072,22.4267
+cma seed 5,scale2,dilated,261.7886,0.276609,24.8008
+cma seed 5,scale2,dilated,253.0452,0.306346,29.1304
+cma seed 5,scale2,dilated,244.8669,0.296674,33.0774
+cma seed 5,scale2,dilated,237.2007,0.251717,35.5045
+cma seed 5,scale2,dilated,230.0000,0.185938,41.6204
+ppo seed 1,train15,eroded,200.0000,0.326105,28.1338
+ppo seed 1,train15,eroded,189.9705,0.259639,26.7641
+ppo seed 1,train15,eroded,180.8989,0.218765,26.0361
+ppo seed 1,train15,eroded,172.6542,0.168873,27.3271
+ppo seed 1,train15,eroded,165.1282,0.130572,31.4445
+ppo seed 1,train15,eroded,158.2310,0.108347,37.7673
+ppo seed 1,train15,eroded,151.8868,0.087274,34.0893
+ppo seed 1,train15,eroded,146.0317,0.074328,31.8975
+ppo seed 1,train15,eroded,140.6114,0.066997,33.1821
+ppo seed 1,train15,eroded,135.5789,0.057397,34.6443
+ppo seed 1,train15,eroded,130.8943,0.055358,30.5594
+ppo seed 1,train15,eroded,126.5226,0.059026,27.3234
+ppo seed 1,train15,eroded,122.4335,0.060946,26.2927
+ppo seed 1,train15,eroded,118.6004,0.063573,27.4155
+ppo seed 1,train15,eroded,115.0000,0.064721,31.1407
+ppo seed 1,train15,nominal,200.0000,0.231701,27.3508
+ppo seed 1,train15,nominal,189.9705,0.185536,28.9255
+ppo seed 1,train15,nominal,180.8989,0.154659,31.5315
+ppo seed 1,train15,nominal,172.6542,0.122248,34.8159
+ppo seed 1,train15,nominal,165.1282,0.098763,37.6124
+ppo seed 1,train15,nominal,158.2310,0.085096,37.0141
+ppo seed 1,train15,nominal,151.8868,0.070972,34.9504
+ppo seed 1,train15,nominal,146.0317,0.060975,33.7041
+ppo seed 1,train15,nominal,140.6114,0.057824,33.1319
+ppo seed 1,train15,nominal,135.5789,0.054124,32.3347
+ppo seed 1,train15,nominal,130.8943,0.056228,30.9589
+ppo seed 1,train15,nominal,126.5226,0.061418,29.7712
+ppo seed 1,train15,nominal,122.4335,0.065219,29.3910
+ppo seed 1,train15,nominal,118.6004,0.072573,30.7639
+ppo seed 1,train15,nominal,115.0000,0.081923,34.8563
+ppo seed 1,train15,dilated,200.0000,0.199361,22.7454
+ppo seed 1,train15,dilated,189.9705,0.164974,23.8212
+ppo seed 1,train15,dilated,180.8989,0.133882,27.8808
+ppo seed 1,train15,dilated,172.6542,0.107407,37.8699
+ppo seed 1,train15,dilated,165.1282,0.093569,30.7102
+ppo seed 1,train15,dilated,158.2310,0.090562,25.9148
+ppo seed 1,train15,dilated,151.8868,0.081958,24.9499
+ppo seed 1,train15,dilated,146.0317,0.069134,26.8058
+ppo seed 1,train15,dilated,140.6114,0.063446,31.7513
+ppo seed 1,train15,dilated,135.5789,0.064750,31.9414
+ppo seed 1,train15,dilated,130.8943,0.076560,27.0783
+ppo seed 1,train15,dilated,126.5226,0.087262,25.3153
+ppo seed 1,train15,dilated,122.4335,0.091173,26.3421
+ppo seed 1,train15,dilated,118.6004,0.098853,31.1472
+ppo seed 1,train15,dilated,115.0000,0.115633,33.8781
+ppo seed 1,heldout61,eroded,200.0000,0.326105,28.1338
+ppo seed 1,heldout61,eroded,197.5662,0.306233,27.9921
+ppo seed 1,heldout61,eroded,195.1909,0.289035,27.6730
+ppo seed 1,heldout61,eroded,192.8721,0.274618,27.2734
+ppo seed 1,heldout61,eroded,190.6077,0.262685,26.8714
+ppo seed 1,heldout61,eroded,188.3959,0.252524,26.5200
+ppo seed 1,heldout61,eroded,186.2348,0.243267,26.2514
+ppo seed 1,heldout61,eroded,184.1227,0.234158,26.0830
+ppo seed 1,heldout61,eroded,182.0580,0.224599,26.0220
+ppo seed 1,heldout61,eroded,180.0391,0.214182,26.0699
+ppo seed 1,heldout61,eroded,178.0645,0.202852,26.2269
+ppo seed 1,heldout61,eroded,176.1327,0.190931,26.4959
+ppo seed 1,heldout61,eroded,174.2424,0.178906,26.8857
+ppo seed 1,heldout61,eroded,172.3923,0.167247,27.4112
+ppo seed 1,heldout61,eroded,170.5810,0.156401,28.0918
+ppo seed 1,heldout61,eroded,168.8073,0.146756,28.9474
+ppo seed 1,heldout61,eroded,167.0702,0.138483,29.9958
+ppo seed 1,heldout61,eroded,165.3685,0.131482,31.2486
+ppo seed 1,heldout61,eroded,163.7011,0.125500,32.7068
+ppo seed 1,heldout61,eroded,162.0669,0.120221,34.3415
+ppo seed 1,heldout61,eroded,160.4651,0.115305,36.0291
+ppo seed 1,heldout61,eroded,158.8946,0.110453,37.4148
+ppo seed 1,heldout61,eroded,157.3546,0.105499,37.9108
+ppo seed 1,heldout61,eroded,155.8442,0.100432,37.3053
+ppo seed 1,heldout61,eroded,154.3624,0.095369,36.1071
+ppo seed 1,heldout61,eroded,152.9086,0.090508,34.8634
+ppo seed 1,heldout61,eroded,151.4819,0.086051,33.8145
+ppo seed 1,heldout61,eroded,150.0816,0.082147,33.0126
+ppo seed 1,heldout61,eroded,148.7069,0.078897,32.4424
+ppo seed 1,heldout61,eroded,147.3572,0.076328,32.0766
+ppo seed 1,heldout61,eroded,146.0317,0.074328,31.8975
+ppo seed 1,heldout61,eroded,144.7299,0.072666,31.9013
+ppo seed 1,heldout61,eroded,143.4511,0.071103,32.0922
+ppo seed 1,heldout61,eroded,142.1947,0.069456,32.4685
+ppo seed 1,heldout61,eroded,140.9602,0.067585,33.0063
+ppo seed 1,heldout61,eroded,139.7468,0.065429,33.6431
+ppo seed 1,heldout61,eroded,138.5542,0.063064,34.2643
+ppo seed 1,heldout61,eroded,137.3818,0.060676,34.7061
+ppo seed 1,heldout61,eroded,136.2290,0.058484,34.7955
+ppo seed 1,heldout61,eroded,135.0954,0.056686,34.4323
+ppo seed 1,heldout61,eroded,133.9806,0.055438,33.6552
+ppo seed 1,heldout61,eroded,132.8840,0.054834,32.6164
+ppo seed 1,heldout61,eroded,131.8052,0.054883,31.4912
+ppo seed 1,heldout61,eroded,130.7437,0.055466,30.4112
+ppo seed 1,heldout61,eroded,129.6992,0.056342,29.4485
+ppo seed 1,heldout61,eroded,128.6713,0.057288,28.6283
+ppo seed 1,heldout61,eroded,127.6596,0.058180,27.9477
+ppo seed 1,heldout61,eroded,126.6636,0.058935,27.3932
+ppo seed 1,heldout61,eroded,125.6831,0.059480,26.9527
+ppo seed 1,heldout61,eroded,124.7176,0.059869,26.6217
+ppo seed 1,heldout61,eroded,123.7668,0.060261,26.4025
+ppo seed 1,heldout61,eroded,122.8304,0.060730,26.3001
+ppo seed 1,heldout61,eroded,121.9081,0.061243,26.3172
+ppo seed 1,heldout61,eroded,120.9996,0.061823,26.4534
+ppo seed 1,heldout61,eroded,120.1044,0.062507,26.7062
+ppo seed 1,heldout61,eroded,119.2225,0.063187,27.0761
+ppo seed 1,heldout61,eroded,118.3533,0.063698,27.5699
+ppo seed 1,heldout61,eroded,117.4968,0.064026,28.2025
+ppo seed 1,heldout61,eroded,116.6526,0.064249,28.9941
+ppo seed 1,heldout61,eroded,115.8204,0.064429,29.9664
+ppo seed 1,heldout61,eroded,115.0000,0.064721,31.1407
+ppo seed 1,heldout61,nominal,200.0000,0.231701,27.3508
+ppo seed 1,heldout61,nominal,197.5662,0.218277,27.6592
+ppo seed 1,heldout61,nominal,195.1909,0.206532,27.9936
+ppo seed 1,heldout61,nominal,192.8721,0.196447,28.3664
+ppo seed 1,heldout61,nominal,190.6077,0.187800,28.7924
+ppo seed 1,heldout61,nominal,188.3959,0.180158,29.2823
+ppo seed 1,heldout61,nominal,186.2348,0.173020,29.8398
+ppo seed 1,heldout61,nominal,184.1227,0.165997,30.4593
+ppo seed 1,heldout61,nominal,182.0580,0.158852,31.1300
+ppo seed 1,heldout61,nominal,180.0391,0.151453,31.8398
+ppo seed 1,heldout61,nominal,178.0645,0.143795,32.5799
+ppo seed 1,heldout61,nominal,176.1327,0.136041,33.3457
+ppo seed 1,heldout61,nominal,174.2424,0.128448,34.1324
+ppo seed 1,heldout61,nominal,172.3923,0.121252,34.9298
+ppo seed 1,heldout61,nominal,170.5810,0.114633,35.7160
+ppo seed 1,heldout61,nominal,168.8073,0.108745,36.4536
+ppo seed 1,heldout61,nominal,167.0702,0.103662,37.0897
+ppo seed 1,heldout61,nominal,165.3685,0.099329,37.5619
+ppo seed 1,heldout61,nominal,163.7011,0.095610,37.8135
+ppo seed 1,heldout61,nominal,162.0669,0.092345,37.8179
+ppo seed 1,heldout61,nominal,160.4651,0.089344,37.5963
+ppo seed 1,heldout61,nominal,158.8946,0.086390,37.2107
+ppo seed 1,heldout61,nominal,157.3546,0.083329,36.7355
+ppo seed 1,heldout61,nominal,155.8442,0.080116,36.2306
+ppo seed 1,heldout61,nominal,154.3624,0.076768,35.7327
+ppo seed 1,heldout61,nominal,152.9086,0.073358,35.2621
+ppo seed 1,heldout61,nominal,151.4819,0.070050,34.8326
+ppo seed 1,heldout61,nominal,150.0816,0.067051,34.4564
+ppo seed 1,heldout61,nominal,148.7069,0.064500,34.1430
+ppo seed 1,heldout61,nominal,147.3572,0.062465,33.8947
+ppo seed 1,heldout61,nominal,146.0317,0.060975,33.7041
+ppo seed 1,heldout61,nominal,144.7299,0.059972,33.5551
+ppo seed 1,heldout61,nominal,143.4511,0.059272,33.4274
+ppo seed 1,heldout61,nominal,142.1947,0.058669,33.3034
+ppo seed 1,heldout61,nominal,140.9602,0.058027,33.1718
+ppo seed 1,heldout61,nominal,139.7468,0.057260,33.0271
+ppo seed 1,heldout61,nominal,138.5542,0.056330,32.8662
+ppo seed 1,heldout61,nominal,137.3818,0.055332,32.6838
+ppo seed 1,heldout61,nominal,136.2290,0.054477,32.4721
+ppo seed 1,heldout61,nominal,135.0954,0.053941,32.2229
+ppo seed 1,heldout61,nominal,133.9806,0.053833,31.9325
+ppo seed 1,heldout61,nominal,132.8840,0.054239,31.6061
+ppo seed 1,heldout61,nominal,131.8052,0.055157,31.2584
+ppo seed 1,heldout61,nominal,130.7437,0.056420,30.9099
+ppo seed 1,heldout61,nominal,129.6992,0.057800,30.5803
+ppo seed 1,heldout61,nominal,128.6713,0.059145,30.2831
+ppo seed 1,heldout61,nominal,127.6596,0.060343,30.0234
+ppo seed 1,heldout61,nominal,126.6636,0.061301,29.8001
+ppo seed 1,heldout61,nominal,125.6831,0.062060,29.6130
+ppo seed 1,heldout61,nominal,124.7176,0.062801,29.4680
+ppo seed 1,heldout61,nominal,123.7668,0.063666,29.3795
+ppo seed 1,heldout61,nominal,122.8304,0.064705,29.3676
+ppo seed 1,heldout61,nominal,121.9081,0.065985,29.4518
+ppo seed 1,heldout61,nominal,120.9996,0.067556,29.6456
+ppo seed 1,heldout61,nominal,120.1044,0.069341,29.9549
+ppo seed 1,heldout61,nominal,119.2225,0.071212,30.3825
+ppo seed 1,heldout61,nominal,118.3533,0.073125,30.9356
+ppo seed 1,heldout61,nominal,117.4968,0.075096,31.6330
+ppo seed 1,heldout61,nominal,116.6526,0.077141,32.5052
+ppo seed 1,heldout61,nominal,115.8204,0.079350,33.5815
+ppo seed 1,heldout61,nominal,115.0000,0.081923,34.8563
+ppo seed 1,heldout61,dilated,200.0000,0.199361,22.7454
+ppo seed 1,heldout61,dilated,197.5662,0.190724,22.8091
+ppo seed 1,heldout61,dilated,195.1909,0.182506,22.9745
+ppo seed 1,heldout61,dilated,192.8721,0.174639,23.2574
+ppo seed 1,heldout61,dilated,190.6077,0.167088,23.6748
+ppo seed 1,heldout61,dilated,188.3959,0.159732,24.2441
+ppo seed 1,heldout61,dilated,186.2348,0.152411,24.9843
+ppo seed 1,heldout61,dilated,184.1227,0.145102,25.9203
+ppo seed 1,heldout61,dilated,182.0580,0.137910,27.0885
+ppo seed 1,heldout61,dilated,180.0391,0.130906,28.5447
+ppo seed 1,heldout61,dilated,178.0645,0.124140,30.3709
+ppo seed 1,heldout61,dilated,176.1327,0.117746,32.6737
+ppo seed 1,heldout61,dilated,174.2424,0.111900,35.4931
+ppo seed 1,heldout61,dilated,172.3923,0.106707,38.1609
+ppo seed 1,heldout61,dilated,170.5810,0.102235,38.2190
+ppo seed 1,heldout61,dilated,168.8073,0.098581,35.7260
+ppo seed 1,heldout61,dilated,167.0702,0.095787,33.1027
+ppo seed 1,heldout61,dilated,165.3685,0.093794,30.9747
+ppo seed 1,heldout61,dilated,163.7011,0.092515,29.3014
+ppo seed 1,heldout61,dilated,162.0669,0.091811,27.9878
+ppo seed 1,heldout61,dilated,160.4651,0.091387,26.9644
+ppo seed 1,heldout61,dilated,158.8946,0.090875,26.1838
+ppo seed 1,heldout61,dilated,157.3546,0.090027,25.6117
+ppo seed 1,heldout61,dilated,155.8442,0.088692,25.2219
+ppo seed 1,heldout61,dilated,154.3624,0.086726,24.9943
+ppo seed 1,heldout61,dilated,152.9086,0.084110,24.9165
+ppo seed 1,heldout61,dilated,151.4819,0.081060,24.9840
+ppo seed 1,heldout61,dilated,150.0816,0.077848,25.1992
+ppo seed 1,heldout61,dilated,148.7069,0.074653,25.5689
+ppo seed 1,heldout61,dilated,147.3572,0.071668,26.1016
+ppo seed 1,heldout61,dilated,146.0317,0.069134,26.8058
+ppo seed 1,heldout61,dilated,144.7299,0.067147,27.6885
+ppo seed 1,heldout61,dilated,143.4511,0.065611,28.7543
+ppo seed 1,heldout61,dilated,142.1947,0.064443,29.9951
+ppo seed 1,heldout61,dilated,140.9602,0.063622,31.3587
+ppo seed 1,heldout61,dilated,139.7468,0.063107,32.6700
+ppo seed 1,heldout61,dilated,138.5542,0.062898,33.5408
+ppo seed 1,heldout61,dilated,137.3818,0.063138,33.5322
+ppo seed 1,heldout61,dilated,136.2290,0.063979,32.6582
+ppo seed 1,heldout61,dilated,135.0954,0.065469,31.3664
+ppo seed 1,heldout61,dilated,133.9806,0.067627,30.0359
+ppo seed 1,heldout61,dilated,132.8840,0.070431,28.8338
+ppo seed 1,heldout61,dilated,131.8052,0.073677,27.8093
+ppo seed 1,heldout61,dilated,130.7437,0.077036,26.9695
+ppo seed 1,heldout61,dilated,129.6992,0.080254,26.3099
+ppo seed 1,heldout61,dilated,128.6713,0.083125,25.8230
+ppo seed 1,heldout61,dilated,127.6596,0.085422,25.4992
+ppo seed 1,heldout61,dilated,126.6636,0.087070,25.3279
+ppo seed 1,heldout61,dilated,125.6831,0.088251,25.3005
+ppo seed 1,heldout61,dilated,124.7176,0.089182,25.4145
+ppo seed 1,heldout61,dilated,123.7668,0.089971,25.6764
+ppo seed 1,heldout61,dilated,122.8304,0.090770,26.1030
+ppo seed 1,heldout61,dilated,121.9081,0.091801,26.7188
+ppo seed 1,heldout61,dilated,120.9996,0.093178,27.5525
+ppo seed 1,heldout61,dilated,120.1044,0.094907,28.6345
+ppo seed 1,heldout61,dilated,119.2225,0.097037,29.9948
+ppo seed 1,heldout61,dilated,118.3533,0.099653,31.6485
+ppo seed 1,heldout61,dilated,117.4968,0.102782,33.5165
+ppo seed 1,heldout61,dilated,116.6526,0.106442,35.1383
+ppo seed 1,heldout61,dilated,115.8204,0.110702,35.3966
+ppo seed 1,heldout61,dilated,115.0000,0.115633,33.8781
+ppo seed 1,scale2,eroded,400.0000,0.326165,28.9318
+ppo seed 1,scale2,eroded,379.9410,0.263772,25.4776
+ppo seed 1,scale2,eroded,361.7978,0.226751,23.9059
+ppo seed 1,scale2,eroded,345.3083,0.178917,24.3346
+ppo seed 1,scale2,eroded,330.2564,0.138782,26.7498
+ppo seed 1,scale2,eroded,316.4619,0.113845,31.0068
+ppo seed 1,scale2,eroded,303.7736,0.090986,33.2207
+ppo seed 1,scale2,eroded,292.0635,0.077071,31.7345
+ppo seed 1,scale2,eroded,281.2227,0.071034,31.7055
+ppo seed 1,scale2,eroded,271.1579,0.061856,32.8221
+ppo seed 1,scale2,eroded,261.7886,0.058286,31.5371
+ppo seed 1,scale2,eroded,253.0452,0.060455,29.0598
+ppo seed 1,scale2,eroded,244.8669,0.060857,28.0440
+ppo seed 1,scale2,eroded,237.2007,0.064506,29.0373
+ppo seed 1,scale2,eroded,230.0000,0.068068,32.3703
+ppo seed 1,scale2,nominal,400.0000,0.233174,27.2404
+ppo seed 1,scale2,nominal,379.9410,0.189053,27.3750
+ppo seed 1,scale2,nominal,361.7978,0.159770,28.1176
+ppo seed 1,scale2,nominal,345.3083,0.128424,29.2110
+ppo seed 1,scale2,nominal,330.2564,0.104019,30.8642
+ppo seed 1,scale2,nominal,316.4619,0.089405,32.8640
+ppo seed 1,scale2,nominal,303.7736,0.074520,34.0519
+ppo seed 1,scale2,nominal,292.0635,0.063541,33.8927
+ppo seed 1,scale2,nominal,281.2227,0.060968,33.2700
+ppo seed 1,scale2,nominal,271.1579,0.057231,32.9366
+ppo seed 1,scale2,nominal,261.7886,0.058216,33.1990
+ppo seed 1,scale2,nominal,253.0452,0.062200,34.3090
+ppo seed 1,scale2,nominal,244.8669,0.064600,36.3586
+ppo seed 1,scale2,nominal,237.2007,0.073266,41.0377
+ppo seed 1,scale2,nominal,230.0000,0.084920,40.0413
+ppo seed 1,scale2,dilated,400.0000,0.200412,22.8083
+ppo seed 1,scale2,dilated,379.9410,0.166768,23.7119
+ppo seed 1,scale2,dilated,361.7978,0.137028,27.1113
+ppo seed 1,scale2,dilated,345.3083,0.112359,31.6138
+ppo seed 1,scale2,dilated,330.2564,0.098618,28.5687
+ppo seed 1,scale2,dilated,316.4619,0.095206,25.3577
+ppo seed 1,scale2,dilated,303.7736,0.085848,24.7675
+ppo seed 1,scale2,dilated,292.0635,0.072096,26.7271
+ppo seed 1,scale2,dilated,281.2227,0.066839,31.7266
+ppo seed 1,scale2,dilated,271.1579,0.067318,33.5897
+ppo seed 1,scale2,dilated,261.7886,0.076912,28.9729
+ppo seed 1,scale2,dilated,253.0452,0.085343,27.5781
+ppo seed 1,scale2,dilated,244.8669,0.087643,29.7278
+ppo seed 1,scale2,dilated,237.2007,0.097522,39.6394
+ppo seed 1,scale2,dilated,230.0000,0.117673,31.6397
+baseline bezier:0.45,train15,eroded,200.0000,0.330621,30.3210
+baseline bezier:0.45,train15,eroded,189.9705,0.283707,26.8363
+baseline bezier:0.45,train15,eroded,180.8989,0.253532,25.7568
+baseline bezier:0.45,train15,eroded,172.6542,0.223928,26.4363
+baseline bezier:0.45,train15,eroded,165.1282,0.192512,29.5258
+baseline bezier:0.45,train15,eroded,158.2310,0.170247,37.4489
+baseline bezier:0.45,train15,eroded,151.8868,0.156807,41.4662
+baseline bezier:0.45,train15,eroded,146.0317,0.140062,33.5912
+baseline bezier:0.45,train15,eroded,140.6114,0.135819,32.1504
+baseline bezier:0.45,train15,eroded,135.5789,0.130854,34.9322
+baseline bezier:0.45,train15,eroded,130.8943,0.120435,43.7754
+baseline bezier:0.45,train15,eroded,126.5226,0.123381,35.9068
+baseline bezier:0.45,train15,eroded,122.4335,0.120322,30.7182
+baseline bezier:0.45,train15,eroded,118.6004,0.120274,29.1173
+baseline bezier:0.45,train15,eroded,115.0000,0.124366,30.0882
+baseline bezier:0.45,train15,nominal,200.0000,0.258621,41.4391
+baseline bezier:0.45,train15,nominal,189.9705,0.230503,37.0231
+baseline bezier:0.45,train15,nominal,180.8989,0.210252,36.6637
+baseline bezier:0.45,train15,nominal,172.6542,0.195593,38.3679
+baseline bezier:0.45,train15,nominal,165.1282,0.175853,38.6016
+baseline bezier:0.45,train15,nominal,158.2310,0.164440,35.5722
+baseline bezier:0.45,train15,nominal,151.8868,0.160134,32.4017
+baseline bezier:0.45,train15,nominal,146.0317,0.145803,31.0983
+baseline bezier:0.45,train15,nominal,140.6114,0.144843,31.5020
+baseline bezier:0.45,train15,nominal,135.5789,0.142949,33.4683
+baseline bezier:0.45,train15,nominal,130.8943,0.137841,38.0640
+baseline bezier:0.45,train15,nominal,126.5226,0.146051,50.8990
+baseline bezier:0.45,train15,nominal,122.4335,0.144290,45.7439
+baseline bezier:0.45,train15,nominal,118.6004,0.144764,41.4668
+baseline bezier:0.45,train15,nominal,115.0000,0.148982,41.8302
+baseline bezier:0.45,train15,dilated,200.0000,0.244532,25.7557
+baseline bezier:0.45,train15,dilated,189.9705,0.232935,24.3903
+baseline bezier:0.45,train15,dilated,180.8989,0.213509,26.5332
+baseline bezier:0.45,train15,dilated,172.6542,0.201087,34.3387
+baseline bezier:0.45,train15,dilated,165.1282,0.187793,32.7882
+baseline bezier:0.45,train15,dilated,158.2310,0.192457,25.6991
+baseline bezier:0.45,train15,dilated,151.8868,0.202355,23.2054
+baseline bezier:0.45,train15,dilated,146.0317,0.190405,23.4052
+baseline bezier:0.45,train15,dilated,140.6114,0.187861,26.2396
+baseline bezier:0.45,train15,dilated,135.5789,0.188766,33.5547
+baseline bezier:0.45,train15,dilated,130.8943,0.197598,36.8142
+baseline bezier:0.45,train15,dilated,126.5226,0.222661,29.1843
+baseline bezier:0.45,train15,dilated,122.4335,0.226210,27.6527
+baseline bezier:0.45,train15,dilated,118.6004,0.219959,29.8524
+baseline bezier:0.45,train15,dilated,115.0000,0.224767,37.0436
+baseline bezier:0.45,heldout61,eroded,200.0000,0.330621,30.3210
+baseline bezier:0.45,heldout61,eroded,197.5662,0.317183,29.1975
+baseline bezier:0.45,heldout61,eroded,195.1909,0.305303,28.2923
+baseline bezier:0.45,heldout61,eroded,192.8721,0.294996,27.5632
+baseline bezier:0.45,heldout61,eroded,190.6077,0.286058,26.9794
+baseline bezier:0.45,heldout61,eroded,188.3959,0.278128,26.5208
+baseline bezier:0.45,heldout61,eroded,186.2348,0.270857,26.1752
+baseline bezier:0.45,heldout61,eroded,184.1227,0.263999,25.9351
+baseline bezier:0.45,heldout61,eroded,182.0580,0.257336,25.7946
+baseline bezier:0.45,heldout61,eroded,180.0391,0.250659,25.7480
+baseline bezier:0.45,heldout61,eroded,178.0645,0.243873,25.7913
+baseline bezier:0.45,heldout61,eroded,176.1327,0.237003,25.9243
+baseline bezier:0.45,heldout61,eroded,174.2424,0.230040,26.1534
+baseline bezier:0.45,heldout61,eroded,172.3923,0.222893,26.4921
+baseline bezier:0.45,heldout61,eroded,170.5810,0.215532,26.9601
+baseline bezier:0.45,heldout61,eroded,168.8073,0.208069,27.5800
+baseline bezier:0.45,heldout61,eroded,167.0702,0.200668,28.3744
+baseline bezier:0.45,heldout61,eroded,165.3685,0.193503,29.3664
+baseline bezier:0.45,heldout61,eroded,163.7011,0.186821,30.5842
+baseline bezier:0.45,heldout61,eroded,162.0669,0.180899,32.0726
+baseline bezier:0.45,heldout61,eroded,160.4651,0.175897,33.9111
+baseline bezier:0.45,heldout61,eroded,158.8946,0.171781,36.2423
+baseline bezier:0.45,heldout61,eroded,157.3546,0.168372,39.3125
+baseline bezier:0.45,heldout61,eroded,155.8442,0.165391,43.3888
+baseline bezier:0.45,heldout61,eroded,154.3624,0.162483,46.6917
+baseline bezier:0.45,heldout61,eroded,152.9086,0.159325,44.1556
+baseline bezier:0.45,heldout61,eroded,151.4819,0.155733,40.5316
+baseline bezier:0.45,heldout61,eroded,150.0816,0.151717,37.9009
+baseline bezier:0.45,heldout61,eroded,148.7069,0.147495,36.0147
+baseline bezier:0.45,heldout61,eroded,147.3572,0.143465,34.6240
+baseline bezier:0.45,heldout61,eroded,146.0317,0.140062,33.5912
+baseline bezier:0.45,heldout61,eroded,144.7299,0.137590,32.8482
+baseline bezier:0.45,heldout61,eroded,143.4511,0.136160,32.3637
+baseline bezier:0.45,heldout61,eroded,142.1947,0.135669,32.1224
+baseline bezier:0.45,heldout61,eroded,140.9602,0.135760,32.1124
+baseline bezier:0.45,heldout61,eroded,139.7468,0.135893,32.3221
+baseline bezier:0.45,heldout61,eroded,138.5542,0.135552,32.7448
+baseline bezier:0.45,heldout61,eroded,137.3818,0.134414,33.3882
+baseline bezier:0.45,heldout61,eroded,136.2290,0.132376,34.2841
+baseline bezier:0.45,heldout61,eroded,135.0954,0.129590,35.4950
+baseline bezier:0.45,heldout61,eroded,133.9806,0.126472,37.1127
+baseline bezier:0.45,heldout61,eroded,132.8840,0.123589,39.2377
+baseline bezier:0.45,heldout61,eroded,131.8052,0.121446,41.8303
+baseline bezier:0.45,heldout61,eroded,130.7437,0.120346,43.9628
+baseline bezier:0.45,heldout61,eroded,129.6992,0.120320,43.4106
+baseline bezier:0.45,heldout61,eroded,128.6713,0.121111,40.8697
+baseline bezier:0.45,heldout61,eroded,127.6596,0.122263,38.3085
+baseline bezier:0.45,heldout61,eroded,126.6636,0.123274,36.1770
+baseline bezier:0.45,heldout61,eroded,125.6831,0.123722,34.4446
+baseline bezier:0.45,heldout61,eroded,124.7176,0.123383,33.0425
+baseline bezier:0.45,heldout61,eroded,123.7668,0.122337,31.9192
+baseline bezier:0.45,heldout61,eroded,122.8304,0.120929,31.0340
+baseline bezier:0.45,heldout61,eroded,121.9081,0.119587,30.3497
+baseline bezier:0.45,heldout61,eroded,120.9996,0.118703,29.8325
+baseline bezier:0.45,heldout61,eroded,120.1044,0.118592,29.4573
+baseline bezier:0.45,heldout61,eroded,119.2225,0.119341,29.2123
+baseline bezier:0.45,heldout61,eroded,118.3533,0.120700,29.0986
+baseline bezier:0.45,heldout61,eroded,117.4968,0.122228,29.1245
+baseline bezier:0.45,heldout61,eroded,116.6526,0.123528,29.2978
+baseline bezier:0.45,heldout61,eroded,115.8204,0.124299,29.6203
+baseline bezier:0.45,heldout61,eroded,115.0000,0.124366,30.0882
+baseline bezier:0.45,heldout61,nominal,200.0000,0.258621,41.4391
+baseline bezier:0.45,heldout61,nominal,197.5662,0.251030,40.2120
+baseline bezier:0.45,heldout61,nominal,195.1909,0.244176,39.0019
+baseline bezier:0.45,heldout61,nominal,192.8721,0.237910,37.9739
+baseline bezier:0.45,heldout61,nominal,190.6077,0.232096,37.1962
+baseline bezier:0.45,heldout61,nominal,188.3959,0.226642,36.6845
+baseline bezier:0.45,heldout61,nominal,186.2348,0.221518,36.4238
+baseline bezier:0.45,heldout61,nominal,184.1227,0.216772,36.3822
+baseline bezier:0.45,heldout61,nominal,182.0580,0.212485,36.5201
+baseline bezier:0.45,heldout61,nominal,180.0391,0.208672,36.7967
+baseline bezier:0.45,heldout61,nominal,178.0645,0.205231,37.1715
+baseline bezier:0.45,heldout61,nominal,176.1327,0.201974,37.6004
+baseline bezier:0.45,heldout61,nominal,174.2424,0.198666,38.0335
+baseline bezier:0.45,heldout61,nominal,172.3923,0.195049,38.4180
+baseline bezier:0.45,heldout61,nominal,170.5810,0.190934,38.7067
+baseline bezier:0.45,heldout61,nominal,168.8073,0.186314,38.8620
+baseline bezier:0.45,heldout61,nominal,167.0702,0.181394,38.8523
+baseline bezier:0.45,heldout61,nominal,165.3685,0.176521,38.6480
+baseline bezier:0.45,heldout61,nominal,163.7011,0.172115,38.2295
+baseline bezier:0.45,heldout61,nominal,162.0669,0.168583,37.6049
+baseline bezier:0.45,heldout61,nominal,160.4651,0.166157,36.8210
+baseline bezier:0.45,heldout61,nominal,158.8946,0.164780,35.9517
+baseline bezier:0.45,heldout61,nominal,157.3546,0.164139,35.0721
+baseline bezier:0.45,heldout61,nominal,155.8442,0.163768,34.2378
+baseline bezier:0.45,heldout61,nominal,154.3624,0.163123,33.4807
+baseline bezier:0.45,heldout61,nominal,152.9086,0.161726,32.8157
+baseline bezier:0.45,heldout61,nominal,151.4819,0.159362,32.2509
+baseline bezier:0.45,heldout61,nominal,150.0816,0.156155,31.7933
+baseline bezier:0.45,heldout61,nominal,148.7069,0.152471,31.4489
+baseline bezier:0.45,heldout61,nominal,147.3572,0.148823,31.2192
+baseline bezier:0.45,heldout61,nominal,146.0317,0.145803,31.0983
+baseline bezier:0.45,heldout61,nominal,144.7299,0.143886,31.0728
+baseline bezier:0.45,heldout61,nominal,143.4511,0.143215,31.1269
+baseline bezier:0.45,heldout61,nominal,142.1947,0.143577,31.2485
+baseline bezier:0.45,heldout61,nominal,140.9602,0.144536,31.4355
+baseline bezier:0.45,heldout61,nominal,139.7468,0.145527,31.6969
+baseline bezier:0.45,heldout61,nominal,138.5542,0.145962,32.0483
+baseline bezier:0.45,heldout61,nominal,137.3818,0.145470,32.5062
+baseline bezier:0.45,heldout61,nominal,136.2290,0.144056,33.0826
+baseline bezier:0.45,heldout61,nominal,135.0954,0.142040,33.7855
+baseline bezier:0.45,heldout61,nominal,133.9806,0.139912,34.6247
+baseline bezier:0.45,heldout61,nominal,132.8840,0.138240,35.6219
+baseline bezier:0.45,heldout61,nominal,131.8052,0.137520,36.8212
+baseline bezier:0.45,heldout61,nominal,130.7437,0.137977,38.2950
+baseline bezier:0.45,heldout61,nominal,129.6992,0.139490,40.1496
+baseline bezier:0.45,heldout61,nominal,128.6713,0.141672,42.5415
+baseline bezier:0.45,heldout61,nominal,127.6596,0.143982,45.7251
+baseline bezier:0.45,heldout61,nominal,126.6636,0.145849,50.1406
+baseline bezier:0.45,heldout61,nominal,125.6831,0.146855,55.4243
+baseline bezier:0.45,heldout61,nominal,124.7176,0.146874,53.9791
+baseline bezier:0.45,heldout61,nominal,123.7668,0.146070,49.6591
+baseline bezier:0.45,heldout61,nominal,122.8304,0.144830,46.6971
+baseline bezier:0.45,heldout61,nominal,121.9081,0.143654,44.6876
+baseline bezier:0.45,heldout61,nominal,120.9996,0.142978,43.2958
+baseline bezier:0.45,heldout61,nominal,120.1044,0.143038,42.3475
+baseline bezier:0.45,heldout61,nominal,119.2225,0.143842,41.7377
+baseline bezier:0.45,heldout61,nominal,118.3533,0.145182,41.3908
+baseline bezier:0.45,heldout61,nominal,117.4968,0.146688,41.2500
+baseline bezier:0.45,heldout61,nominal,116.6526,0.147964,41.2796
+baseline bezier:0.45,heldout61,nominal,115.8204,0.148749,41.4697
+baseline bezier:0.45,heldout61,nominal,115.0000,0.148982,41.8302
+baseline bezier:0.45,heldout61,dilated,200.0000,0.244532,25.7557
+baseline bezier:0.45,heldout61,dilated,197.5662,0.243052,25.1328
+baseline bezier:0.45,heldout61,dilated,195.1909,0.240958,24.6999
+baseline bezier:0.45,heldout61,dilated,192.8721,0.237983,24.4484
+baseline bezier:0.45,heldout61,dilated,190.6077,0.234157,24.3772
+baseline bezier:0.45,heldout61,dilated,188.3959,0.229692,24.4892
+baseline bezier:0.45,heldout61,dilated,186.2348,0.224870,24.7901
+baseline bezier:0.45,heldout61,dilated,184.1227,0.220069,25.2910
+baseline bezier:0.45,heldout61,dilated,182.0580,0.215707,26.0113
+baseline bezier:0.45,heldout61,dilated,180.0391,0.212003,26.9835
+baseline bezier:0.45,heldout61,dilated,178.0645,0.208880,28.2582
+baseline bezier:0.45,heldout61,dilated,176.1327,0.206116,29.9109
+baseline bezier:0.45,heldout61,dilated,174.2424,0.203470,32.0473
+baseline bezier:0.45,heldout61,dilated,172.3923,0.200668,34.7598
+baseline bezier:0.45,heldout61,dilated,170.5810,0.197524,37.6869
+baseline bezier:0.45,heldout61,dilated,168.8073,0.194125,38.5080
+baseline bezier:0.45,heldout61,dilated,167.0702,0.190825,36.0793
+baseline bezier:0.45,heldout61,dilated,165.3685,0.188104,33.1657
+baseline bezier:0.45,heldout61,dilated,163.7011,0.186490,30.7635
+baseline bezier:0.45,heldout61,dilated,162.0669,0.186430,28.8608
+baseline bezier:0.45,heldout61,dilated,160.4651,0.188026,27.3472
+baseline bezier:0.45,heldout61,dilated,158.8946,0.190943,26.1387
+baseline bezier:0.45,heldout61,dilated,157.3546,0.194595,25.1773
+baseline bezier:0.45,heldout61,dilated,155.8442,0.198261,24.4220
+baseline bezier:0.45,heldout61,dilated,154.3624,0.201114,23.8428
+baseline bezier:0.45,heldout61,dilated,152.9086,0.202461,23.4194
+baseline bezier:0.45,heldout61,dilated,151.4819,0.202075,23.1399
+baseline bezier:0.45,heldout61,dilated,150.0816,0.200164,22.9992
+baseline bezier:0.45,heldout61,dilated,148.7069,0.197140,22.9964
+baseline bezier:0.45,heldout61,dilated,147.3572,0.193616,23.1316
+baseline bezier:0.45,heldout61,dilated,146.0317,0.190405,23.4052
+baseline bezier:0.45,heldout61,dilated,144.7299,0.188163,23.8175
+baseline bezier:0.45,heldout61,dilated,143.4511,0.187080,24.3716
+baseline bezier:0.45,heldout61,dilated,142.1947,0.187002,25.0770
+baseline bezier:0.45,heldout61,dilated,140.9602,0.187619,25.9535
+baseline bezier:0.45,heldout61,dilated,139.7468,0.188464,27.0342
+baseline bezier:0.45,heldout61,dilated,138.5542,0.189036,28.3683
+baseline bezier:0.45,heldout61,dilated,137.3818,0.189119,30.0271
+baseline bezier:0.45,heldout61,dilated,136.2290,0.188891,32.1148
+baseline bezier:0.45,heldout61,dilated,135.0954,0.188740,34.7737
+baseline bezier:0.45,heldout61,dilated,133.9806,0.189164,38.0475
+baseline bezier:0.45,heldout61,dilated,132.8840,0.190713,40.6896
+baseline bezier:0.45,heldout61,dilated,131.8052,0.193764,39.4616
+baseline bezier:0.45,heldout61,dilated,130.7437,0.198336,36.3869
+baseline bezier:0.45,heldout61,dilated,129.6992,0.204126,33.7817
+baseline bezier:0.45,heldout61,dilated,128.6713,0.210551,31.8242
+baseline bezier:0.45,heldout61,dilated,127.6596,0.216788,30.3735
+baseline bezier:0.45,heldout61,dilated,126.6636,0.222029,29.3099
+baseline bezier:0.45,heldout61,dilated,125.6831,0.225750,28.5504
+baseline bezier:0.45,heldout61,dilated,124.7176,0.227731,28.0389
+baseline bezier:0.45,heldout61,dilated,123.7668,0.228004,27.7406
+baseline bezier:0.45,heldout61,dilated,122.8304,0.226931,27.6380
+baseline bezier:0.45,heldout61,dilated,121.9081,0.225125,27.7273
+baseline bezier:0.45,heldout61,dilated,120.9996,0.223151,28.0127
+baseline bezier:0.45,heldout61,dilated,120.1044,0.221421,28.5023
+baseline bezier:0.45,heldout61,dilated,119.2225,0.220285,29.2075
+baseline bezier:0.45,heldout61,dilated,118.3533,0.219944,30.1456
+baseline bezier:0.45,heldout61,dilated,117.4968,0.220337,31.3470
+baseline bezier:0.45,heldout61,dilated,116.6526,0.221309,32.8628
+baseline bezier:0.45,heldout61,dilated,115.8204,0.222789,34.7605
+baseline bezier:0.45,heldout61,dilated,115.0000,0.224767,37.0436
+baseline bezier:0.45,scale2,eroded,400.0000,0.329886,33.3326
+baseline bezier:0.45,scale2,eroded,379.9410,0.280984,28.9908
+baseline bezier:0.45,scale2,eroded,361.7978,0.249496,27.9338
+baseline bezier:0.45,scale2,eroded,345.3083,0.219294,29.1991
+baseline bezier:0.45,scale2,eroded,330.2564,0.189022,34.1147
+baseline bezier:0.45,scale2,eroded,316.4619,0.169308,40.7101
+baseline bezier:0.45,scale2,eroded,303.7736,0.158625,32.2615
+baseline bezier:0.45,scale2,eroded,292.0635,0.143598,28.9787
+baseline bezier:0.45,scale2,eroded,281.2227,0.138796,28.8349
+baseline bezier:0.45,scale2,eroded,271.1579,0.132339,32.0528
+baseline bezier:0.45,scale2,eroded,261.7886,0.120230,42.6333
+baseline bezier:0.45,scale2,eroded,253.0452,0.122328,35.5011
+baseline bezier:0.45,scale2,eroded,244.8669,0.119607,29.8113
+baseline bezier:0.45,scale2,eroded,237.2007,0.118319,28.3587
+baseline bezier:0.45,scale2,eroded,230.0000,0.120324,29.9280
+baseline bezier:0.45,scale2,nominal,400.0000,0.258863,38.5971
+baseline bezier:0.45,scale2,nominal,379.9410,0.231054,33.7404
+baseline bezier:0.45,scale2,nominal,361.7978,0.210867,32.8345
+baseline bezier:0.45,scale2,nominal,345.3083,0.195316,34.3311
+baseline bezier:0.45,scale2,nominal,330.2564,0.174409,37.8371
+baseline bezier:0.45,scale2,nominal,316.4619,0.161517,45.0286
+baseline bezier:0.45,scale2,nominal,303.7736,0.156399,39.7509
+baseline bezier:0.45,scale2,nominal,292.0635,0.142443,35.5153
+baseline bezier:0.45,scale2,nominal,281.2227,0.142110,34.2868
+baseline bezier:0.45,scale2,nominal,271.1579,0.141213,34.8726
+baseline bezier:0.45,scale2,nominal,261.7886,0.135874,37.7984
+baseline bezier:0.45,scale2,nominal,253.0452,0.143146,45.8528
+baseline bezier:0.45,scale2,nominal,244.8669,0.141158,54.0302
+baseline bezier:0.45,scale2,nominal,237.2007,0.140897,42.9724
+baseline bezier:0.45,scale2,nominal,230.0000,0.144485,40.5695
+baseline bezier:0.45,scale2,dilated,400.0000,0.247135,24.5537
+baseline bezier:0.45,scale2,dilated,379.9410,0.236667,23.1572
+baseline bezier:0.45,scale2,dilated,361.7978,0.216525,24.7324
+baseline bezier:0.45,scale2,dilated,345.3083,0.200682,30.4531
+baseline bezier:0.45,scale2,dilated,330.2564,0.182935,38.3030
+baseline bezier:0.45,scale2,dilated,316.4619,0.183715,28.1412
+baseline bezier:0.45,scale2,dilated,303.7736,0.192823,24.6774
+baseline bezier:0.45,scale2,dilated,292.0635,0.183101,24.4406
+baseline bezier:0.45,scale2,dilated,281.2227,0.182925,26.9382
+baseline bezier:0.45,scale2,dilated,271.1579,0.185008,33.6474
+baseline bezier:0.45,scale2,dilated,261.7886,0.192619,38.1475
+baseline bezier:0.45,scale2,dilated,253.0452,0.216718,30.0674
+baseline bezier:0.45,scale2,dilated,244.8669,0.222142,28.1204
+baseline bezier:0.45,scale2,dilated,237.2007,0.217427,29.6242
+baseline bezier:0.45,scale2,dilated,230.0000,0.220715,34.9588
+baseline arc,train15,eroded,200.0000,0.362546,27.9057
+baseline arc,train15,eroded,189.9705,0.297984,25.2809
+baseline arc,train15,eroded,180.8989,0.252841,25.2501
+baseline arc,train15,eroded,172.6542,0.199482,27.7458
+baseline arc,train15,eroded,165.1282,0.155570,35.5515
+baseline arc,train15,eroded,158.2310,0.130292,37.4408
+baseline arc,train15,eroded,151.8868,0.109884,29.0819
+baseline arc,train15,eroded,146.0317,0.091632,26.8908
+baseline arc,train15,eroded,140.6114,0.079754,27.8618
+baseline arc,train15,eroded,135.5789,0.063120,33.0601
+baseline arc,train15,eroded,130.8943,0.050864,47.6783
+baseline arc,train15,eroded,126.5226,0.051504,31.4957
+baseline arc,train15,eroded,122.4335,0.048263,27.7545
+baseline arc,train15,eroded,118.6004,0.047263,27.5492
+baseline arc,train15,eroded,115.0000,0.044875,30.5823
+baseline arc,train15,nominal,200.0000,0.257960,43.2941
+baseline arc,train15,nominal,189.9705,0.212632,47.1095
+baseline arc,train15,nominal,180.8989,0.181989,46.0708
+baseline arc,train15,nominal,172.6542,0.150838,45.2101
+baseline arc,train15,nominal,165.1282,0.122822,45.6701
+baseline arc,train15,nominal,158.2310,0.104712,46.4950
+baseline arc,train15,nominal,151.8868,0.087824,43.4338
+baseline arc,train15,nominal,146.0317,0.070547,41.4163
+baseline arc,train15,nominal,140.6114,0.064744,40.9074
+baseline arc,train15,nominal,135.5789,0.056483,41.5908
+baseline arc,train15,nominal,130.8943,0.050611,43.9009
+baseline arc,train15,nominal,126.5226,0.052348,48.9229
+baseline arc,train15,nominal,122.4335,0.047990,54.6805
+baseline arc,train15,nominal,118.6004,0.049026,52.5140
+baseline arc,train15,nominal,115.0000,0.051028,49.2815
+baseline arc,train15,dilated,200.0000,0.216582,27.3907
+baseline arc,train15,dilated,189.9705,0.187364,26.8203
+baseline arc,train15,dilated,180.8989,0.160278,30.2897
+baseline arc,train15,dilated,172.6542,0.135786,43.3071
+baseline arc,train15,dilated,165.1282,0.116035,31.9630
+baseline arc,train15,dilated,158.2310,0.109152,26.9019
+baseline arc,train15,dilated,151.8868,0.099860,25.7312
+baseline arc,train15,dilated,146.0317,0.082224,27.4774
+baseline arc,train15,dilated,140.6114,0.075382,33.3501
+baseline arc,train15,dilated,135.5789,0.071206,46.7358
+baseline arc,train15,dilated,130.8943,0.075242,32.7616
+baseline arc,train15,dilated,126.5226,0.085686,29.9499
+baseline arc,train15,dilated,122.4335,0.084376,31.4216
+baseline arc,train15,dilated,118.6004,0.084392,39.3137
+baseline arc,train15,dilated,115.0000,0.091811,39.6551
+baseline arc,heldout61,eroded,200.0000,0.362546,27.9057
+baseline arc,heldout61,eroded,197.5662,0.344031,26.9977
+baseline arc,heldout61,eroded,195.1909,0.327629,26.2918
+baseline arc,heldout61,eroded,192.8721,0.313454,25.7556
+baseline arc,heldout61,eroded,190.6077,0.301210,25.3669
+baseline arc,heldout61,eroded,188.3959,0.290291,25.1127
+baseline arc,heldout61,eroded,186.2348,0.280041,24.9870
+baseline arc,heldout61,eroded,184.1227,0.269867,24.9887
+baseline arc,heldout61,eroded,182.0580,0.259250,25.1183
+baseline arc,heldout61,eroded,180.0391,0.247853,25.3768
+baseline arc,heldout61,eroded,178.0645,0.235682,25.7679
+baseline arc,heldout61,eroded,176.1327,0.223030,26.3010
+baseline arc,heldout61,eroded,174.2424,0.210258,26.9956
+baseline arc,heldout61,eroded,172.3923,0.197720,27.8871
+baseline arc,heldout61,eroded,170.5810,0.185816,29.0308
+baseline arc,heldout61,eroded,168.8073,0.174909,30.5107
+baseline arc,heldout61,eroded,167.0702,0.165191,32.4579
+baseline arc,heldout61,eroded,165.3685,0.156688,35.0970
+baseline arc,heldout61,eroded,163.7011,0.149341,38.8468
+baseline arc,heldout61,eroded,162.0669,0.143000,43.9749
+baseline arc,heldout61,eroded,160.4651,0.137425,44.1116
+baseline arc,heldout61,eroded,158.8946,0.132362,39.1571
+baseline arc,heldout61,eroded,157.3546,0.127583,35.5545
+baseline arc,heldout61,eroded,155.8442,0.122883,33.0471
+baseline arc,heldout61,eroded,154.3624,0.118133,31.2175
+baseline arc,heldout61,eroded,152.9086,0.113326,29.8480
+baseline arc,heldout61,eroded,151.4819,0.108511,28.8167
+baseline arc,heldout61,eroded,150.0816,0.103761,28.0474
+baseline arc,heldout61,eroded,148.7069,0.099238,27.4889
+baseline arc,heldout61,eroded,147.3572,0.095163,27.1089
+baseline arc,heldout61,eroded,146.0317,0.091632,26.8908
+baseline arc,heldout61,eroded,144.7299,0.088562,26.8315
+baseline arc,heldout61,eroded,143.4511,0.085823,26.9374
+baseline arc,heldout61,eroded,142.1947,0.083254,27.2196
+baseline arc,heldout61,eroded,140.9602,0.080581,27.6906
+baseline arc,heldout61,eroded,139.7468,0.077515,28.3652
+baseline arc,heldout61,eroded,138.5542,0.073940,29.2670
+baseline arc,heldout61,eroded,137.3818,0.069924,30.4403
+baseline arc,heldout61,eroded,136.2290,0.065616,31.9696
+baseline arc,heldout61,eroded,135.0954,0.061285,34.0155
+baseline arc,heldout61,eroded,133.9806,0.057331,36.9041
+baseline arc,heldout61,eroded,132.8840,0.054137,41.4310
+baseline arc,heldout61,eroded,131.8052,0.051929,49.7228
+baseline arc,heldout61,eroded,130.7437,0.050757,46.3228
+baseline arc,heldout61,eroded,129.6992,0.050473,39.7485
+baseline arc,heldout61,eroded,128.6713,0.050745,36.0254
+baseline arc,heldout61,eroded,127.6596,0.051192,33.5331
+baseline arc,heldout61,eroded,126.6636,0.051490,31.7159
+baseline arc,heldout61,eroded,125.6831,0.051386,30.3389
+baseline arc,heldout61,eroded,124.7176,0.050773,29.2883
+baseline arc,heldout61,eroded,123.7668,0.049787,28.5012
+baseline arc,heldout61,eroded,122.8304,0.048701,27.9366
+baseline arc,heldout61,eroded,121.9081,0.047739,27.5625
+baseline arc,heldout61,eroded,120.9996,0.047080,27.3545
+baseline arc,heldout61,eroded,120.1044,0.046868,27.2975
+baseline arc,heldout61,eroded,119.2225,0.047052,27.3887
+baseline arc,heldout61,eroded,118.3533,0.047332,27.6371
+baseline arc,heldout61,eroded,117.4968,0.047387,28.0595
+baseline arc,heldout61,eroded,116.6526,0.047044,28.6761
+baseline arc,heldout61,eroded,115.8204,0.046206,29.5080
+baseline arc,heldout61,eroded,115.0000,0.044875,30.5823
+baseline arc,heldout61,nominal,200.0000,0.257960,43.2941
+baseline arc,heldout61,nominal,197.5662,0.245000,44.6496
+baseline arc,heldout61,nominal,195.1909,0.233570,45.9134
+baseline arc,heldout61,nominal,192.8721,0.223625,46.7874
+baseline arc,heldout61,nominal,190.6077,0.214932,47.1057
+baseline arc,heldout61,nominal,188.3959,0.207153,47.0142
+baseline arc,heldout61,nominal,186.2348,0.199929,46.7644
+baseline arc,heldout61,nominal,184.1227,0.192951,46.4923
+baseline arc,heldout61,nominal,182.0580,0.186001,46.2239
+baseline arc,heldout61,nominal,180.0391,0.178951,45.9566
+baseline arc,heldout61,nominal,178.0645,0.171756,45.7000
+baseline arc,heldout61,nominal,176.1327,0.164445,45.4749
+baseline arc,heldout61,nominal,174.2424,0.157096,45.3025
+baseline arc,heldout61,nominal,172.3923,0.149803,45.2004
+baseline arc,heldout61,nominal,170.5810,0.142675,45.1797
+baseline arc,heldout61,nominal,168.8073,0.135842,45.2438
+baseline arc,heldout61,nominal,167.0702,0.129447,45.3930
+baseline arc,heldout61,nominal,165.3685,0.123606,45.6292
+baseline arc,heldout61,nominal,163.7011,0.118394,45.9462
+baseline arc,heldout61,nominal,162.0669,0.113825,46.2973
+baseline arc,heldout61,nominal,160.4651,0.109822,46.5652
+baseline arc,heldout61,nominal,158.8946,0.106205,46.5891
+baseline arc,heldout61,nominal,157.3546,0.102728,46.2691
+baseline arc,heldout61,nominal,155.8442,0.099151,45.6453
+baseline arc,heldout61,nominal,154.3624,0.095285,44.8480
+baseline arc,heldout61,nominal,152.9086,0.091046,44.0068
+baseline arc,heldout61,nominal,151.4819,0.086507,43.2181
+baseline arc,heldout61,nominal,150.0816,0.081893,42.5462
+baseline arc,heldout61,nominal,148.7069,0.077504,42.0256
+baseline arc,heldout61,nominal,147.3572,0.073642,41.6581
+baseline arc,heldout61,nominal,146.0317,0.070547,41.4163
+baseline arc,heldout61,nominal,144.7299,0.068318,41.2543
+baseline arc,heldout61,nominal,143.4511,0.066849,41.1276
+baseline arc,heldout61,nominal,142.1947,0.065864,41.0143
+baseline arc,heldout61,nominal,140.9602,0.065012,40.9244
+baseline arc,heldout61,nominal,139.7468,0.063950,40.8912
+baseline arc,heldout61,nominal,138.5542,0.062423,40.9503
+baseline arc,heldout61,nominal,137.3818,0.060364,41.1203
+baseline arc,heldout61,nominal,136.2290,0.057929,41.3953
+baseline arc,heldout61,nominal,135.0954,0.055423,41.7522
+baseline arc,heldout61,nominal,133.9806,0.053198,42.1721
+baseline arc,heldout61,nominal,132.8840,0.051568,42.6621
+baseline arc,heldout61,nominal,131.8052,0.050721,43.2610
+baseline arc,heldout61,nominal,130.7437,0.050639,44.0210
+baseline arc,heldout61,nominal,129.6992,0.051103,44.9780
+baseline arc,heldout61,nominal,128.6713,0.051776,46.1255
+baseline arc,heldout61,nominal,127.6596,0.052300,47.4065
+baseline arc,heldout61,nominal,126.6636,0.052382,48.7338
+baseline arc,heldout61,nominal,125.6831,0.051891,50.0474
+baseline arc,heldout61,nominal,124.7176,0.050894,51.3639
+baseline arc,heldout61,nominal,123.7668,0.049629,52.7447
+baseline arc,heldout61,nominal,122.8304,0.048416,54.1479
+baseline arc,heldout61,nominal,121.9081,0.047558,55.2082
+baseline arc,heldout61,nominal,120.9996,0.047258,55.3192
+baseline arc,heldout61,nominal,120.1044,0.047555,54.4603
+baseline arc,heldout61,nominal,119.2225,0.048324,53.2813
+baseline arc,heldout61,nominal,118.3533,0.049315,52.2408
+baseline arc,heldout61,nominal,117.4968,0.050245,51.4223
+baseline arc,heldout61,nominal,116.6526,0.050887,50.7259
+baseline arc,heldout61,nominal,115.8204,0.051135,50.0294
+baseline arc,heldout61,nominal,115.0000,0.051028,49.2815
+baseline arc,heldout61,dilated,200.0000,0.216582,27.3907
+baseline arc,heldout61,dilated,197.5662,0.209326,26.9434
+baseline arc,heldout61,dilated,195.1909,0.202431,26.6871
+baseline arc,heldout61,dilated,192.8721,0.195748,26.6200
+baseline arc,heldout61,dilated,190.6077,0.189211,26.7471
+baseline arc,heldout61,dilated,188.3959,0.182767,27.0777
+baseline arc,heldout61,dilated,186.2348,0.176348,27.6275
+baseline arc,heldout61,dilated,184.1227,0.169975,28.4228
+baseline arc,heldout61,dilated,182.0580,0.163748,29.5096
+baseline arc,heldout61,dilated,180.0391,0.157713,30.9659
+baseline arc,heldout61,dilated,178.0645,0.151833,32.9242
+baseline arc,heldout61,dilated,176.1327,0.146085,35.6175
+baseline arc,heldout61,dilated,174.2424,0.140480,39.4215
+baseline arc,heldout61,dilated,172.3923,0.135014,43.7732
+baseline arc,heldout61,dilated,170.5810,0.129720,42.1932
+baseline arc,heldout61,dilated,168.8073,0.124742,37.8219
+baseline arc,heldout61,dilated,167.0702,0.120277,34.5902
+baseline arc,heldout61,dilated,165.3685,0.116507,32.2461
+baseline arc,heldout61,dilated,163.7011,0.113593,30.4719
+baseline arc,heldout61,dilated,162.0669,0.111601,29.0948
+baseline arc,heldout61,dilated,160.4651,0.110360,28.0200
+baseline arc,heldout61,dilated,158.8946,0.109500,27.1914
+baseline arc,heldout61,dilated,157.3546,0.108635,26.5715
+baseline arc,heldout61,dilated,155.8442,0.107395,26.1329
+baseline arc,heldout61,dilated,154.3624,0.105410,25.8563
+baseline arc,heldout61,dilated,152.9086,0.102478,25.7304
+baseline arc,heldout61,dilated,151.4819,0.098720,25.7530
+baseline arc,heldout61,dilated,150.0816,0.094449,25.9288
+baseline arc,heldout61,dilated,148.7069,0.090004,26.2673
+baseline arc,heldout61,dilated,147.3572,0.085784,26.7793
+baseline arc,heldout61,dilated,146.0317,0.082224,27.4774
+baseline arc,heldout61,dilated,144.7299,0.079559,28.3784
+baseline arc,heldout61,dilated,143.4511,0.077721,29.5116
+baseline arc,heldout61,dilated,142.1947,0.076490,30.9317
+baseline arc,heldout61,dilated,140.9602,0.075610,32.7394
+baseline arc,heldout61,dilated,139.7468,0.074793,35.1223
+baseline arc,heldout61,dilated,138.5542,0.073829,38.4570
+baseline arc,heldout61,dilated,137.3818,0.072729,43.5820
+baseline arc,heldout61,dilated,136.2290,0.071681,49.3721
+baseline arc,heldout61,dilated,135.0954,0.070951,43.9088
+baseline arc,heldout61,dilated,133.9806,0.070837,39.1490
+baseline arc,heldout61,dilated,132.8840,0.071580,36.1474
+baseline arc,heldout61,dilated,131.8052,0.073226,34.0752
+baseline arc,heldout61,dilated,130.7437,0.075620,32.5748
+baseline arc,heldout61,dilated,129.6992,0.078477,31.4818
+baseline arc,heldout61,dilated,128.6713,0.081376,30.7127
+baseline arc,heldout61,dilated,127.6596,0.083833,30.2191
+baseline arc,heldout61,dilated,126.6636,0.085516,29.9676
+baseline arc,heldout61,dilated,125.6831,0.086335,29.9340
+baseline arc,heldout61,dilated,124.7176,0.086343,30.1044
+baseline arc,heldout61,dilated,123.7668,0.085712,30.4806
+baseline arc,heldout61,dilated,122.8304,0.084775,31.0838
+baseline arc,heldout61,dilated,121.9081,0.083907,31.9570
+baseline arc,heldout61,dilated,120.9996,0.083360,33.1681
+baseline arc,heldout61,dilated,120.1044,0.083275,34.8221
+baseline arc,heldout61,dilated,119.2225,0.083736,37.1029
+baseline arc,heldout61,dilated,118.3533,0.084718,40.3966
+baseline arc,heldout61,dilated,117.4968,0.086091,45.6422
+baseline arc,heldout61,dilated,116.6526,0.087750,51.1705
+baseline arc,heldout61,dilated,115.8204,0.089656,44.6059
+baseline arc,heldout61,dilated,115.0000,0.091811,39.6551
+baseline arc,scale2,eroded,400.0000,0.361370,29.1739
+baseline arc,scale2,eroded,379.9410,0.295624,26.2543
+baseline arc,scale2,eroded,361.7978,0.250264,26.2377
+baseline arc,scale2,eroded,345.3083,0.197403,29.0735
+baseline arc,scale2,eroded,330.2564,0.154424,38.7941
+baseline arc,scale2,eroded,316.4619,0.130360,34.7093
+baseline arc,scale2,eroded,303.7736,0.110775,27.9911
+baseline arc,scale2,eroded,292.0635,0.092644,26.1291
+baseline arc,scale2,eroded,281.2227,0.080490,27.1127
+baseline arc,scale2,eroded,271.1579,0.063466,31.8653
+baseline arc,scale2,eroded,261.7886,0.050584,51.5558
+baseline arc,scale2,eroded,253.0452,0.050849,32.6802
+baseline arc,scale2,eroded,244.8669,0.047322,28.6624
+baseline arc,scale2,eroded,237.2007,0.046005,28.6882
+baseline arc,scale2,eroded,230.0000,0.044263,32.7878
+baseline arc,scale2,nominal,400.0000,0.257845,53.1781
+baseline arc,scale2,nominal,379.9410,0.212354,45.1622
+baseline arc,scale2,nominal,361.7978,0.181601,41.8131
+baseline arc,scale2,nominal,345.3083,0.150075,41.8252
+baseline arc,scale2,nominal,330.2564,0.121605,43.4606
+baseline arc,scale2,nominal,316.4619,0.103148,49.3748
+baseline arc,scale2,nominal,303.7736,0.086042,50.3015
+baseline arc,scale2,nominal,292.0635,0.068677,45.3232
+baseline arc,scale2,nominal,281.2227,0.063022,43.5883
+baseline arc,scale2,nominal,271.1579,0.055156,43.9511
+baseline arc,scale2,nominal,261.7886,0.049623,47.1937
+baseline arc,scale2,nominal,253.0452,0.052070,57.4636
+baseline arc,scale2,nominal,244.8669,0.048325,52.7902
+baseline arc,scale2,nominal,237.2007,0.049620,47.6313
+baseline arc,scale2,nominal,230.0000,0.051763,45.6592
+baseline arc,scale2,dilated,400.0000,0.218004,26.4945
+baseline arc,scale2,dilated,379.9410,0.188464,25.9552
+baseline arc,scale2,dilated,361.7978,0.160321,29.0286
+baseline arc,scale2,dilated,345.3083,0.134082,40.2845
+baseline arc,scale2,dilated,330.2564,0.112700,33.5544
+baseline arc,scale2,dilated,316.4619,0.104809,27.6280
+baseline arc,scale2,dilated,303.7736,0.095269,26.2194
+baseline arc,scale2,dilated,292.0635,0.077899,27.9083
+baseline arc,scale2,dilated,281.2227,0.071646,33.9881
+baseline arc,scale2,dilated,271.1579,0.068238,44.4833
+baseline arc,scale2,dilated,261.7886,0.073152,32.0438
+baseline arc,scale2,dilated,253.0452,0.084739,29.1886
+baseline arc,scale2,dilated,244.8669,0.083563,30.1599
+baseline arc,scale2,dilated,237.2007,0.081949,35.7531
+baseline arc,scale2,dilated,230.0000,0.086228,47.1764

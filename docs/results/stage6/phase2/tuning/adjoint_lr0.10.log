@@ -1,0 +1,20 @@
+rep Grid(20), r_f 6, lr 0.1, betas [2.0, 4.0, 8.0, 16.0, 32.0, 64.0] x 6 then hold, score every 2, cap 300, init sharpL, eta [0.641366102192773, 0.5, 0.3586338978072273]
+adjoint basis: port 2 11, port 1 12; physical solves per iteration 26, charged 26
+it   0 beta    2  F 2.825994  F_v [2.82599 2.77112 2.75882]  worst 0  charged 26  fwd 2.2 s adj 14.4 s
+it   1 beta    2  F 1.856556  F_v [1.72267 1.78125 1.85656]  worst 2  charged 52  fwd 2.2 s adj 14.4 s
+  score it 1: J 19.6125  best 19.6125  charged 55
+it   2 beta    2  F 1.263519  F_v [1.20805 1.26352 1.21209]  worst 1  charged 81  fwd 2.1 s adj 14.4 s
+it   3 beta    2  F 0.542953  F_v [0.45386 0.52648 0.54295]  worst 2  charged 107  fwd 2.2 s adj 14.4 s
+  score it 3: J 103.0000  best 19.6125  charged 107
+it   4 beta    2  F 0.429490  F_v [0.41782 0.39358 0.42949]  worst 2  charged 133  fwd 2.1 s adj 14.4 s
+it   5 beta    2  F 1.215064  F_v [1.21506 0.79426 0.57830]  worst 0  charged 159  fwd 2.1 s adj 14.4 s
+  score it 5: J 104.0000  best 19.6125  charged 159
+it   6 beta    4  F 1.079650  F_v [1.07965 0.41392 0.36326]  worst 0  charged 185  fwd 2.2 s adj 14.4 s
+it   7 beta    4  F 0.807985  F_v [0.80799 0.31131 0.32937]  worst 0  charged 211  fwd 2.2 s adj 14.4 s
+  score it 7: J 102.0000  best 19.6125  charged 211
+it   8 beta    4  F 0.465372  F_v [0.46537 0.25472 0.31893]  worst 0  charged 237  fwd 2.1 s adj 14.5 s
+it   9 beta    4  F 0.401873  F_v [0.31642 0.37029 0.40187]  worst 2  charged 263  fwd 2.2 s adj 14.5 s
+  score it 9: J 103.0000  best 19.6125  charged 263
+it  10 beta    4  F 0.461562  F_v [0.46156 0.40154 0.35843]  worst 0  charged 289  fwd 2.2 s adj 14.5 s
+  score final: J 106.0000  best 19.6125  charged 289
+done: best J 19.6125, charged 289, forward 36 adjoint 253 solves, 0 cache hits

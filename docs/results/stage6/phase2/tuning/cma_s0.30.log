@@ -1,0 +1,25 @@
+method cma, seed 0, init sharpL, cap 300, rf 6
+CMA-ES: n 400, lambda 21, mu 10, mueff 5.939, cs 0.0193, ds 1.0193, cc 0.0099, c1 1.242e-5, cmu 5.083e-5, sigma0 0.3
+gen   0 charged    18 best J 19.7500 gen best 19.7500 sigma 0.2955
+gen   1 charged    30 best J 19.7500 gen best 24.0727 sigma 0.2914
+gen   2 charged    42 best J 19.7500 gen best 20.3710 sigma 0.2877
+gen   3 charged    57 best J 15.4452 gen best 15.4452 sigma 0.2843
+gen   4 charged    78 best J 15.4452 gen best 18.9517 sigma 0.2811
+gen   5 charged    84 best J 15.4452 gen best 25.6665 sigma 0.2782
+gen   6 charged   105 best J 15.4452 gen best 19.1514 sigma 0.2753
+gen   7 charged   120 best J 15.4452 gen best 20.9825 sigma 0.2727
+gen   8 charged   132 best J 15.4452 gen best 19.1987 sigma 0.2703
+gen   9 charged   141 best J 15.4452 gen best 17.6900 sigma 0.2680
+gen  10 charged   144 best J 15.4452 gen best 19.6495 sigma 0.2657
+gen  11 charged   156 best J 15.4452 gen best 19.7990 sigma 0.2637
+gen  12 charged   165 best J 15.4452 gen best 18.0263 sigma 0.2616
+gen  13 charged   180 best J 15.0296 gen best 15.0296 sigma 0.2596
+gen  14 charged   189 best J 15.0296 gen best 16.6599 sigma 0.2577
+gen  15 charged   210 best J 15.0296 gen best 15.4275 sigma 0.2560
+gen  16 charged   222 best J 15.0296 gen best 16.7925 sigma 0.2543
+gen  17 charged   231 best J 15.0296 gen best 17.0137 sigma 0.2528
+gen  18 charged   243 best J 15.0296 gen best 17.9143 sigma 0.2513
+gen  19 charged   267 best J 15.0296 gen best 18.2616 sigma 0.2498
+gen  20 charged   276 best J 15.0296 gen best 15.0540 sigma 0.2484
+gen  21 charged   291 best J 15.0296 gen best 16.8008 sigma 0.2471
+done: best J 15.0296, charged 300, candidates 472, cache hits 0

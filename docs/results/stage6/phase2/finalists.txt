@@ -1,0 +1,3 @@
+adjoint finalist: seed 5
+cma finalist: seed 5
+ppo finalist: seed 1

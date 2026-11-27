@@ -11,7 +11,9 @@
       wall time, for every run (thin) and the median of each method (thick,
       with the min-max band); the adjoint median also with the adjoint solves
       re-weighted by the measured adjoint/forward wall-time ratio (dotted).
-      A run without a feasible design so far has no line at that point.
+      A run without a feasible design so far has no line at that point, and a
+      run's line ends where the run ended; the median and the band are drawn
+      only where all five runs of the method are still running.
       Bars: fraction of scored candidates that meet the geometry gates, and
       that meet the performance gates. Table: time to the targets.
 """
@@ -188,9 +190,16 @@ def curve(ev, xkey, rho=None):
     return np.array(xs), np.array(ys)
 
 
+ENDED = -1.0  # marker: the run had ended at this grid point
+
+
 def at(xs, ys, grid):
+    """Best J so far at each grid point: NaN before the first feasible design,
+    ENDED after the run ended (a run that stopped early does not count as
+    having used the rest of the budget)."""
     idx = np.searchsorted(xs, grid, side="right") - 1
-    return np.where(idx >= 0, ys[np.clip(idx, 0, None)], math.nan)
+    v = np.where(idx >= 0, ys[np.clip(idx, 0, None)], math.nan)
+    return np.where(grid > xs[-1], ENDED, v)
 
 
 def tradeoff(rdir, out_svg, out_json, t2=None):
@@ -247,7 +256,11 @@ def tradeoff(rdir, out_svg, out_json, t2=None):
         A = np.array(curves_c)
         B = np.array(curves_t)
         def stats(M):
+            # Drawn only where all runs are still running; "no feasible design
+            # yet" counts as the worst value.
+            running = (M != ENDED).all(axis=0)
             Mi = np.where(np.isnan(M), np.inf, M)
+            Mi = np.where(running[None, :], Mi, np.inf)
             med = np.median(Mi, axis=0)
             return np.where(np.isinf(med), np.nan, med), np.where(np.isinf(Mi.min(0)), np.nan, Mi.min(0)), np.where(np.isinf(Mi.max(0)), np.nan, Mi.max(0))
         med, lo, hi = stats(A)
@@ -256,8 +269,12 @@ def tradeoff(rdir, out_svg, out_json, t2=None):
         medt, lot, hit = stats(B)
         pb.band(tgrid / 60, lot, hit, c)
         pb.line(tgrid / 60, medt, c, 3.0)
-        out["methods"][m] = {"runs": len(mr), "median_at_cap": None if not math.isfinite(med[-1]) else float(med[-1]),
-                             "min_at_cap": None if not math.isfinite(lo[-1]) else float(lo[-1]), "max_at_cap": None if not math.isfinite(hi[-1]) else float(hi[-1])}
+        # Final best J of each run (at the end of the run, whatever budget it used).
+        fin = np.array([x["best_j"] if x["best_j"] is not None else np.inf for x in out["runs"] if x["method"] == m])
+        used = [x["charged"] for x in out["runs"] if x["method"] == m]
+        f = lambda v: None if not math.isfinite(v) else float(v)
+        out["methods"][m] = {"runs": len(mr), "median_at_cap": f(np.median(fin)), "min_at_cap": f(fin.min()), "max_at_cap": f(fin.max()),
+                             "charged_min": min(used), "charged_max": max(used)}
         if m == "adjoint":
             rhos = [x["adjoint_s_per_solve"] / x["forward_s_per_solve"] for x in out["runs"] if x["method"] == "adjoint" and x["adjoint_s_per_solve"]]
             rho = float(np.median(rhos)) if rhos else 1.0
@@ -282,7 +299,7 @@ def tradeoff(rdir, out_svg, out_json, t2=None):
             x1 = pc.px(3 * i + 1.3 + 1.2 * k)
             y = pc.py(frac)
             svg.add(f'<rect x="{x0:.1f}" y="{y:.1f}" width="{x1 - x0:.1f}" height="{pc.py(0) - y:.1f}" fill="{COL[m]}" fill-opacity="{op}"/>')
-            svg.text((x0 + x1) / 2, y - 4, f"{frac:.2f}", 11, "middle")
+            svg.text((x0 + x1) / 2, y - 4, f"{frac:.3f}" if frac < 0.01 else f"{frac:.2f}", 11, "middle")
         svg.text(pc.px(3 * i + 1.5), 840, {"adjoint": "adjoint", "cma": "CMA-ES", "ppo": "PPO"}[m], 12, "middle")
     svg.text(90, 862, "dark: geometry gates met; light: geometry and performance gates met", 11)
     svg.text(670, 570, "D. time to target (charged solves / wall min); - = not reached", 14, weight="bold")

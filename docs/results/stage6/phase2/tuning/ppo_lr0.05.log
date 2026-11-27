@@ -1,0 +1,19 @@
+method ppo, seed 0, init sharpL, cap 300, rf 6
+update   0 charged     9 best J 24.1478 batch best 24.1478 sd 0.0996 active 37/64
+update   1 charged    24 best J 24.1478 batch best 24.6702 sd 0.1090 active 27/64
+update   2 charged    39 best J 24.1478 batch best 24.5476 sd 0.1067 active 26/64
+update   3 charged    48 best J 23.6398 batch best 23.6398 sd 0.1010 active 23/64
+update   4 charged    78 best J 22.5758 batch best 22.5758 sd 0.0958 active 26/64
+update   5 charged    96 best J 22.5758 batch best 22.7880 sd 0.0904 active 27/64
+update   6 charged   111 best J 22.5758 batch best 22.7539 sd 0.0919 active 25/64
+update   7 charged   123 best J 22.1324 batch best 22.1324 sd 0.0983 active 26/64
+update   8 charged   132 best J 21.7138 batch best 21.7138 sd 0.1022 active 25/64
+update   9 charged   150 best J 21.7138 batch best 22.4045 sd 0.1020 active 27/64
+update  10 charged   180 best J 21.7138 batch best 22.1649 sd 0.1050 active 23/64
+update  11 charged   192 best J 21.7138 batch best 22.2207 sd 0.1084 active 27/64
+update  12 charged   210 best J 21.7138 batch best 22.0700 sd 0.1130 active 22/64
+update  13 charged   222 best J 21.7138 batch best 22.0824 sd 0.1177 active 23/64
+update  14 charged   243 best J 21.2254 batch best 21.2254 sd 0.1144 active 23/64
+update  15 charged   267 best J 21.2254 batch best 21.4361 sd 0.1109 active 22/64
+update  16 charged   285 best J 20.0089 batch best 20.0089 sd 0.1093 active 24/64
+done: best J 20.0089, charged 300, candidates 287, cache hits 1

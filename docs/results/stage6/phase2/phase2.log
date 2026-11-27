@@ -1,0 +1,5 @@
+{"adjoint_lr": 0.05, "cma_sigma0": 0.30, "ppo_lr": 0.05}
+adjoint finalist: seed 5
+cma finalist: seed 5
+ppo finalist: seed 1
+done

@@ -2,12 +2,12 @@
 """Build the static project page and the portfolio index (no network, no
 dependencies beyond the Python standard library).
 
-  tools/build_site.py --release DIR --phase1 DIR --phase2 DIR --movie DIR --out DIR [--tag v0.6.0-rc1]
+  tools/build_site.py --release DIR --validate DIR --movie DIR --out DIR [--tag v0.6.0-rc1]
 
 Reads only result files; every result sentence on the page comes from them:
-  DIR(phase1)/validate/validate.json, spectra JSON from tools/plot_stage6.py,
-  DIR(phase2)/tradeoff.json, the release artifacts (SVG, GDSII, certificate,
-  plots), and the movie files (movie.mp4, movie.webm, poster.png, movie.json).
+  DIR(validate)/validate.json, and from DIR(release): release.json, the spectra
+  and trade-off JSON of tools/plot_stage6.py, the layouts, the certificates
+  and the plots; the movie files (movie.mp4, movie.webm, poster.png, movie.json).
 Writes OUT/index.html (portfolio index) and OUT/photon-fdtd/index.html.
 """
 
@@ -130,8 +130,7 @@ def badge(ok, yes="PASS", no="FAIL"):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--release", required=True)
-    ap.add_argument("--phase1", required=True)
-    ap.add_argument("--phase2", required=True)
+    ap.add_argument("--validate", required=True)
     ap.add_argument("--movie", required=True)
     ap.add_argument("--out", required=True)
     ap.add_argument("--tag", default="v0.6.0-rc1")
@@ -140,12 +139,12 @@ def main():
     out = os.path.join(a.out, "photon-fdtd")
     os.makedirs(os.path.join(out, "files"), exist_ok=True)
     rel = json.load(open(os.path.join(a.release, "release.json")))
-    val = json.load(open(os.path.join(a.phase1, "validate", "validate.json")))
+    val = json.load(open(os.path.join(a.validate, "validate.json")))
     spec = json.load(open(os.path.join(a.release, "spectra_heldout61.json")))
     trade = json.load(open(os.path.join(a.release, "tradeoff.json"))) if os.path.exists(os.path.join(a.release, "tradeoff.json")) else None
     cert = json.load(open(os.path.join(a.release, rel["certificate"])))
     files = []
-    for key in ("gds", "svg", "certificate", "spectra_plot", "tradeoff_plot", "spectra_plot_png", "tradeoff_plot_png"):
+    for key in ("gds", "svg", "certificate", "phase1_gds", "phase1_svg", "phase1_certificate", "spectra_plot", "tradeoff_plot", "spectra_plot_png", "tradeoff_plot_png"):
         f = rel.get(key)
         if f and os.path.exists(os.path.join(a.release, f)):
             shutil.copy(os.path.join(a.release, f), os.path.join(out, "files", f))

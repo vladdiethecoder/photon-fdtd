@@ -31,11 +31,16 @@ run test cargo test --release
 run viewer_build cargo build --release --features gui --bin viewer
 run stage5_fixture ./target/release/stage5_validate docs/results/stage5/rho_final.txt --beta 128 --out "$SCRATCH/out/s5"
 diff "$OUT/stage5_fixture.log" docs/results/stage5/validate.log > "$OUT/stage5_fixture.diff" || true
-./target/release/export_layout --mask docs/results/stage6/phase1/validate/phase1_r_f_6_s1.mask --out "$SCRATCH/out/bend80" > "$OUT/layout_rebuild.log"
+MASK=docs/results/stage6/release_validate/$(python3 -c "import json; print(json.load(open('release/release.json'))['design_mask'])")
+./target/release/export_layout --mask "$MASK" --out "$SCRATCH/out/bend80" > "$OUT/layout_rebuild.log"
+./target/release/export_layout --mask docs/results/stage6/release_validate/phase1_r_f_6_s1.mask --out "$SCRATCH/out/bend80_phase1" >> "$OUT/layout_rebuild.log"
 layout_same=true
-for f in bend80.gds bend80.svg bend80_layer1.mask bend80_layer2.mask bend80_layer3.mask; do
-  cmp -s "$SCRATCH/out/$f" "release/$f" || layout_same=false
+for p in bend80 bend80_phase1; do
+  for f in $p.gds $p.svg ${p}_layer1.mask ${p}_layer2.mask ${p}_layer3.mask; do
+    cmp -s "$SCRATCH/out/$f" "release/$f" || layout_same=false
+  done
 done
+python3 tools/check_layout.py release/bend80 --design-revision clean-checkout > "$OUT/layout_check.log" && python3 tools/check_layout.py release/bend80_phase1 --design-revision clean-checkout >> "$OUT/layout_check.log" || layout_same=false
 passed=$(grep -o 'test result: ok\. [0-9]* passed' "$OUT/test.log" | awk '{s+=$4} END {print s+0}')
 failed=$(grep -o '[0-9]* failed' "$OUT/test.log" | awk '{s+=$1} END {print s+0}')
 cat > "$OUT/receipts.json" <<JSON

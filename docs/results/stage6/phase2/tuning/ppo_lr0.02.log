@@ -1,0 +1,29 @@
+method ppo, seed 0, init sharpL, cap 300, rf 6
+update   0 charged     9 best J 24.1478 batch best 24.1478 sd 0.0973 active 25/64
+update   1 charged    15 best J 23.9748 batch best 23.9748 sd 0.1010 active 19/64
+update   2 charged    18 best J 23.9748 batch best 25.7405 sd 0.1024 active 20/64
+update   3 charged    21 best J 23.9748 batch best 24.8255 sd 0.1014 active 20/64
+update   4 charged    27 best J 23.9748 batch best 24.7822 sd 0.1030 active 19/64
+update   5 charged    36 best J 23.9748 batch best 25.0950 sd 0.1039 active 19/64
+update   6 charged    42 best J 23.9748 batch best 25.1113 sd 0.1059 active 18/64
+update   7 charged    45 best J 23.9748 batch best 25.2308 sd 0.1070 active 20/64
+update   8 charged    57 best J 23.9748 batch best 24.3703 sd 0.1099 active 17/64
+update   9 charged    63 best J 23.9748 batch best 24.1983 sd 0.1107 active 19/64
+update  10 charged    69 best J 23.7359 batch best 23.7359 sd 0.1123 active 20/64
+update  11 charged    75 best J 23.7359 batch best 24.3636 sd 0.1142 active 25/64
+update  12 charged    87 best J 23.7359 batch best 24.0238 sd 0.1151 active 19/64
+update  13 charged    99 best J 23.7359 batch best 24.2992 sd 0.1169 active 23/64
+update  14 charged   108 best J 22.8919 batch best 22.8919 sd 0.1144 active 18/64
+update  15 charged   117 best J 22.8919 batch best 23.4670 sd 0.1120 active 19/64
+update  16 charged   123 best J 22.8919 batch best 23.1881 sd 0.1107 active 23/64
+update  17 charged   141 best J 22.8919 batch best 24.3198 sd 0.1101 active 22/64
+update  18 charged   156 best J 22.8919 batch best 23.7592 sd 0.1105 active 21/64
+update  19 charged   165 best J 22.8919 batch best 24.8427 sd 0.1110 active 22/64
+update  20 charged   186 best J 22.8919 batch best 24.1277 sd 0.1134 active 20/64
+update  21 charged   210 best J 21.9393 batch best 21.9393 sd 0.1147 active 19/64
+update  22 charged   228 best J 21.9393 batch best 22.6202 sd 0.1152 active 16/64
+update  23 charged   249 best J 21.9393 batch best 23.7308 sd 0.1160 active 20/64
+update  24 charged   258 best J 21.9393 batch best 24.4356 sd 0.1148 active 21/64
+update  25 charged   270 best J 21.9393 batch best 23.6188 sd 0.1136 active 19/64
+update  26 charged   288 best J 21.9393 batch best 22.6020 sd 0.1142 active 21/64
+done: best J 21.9393, charged 300, candidates 441, cache hits 3

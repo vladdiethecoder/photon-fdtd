@@ -1,0 +1,37 @@
+design,scale,variant,silicon_cells,ports_connected,floating_silicon,enclosed_air,islands,width_violations,gap_violations,min_width,min_gap,feasible
+phase1 r_f 6,1,eroded,1525,true,0,0,0,0,0,12,12,true
+phase1 r_f 6,1,nominal,1706,true,0,0,0,0,0,12,12,true
+phase1 r_f 6,1,dilated,1887,true,0,0,0,0,0,10,12,true
+phase1 r_f 6,2,eroded,6113,true,0,0,0,0,6,24,1,false
+phase1 r_f 6,2,nominal,6835,true,0,0,0,0,0,24,24,true
+phase1 r_f 6,2,dilated,7557,true,0,0,0,10,0,2,24,false
+adjoint seed 5,1,eroded,2090,true,0,0,0,4,0,1,6,false
+adjoint seed 5,1,nominal,2286,true,0,0,0,0,0,1,6,true
+adjoint seed 5,1,dilated,2482,true,0,0,0,2,2,1,4,false
+adjoint seed 5,2,eroded,8354,true,0,0,0,2,5,6,1,false
+adjoint seed 5,2,nominal,9134,true,0,0,0,2,1,6,6,false
+adjoint seed 5,2,dilated,9914,true,0,0,0,7,1,2,2,false
+cma seed 5,1,eroded,1546,true,0,0,0,0,0,6,1,true
+cma seed 5,1,nominal,1752,true,0,0,0,0,0,1,1,true
+cma seed 5,1,dilated,1958,true,0,0,0,2,0,1,1,false
+cma seed 5,2,eroded,6186,true,0,0,0,4,12,6,1,false
+cma seed 5,2,nominal,7011,true,0,0,0,5,8,2,1,false
+cma seed 5,2,dilated,7836,true,0,0,0,16,7,2,1,false
+ppo seed 1,1,eroded,1450,true,0,0,0,0,1,6,2,false
+ppo seed 1,1,nominal,1631,true,0,0,0,0,0,6,6,true
+ppo seed 1,1,dilated,1812,true,0,0,0,0,0,6,6,true
+ppo seed 1,2,eroded,5802,true,0,0,0,3,10,6,2,false
+ppo seed 1,2,nominal,6528,true,0,0,0,3,0,4,10,false
+ppo seed 1,2,dilated,7254,true,0,0,0,9,0,1,10,false
+baseline bezier:0.45,1,eroded,1394,true,0,0,0,0,0,12,12,true
+baseline bezier:0.45,1,nominal,1565,true,0,0,0,0,0,12,12,true
+baseline bezier:0.45,1,dilated,1736,true,0,0,0,0,0,12,12,true
+baseline bezier:0.45,2,eroded,5571,true,0,0,0,0,8,18,2,false
+baseline bezier:0.45,2,nominal,6255,true,0,0,0,0,0,18,18,true
+baseline bezier:0.45,2,dilated,6939,true,0,0,0,8,0,2,18,false
+baseline arc,1,eroded,1428,true,0,0,0,0,0,12,10,true
+baseline arc,1,nominal,1609,true,0,0,0,0,0,12,10,true
+baseline arc,1,dilated,1790,true,0,0,0,0,0,12,10,true
+baseline arc,2,eroded,5711,true,0,0,0,0,8,24,2,false
+baseline arc,2,nominal,6435,true,0,0,0,0,0,24,24,true
+baseline arc,2,dilated,7159,true,0,0,0,8,0,2,24,false

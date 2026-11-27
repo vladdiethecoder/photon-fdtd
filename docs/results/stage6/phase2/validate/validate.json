@@ -1,0 +1,13 @@
+{
+  "designs": [
+    {"label": "adjoint seed 5", "geometry_ok": true, "gates": true, "robust": {"train15": [0.171125, 22.9928], "heldout61": [0.171817, 22.9928], "scale2": [0.168787, 23.2352]}, "variants_il_rl": {"train15": [[0.171125, 22.9928], [0.146399, 28.2391], [0.158473, 26.7323]], "heldout61": [[0.171817, 22.9928], [0.146399, 28.2391], [0.158473, 26.4398]], "scale2": [[0.168787, 23.2352], [0.146231, 28.5497], [0.158998, 27.1326]]}, "grid_change_il_db": [-0.002337, -0.000169, 0.000525], "grid_change_rl_db": [0.2423, 0.3106, 0.4003]},
+    {"label": "cma seed 5", "geometry_ok": true, "gates": false, "robust": {"train15": [0.578043, 21.7653], "heldout61": [0.578043, 21.7606], "scale2": [0.585999, 19.7529]}, "variants_il_rl": {"train15": [[0.578043, 21.7653], [0.430457, 23.4242], [0.365689, 23.7499]], "heldout61": [[0.578043, 21.7606], [0.430457, 23.4022], [0.365689, 23.7003]], "scale2": [[0.585999, 19.7529], [0.441762, 21.3729], [0.378350, 21.8373]]}, "grid_change_il_db": [0.007956, 0.011305, 0.012661], "grid_change_rl_db": [-2.0124, -2.0513, -1.9125]},
+    {"label": "ppo seed 1", "geometry_ok": true, "gates": true, "robust": {"train15": [0.326105, 22.7454], "heldout61": [0.326105, 22.7454], "scale2": [0.326165, 22.8083]}, "variants_il_rl": {"train15": [[0.326105, 26.0361], [0.231701, 27.3508], [0.199361, 22.7454]], "heldout61": [[0.326105, 26.0220], [0.231701, 27.3508], [0.199361, 22.7454]], "scale2": [[0.326165, 23.9059], [0.233174, 27.2404], [0.200412, 22.8083]]}, "grid_change_il_db": [0.000060, 0.001473, 0.001051], "grid_change_rl_db": [-2.1302, -0.1104, 0.0629]},
+    {"label": "baseline bezier:0.45", "geometry_ok": true, "gates": true, "robust": {"train15": [0.330621, 23.2054], "heldout61": [0.330621, 22.9964], "scale2": [0.329886, 23.1572]}, "variants_il_rl": {"train15": [[0.330621, 25.7568], [0.258621, 31.0983], [0.244532, 23.2054]], "heldout61": [[0.330621, 25.7480], [0.258621, 31.0728], [0.244532, 22.9964]], "scale2": [[0.329886, 27.9338], [0.258863, 32.8345], [0.247135, 23.1572]]}, "grid_change_il_db": [-0.000735, 0.000243, 0.002603], "grid_change_rl_db": [2.1770, 1.7362, -0.0482]}
+  ],
+  "win_tests": [
+    {"design": "adjoint seed 5", "baseline": "baseline bezier:0.45", "gains_db": [0.159496, 0.158803, 0.161099], "largest_abs_grid_change_db": 0.002603, "gates": true, "win": true},
+    {"design": "cma seed 5", "baseline": "baseline bezier:0.45", "gains_db": [-0.247422, -0.247422, -0.256113], "largest_abs_grid_change_db": 0.012661, "gates": false, "win": false},
+    {"design": "ppo seed 1", "baseline": "baseline bezier:0.45", "gains_db": [0.004516, 0.004516, 0.003721], "largest_abs_grid_change_db": 0.002603, "gates": true, "win": false}
+  ]
+}
