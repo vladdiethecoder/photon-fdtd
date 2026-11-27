@@ -742,3 +742,61 @@ fn stage6_geometry_and_bias_rules() {
         assert!(!gg.ports_connected && gg.gap_violations > 0 && !gg.feasible());
     }
 }
+
+// ---- RTL reference: fixed-point 1D Yee stencil ----
+
+/// src/fixed1d.rs (the bit-exact reference of rtl/yee1d.sv): the committed
+/// golden vectors equal a fresh run of yee1d_vectors. Local error: one fixed
+/// step from a state, against one f64 step (same quantised coefficients) from
+/// the same state, differs by at most 0.5 LSB in H (one rounding) and
+/// 0.5 + |CB| LSB <= 1 LSB in E (its own rounding plus the H rounding through
+/// the difference), at every step of the nominal case, which never saturates.
+/// The accumulated drift over 400 steps is printed (a lossless closed cavity,
+/// so rounding errors do not decay). The saturate case sets the sticky flag at
+/// step 59 and keeps every word inside 18 bits.
+#[test]
+fn fixed_point_yee1d_reference_and_vectors() {
+    use photon_fdtd::fixed1d::{CF, MAX, MIN, case, step_f64};
+    let dir = std::env::temp_dir().join(format!("yee1d_vectors_{}", std::process::id()));
+    let st = std::process::Command::new(env!("CARGO_BIN_EXE_yee1d_vectors")).arg("--out").arg(&dir).status().unwrap();
+    assert!(st.success());
+    for case_name in ["nominal", "saturate"] {
+        for f in ["cb.hex", "ch.hex", "src.hex", "e.hex", "h.hex", "ovf.hex", "meta.txt"] {
+            let a = std::fs::read(dir.join(case_name).join(f)).unwrap();
+            let b = std::fs::read(std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("rtl/vectors").join(case_name).join(f)).unwrap();
+            assert!(a == b, "rtl/vectors/{case_name}/{f} differs from the reference");
+        }
+    }
+    std::fs::remove_dir_all(&dir).unwrap();
+    let (mut y, _, src) = case(0.5);
+    let n = y.e.len();
+    let cbq: Vec<f64> = y.cb.iter().map(|&c| c as f64 / (1u64 << CF) as f64).collect();
+    let chq = y.ch as f64 / (1u64 << CF) as f64;
+    let (mut ef, mut hf) = (vec![0.0; n], vec![0.0; n]);
+    let (mut drift, mut local_e, mut local_h) = (0.0f64, 0.0f64, 0.0f64);
+    let lsb = 1.0 / 32768.0;
+    for &s in &src {
+        let (mut le, mut lh): (Vec<f64>, Vec<f64>) = (y.e.iter().map(|&v| v as f64 * lsb).collect(), y.h.iter().map(|&v| v as f64 * lsb).collect());
+        step_f64(&mut le, &mut lh, chq, &cbq, y.src, s as f64 * lsb);
+        y.step(s);
+        step_f64(&mut ef, &mut hf, chq, &cbq, y.src, s as f64 * lsb);
+        for i in 0..n {
+            local_e = local_e.max((y.e[i] as f64 * lsb - le[i]).abs() / lsb);
+            local_h = local_h.max((y.h[i] as f64 * lsb - lh[i]).abs() / lsb);
+            drift = drift.max((y.e[i] as f64 * lsb - ef[i]).abs().max((y.h[i] as f64 * lsb - hf[i]).abs()) / lsb);
+        }
+    }
+    println!("nominal: local error E {local_e:.3} LSB, H {local_h:.3} LSB; drift after 400 steps {drift:.1} LSB");
+    assert!(!y.ovf && local_h <= 0.5 && local_e <= 1.0);
+    let (mut y, _, src) = case(3.9);
+    let mut first = None;
+    for (k, &s) in src.iter().enumerate() {
+        y.step(s);
+        assert!(y.e.iter().chain(&y.h).all(|v| (MIN..=MAX).contains(v)));
+        if y.ovf && first.is_none() {
+            first = Some(k);
+        }
+    }
+    println!("saturate: first overflow at step {first:?}");
+    assert_eq!(first, Some(59));
+}

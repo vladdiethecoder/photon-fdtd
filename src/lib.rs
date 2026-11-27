@@ -16,6 +16,7 @@ pub mod adjoint;
 pub mod cpml;
 pub mod design;
 pub mod export;
+pub mod fixed1d;
 pub mod gpu;
 pub mod robust;
 pub mod sparams;
