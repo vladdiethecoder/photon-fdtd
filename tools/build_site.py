@@ -34,6 +34,7 @@ code,pre{font:13.5px/1.45 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
 pre{background:var(--card);padding:12px;overflow-x:auto;border-radius:6px}
 .hero{background:var(--card);border-radius:10px;padding:16px 18px;margin:14px 0}
 .scope{font-size:.95rem;color:var(--muted)}
+.stat{display:inline-block;margin-right:14px}
 .badge{display:inline-block;padding:1px 8px;border-radius:10px;font-size:.85rem;font-weight:600;color:#fff}
 .pass{background:var(--ok)}.fail{background:var(--bad)}.neutral{background:#666}
 table{border-collapse:collapse;width:100%;font-size:.93rem;margin:.6em 0;display:block;overflow-x:auto}
@@ -209,7 +210,7 @@ def main():
 <h1>photon-fdtd: a verified 2D FDTD solver and a robust inverse-designed bend</h1>
 <div class="hero">
 <p><strong>Result.</strong> {esc(rel['headline'])}</p>
-<p>Release gates (robust IL &lt; 0.50 dB and RL ≥ 22 dB over eroded, nominal and dilated masks; binary, connected, 5-cell width and gap): {badge(gates)} &nbsp; Win over the best tested conventional bend: {badge(bool(win and win['win']), 'WIN', 'NO WIN')} &nbsp; Layout certificate: {badge(cert['passed'])}</p>
+<p><span class="stat">Release gates (robust IL &lt; 0.50 dB and RL ≥ 22 dB over eroded, nominal and dilated masks; binary, connected, 5-cell width and gap): {badge(gates)}</span> <span class="stat">Win over the best tested conventional bend: {badge(bool(win and win['win']), 'WIN', 'NO WIN')}</span> <span class="stat">Layout certificate: {badge(cert['passed'])}</span></p>
 <p class="scope"><strong>Scope.</strong> 2D TMz model in natural units (Rust CPU and CUDA f64). Not a 3D silicon-on-insulator result, not fabrication-ready, and not a PDK signoff. The layout scale (1 cell = {cert['units']['cell_nm']} nm) is illustrative, not calibrated. Release candidate {esc(a.tag)}, solver revision <code>{esc(cert['solver_revision'][:12])}</code>.</p>
 </div>
 <div class="grid2">

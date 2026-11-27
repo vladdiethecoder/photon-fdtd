@@ -26,6 +26,7 @@ import argparse
 import hashlib
 import json
 import platform
+import shlex
 import struct
 import subprocess
 import sys
@@ -286,7 +287,7 @@ def main():
             "gates": "rules_ok is required on layer 1 (nominal); layers 2 and 3 are reported",
         },
         "checks": report,
-        "command": " ".join(["tools/check_layout.py"] + sys.argv[1:]),
+        "command": shlex.join(["tools/check_layout.py"] + sys.argv[1:]),
         "tools": {"python": platform.python_version(), "numpy": np.__version__},
     }
     text = json.dumps(cert, indent=2, sort_keys=True) + "\n"
