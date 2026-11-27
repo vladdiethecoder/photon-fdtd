@@ -30,15 +30,18 @@ pub fn l1_ball(r: i64) -> Vec<(i64, i64)> {
     (-r..=r).flat_map(|dy| (-r..=r).map(move |dx| (dx, dy))).filter(|&(dx, dy)| dx.abs() + dy.abs() <= r).collect()
 }
 
-/// A disk of integer diameter d. Odd d: centred on a cell; even d: centred on
-/// a cell corner (offsets with (dx + 1/2)^2 + (dy + 1/2)^2 <= (d / 2)^2).
+/// A disk that spans d cells. Odd d: the cell centres within (d - 1) / 2 of
+/// a cell centre (d = 5 is the Stage 5 L_min disk, `design::disk(4)`).
+/// Even d: the cell centres within sqrt(((d - 1) / 2)^2 + 1/4) of a cell
+/// corner, which includes the cells at (+-(d - 1) / 2, +-1/2) (d = 2: the
+/// 2 x 2 block).
 pub fn disk_d(d: usize) -> Vec<(i64, i64)> {
-    let r = d as f64 / 2.0;
-    let c = if d % 2 == 1 { 0.0 } else { 0.5 };
+    let h = (d as f64 - 1.0) / 2.0;
+    let (c, r2) = if d % 2 == 1 { (0.0, h * h) } else { (0.5, h * h + 0.25) };
     let m = d as i64;
     (-m..=m)
         .flat_map(|dy| (-m..=m).map(move |dx| (dx, dy)))
-        .filter(|&(dx, dy)| (dx as f64 + c).powi(2) + (dy as f64 + c).powi(2) <= r * r + 1e-9)
+        .filter(|&(dx, dy)| (dx as f64 + c).powi(2) + (dy as f64 + c).powi(2) <= r2 + 1e-9)
         .collect()
 }
 

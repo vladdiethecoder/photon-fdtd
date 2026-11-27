@@ -679,3 +679,66 @@ fn adjoint_reflection_gradient_matches_finite_differences() {
         }
     }
 }
+
+// ---- Stage 6: robust evaluator rules ----
+
+/// Geometry and bias rules of docs/stage6-protocol.md (sections 2 and 3) on
+/// cases with a known answer, at scale 1 and scale 2.
+#[test]
+fn stage6_geometry_and_bias_rules() {
+    use photon_fdtd::robust::{bias, connectivity, disk_d, geometry, l1_ball, width_gap_violations};
+    assert_eq!(l1_ball(1).len(), 5);
+    assert_eq!(l1_ball(2).len(), 13);
+    let mut a = disk_d(5);
+    let mut b = disk(4);
+    a.sort();
+    b.sort();
+    assert_eq!(a, b, "the 5-cell disk is the Stage 5 L_min disk");
+    let d10 = disk_d(10);
+    assert!(d10.iter().all(|&(x, y)| d10.contains(&(-1 - x, -1 - y))), "even disk is symmetric about its corner centre");
+    for scale in [1usize, 2] {
+        let base = PortSetup::standard(Geometry::Bend, scale);
+        let bx = DesignBox::for_bend(&base, 80 * scale, 8 * scale);
+        let n = bx.n;
+        let arc = bx.circular_arc();
+        let g = geometry(&bx, &arc, scale);
+        println!("scale {scale}: arc {g:?}");
+        assert!(g.feasible() && g.min_width == 12 * scale && g.enclosed_air == 0, "arc: width at the scan cap");
+        // Bias: eroded < nominal < dilated; the closing (erosion of the dilation) contains the arc.
+        let (e, d) = (bias(&bx, &arc, scale, false), bias(&bx, &arc, scale, true));
+        let area = |s: &[f64]| s.iter().filter(|&&v| v >= 0.5).count();
+        assert!(area(&e) < area(&arc) && area(&arc) < area(&d));
+        let closed = bias(&bx, &d, scale, false);
+        let added = closed.iter().zip(&arc).filter(|(c, a)| **c >= 0.5 && **a < 0.5).count();
+        // The exterior padding is not biased (protocol section 2), so the
+        // closing is extensive only away from the box edge.
+        let lost: Vec<usize> = (0..n * n).filter(|&k| arc[k] >= 0.5 && closed[k] < 0.5).collect();
+        let interior = |k: usize| (scale..n - scale).contains(&(k % n)) && (scale..n - scale).contains(&(k / n));
+        assert!(lost.iter().all(|&k| !interior(k)), "a closing keeps every interior arc cell");
+        println!("scale {scale}: closing adds {added} cells, drops {} edge cells next to the unbiased padding", lost.len());
+        assert!(added < 2 * n);
+        // A floating silicon square and a 3-native-cell line.
+        let mut s = arc.clone();
+        for q in 0..36 * scale * scale {
+            s[(5 * scale + q / (6 * scale)) * n + 50 * scale + q % (6 * scale)] = 1.0;
+        }
+        let (conn, floating, _) = connectivity(&bx, &s);
+        assert!(conn && floating == 1);
+        let mut thin = bx.sharp_l();
+        for a in 5 * scale..25 * scale {
+            for b in 40 * scale..43 * scale {
+                thin[b * n + a] = 1.0;
+            }
+        }
+        assert!(width_gap_violations(&bx, &thin, &disk_d(5 * scale)).0 > 0);
+        // A 3-native-cell air gap across the input slab breaks the ports and the gap rule.
+        let mut gap = bx.sharp_l();
+        for b in bx.margin..bx.margin + bx.core_w {
+            for a in 10 * scale..13 * scale {
+                gap[b * n + a] = 0.0;
+            }
+        }
+        let gg = geometry(&bx, &gap, scale);
+        assert!(!gg.ports_connected && gg.gap_violations > 0 && !gg.feasible());
+    }
+}

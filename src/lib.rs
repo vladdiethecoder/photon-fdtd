@@ -19,6 +19,7 @@ pub mod export;
 pub mod gpu;
 pub mod robust;
 pub mod sparams;
+pub mod stage6;
 pub mod verify;
 
 use rayon::prelude::*;
