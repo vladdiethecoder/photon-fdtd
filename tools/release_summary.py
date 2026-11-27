@@ -76,6 +76,12 @@ def main():
                 f"{geo.get('width_violations', '?')} width and {geo.get('gap_violations', '?')} gap violations (minimum width {geo.get('min_width', '?')} cells, "
                 f"minimum gap {geo.get('min_gap', '?')} cells): the projection-based length-scale control did not hold. "
                 "Earlier, a nominal-only 80 x 80 run (Stage 5 stretch, 0.0376 dB) also failed the 5-cell width rule; it is not a release target.")
+    cert_path = os.path.join(a.release, "bend80_certificate.json")
+    if os.path.exists(cert_path):
+        lay = json.load(open(cert_path))["checks"]["layers"]
+        failures += (f" Release design ({label}): the nominal mask meets every geometry rule, but the biased masks do not: eroded layer "
+                     f"{lay['2']['width_violations']} width and {lay['2']['gap_violations']} gap violations, dilated layer "
+                     f"{lay['3']['width_violations']} width and {lay['3']['gap_violations']} gap violations (reported, not gated).")
     out = {
         "design_label": label,
         "phase1_label": p1,

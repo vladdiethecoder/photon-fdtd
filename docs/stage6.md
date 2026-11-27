@@ -126,4 +126,76 @@ Regenerate:
 
 ## Phase 2: optimiser benchmark
 
-PHASE2_PLACEHOLDER
+All methods use the shared parts of protocol section 8: the 20 x 20 control grid, the initialisation set I1 to I5 (seed i starts from Ii), the robust binary score, the geometry gates, the `Scorer` cache, and a cap of 1200 charged forward-equivalents. The runs ran one after another on one RTX 5090.
+
+![Optimiser trade-offs](../release/tradeoff.svg)
+
+### Tuning allowance (reported separately)
+
+| Configuration | Best J at 300 (dB) | Charged | Wall time |
+|---|---|---|---|
+| adjoint_lr0.05 | 18.0850 | 289 | 184 s |
+| adjoint_lr0.10 | 19.6125 | 289 | 185 s |
+| cma_s0.15 | 21.2300 | 300 | 256 s |
+| cma_s0.30 | 15.0296 | 300 | 257 s |
+| ppo_lr0.02 | 21.9393 | 300 | 247 s |
+| ppo_lr0.05 | 20.0089 | 300 | 247 s |
+
+Chosen by the rule of section 8: adjoint learning rate 0.05, CMA-ES sigma0 0.3, PPO learning rate 0.05. Tuning cost: 1778 charged, 1377 s.
+
+### Production runs
+
+| Run | Best J (dB) | Charged | Forward solves | Adjoint solves | Cache hits | Wall time | Geometry-feasible candidates | Gate-passing candidates | T1 (charged / min) | T2 (charged / min) |
+|---|---|---|---|---|---|---|---|---|---|---|
+| adjoint 1 | 0.2074 | 1181 | 192 | 989 | 0 | 762 s | 21 / 22 | 15 | 110 / 1.2 | 822 / 8.8 |
+| adjoint 2 | 0.2166 | 1181 | 192 | 989 | 0 | 766 s | 21 / 22 | 20 | 55 / 0.6 | 932 / 10.1 |
+| adjoint 3 | 0.2612 | 1194 | 159 | 1035 | 0 | 770 s | 8 / 23 | 4 | 110 / 1.2 | - |
+| adjoint 4 | 0.2949 | 1188 | 153 | 1035 | 0 | 761 s | 6 / 23 | 5 | 55 / 0.6 | - |
+| adjoint 5 | 0.1711 | 1200 | 165 | 1035 | 0 | 774 s | 10 / 22 | 8 | 110 / 1.2 | 807 / 8.7 |
+| cma 1 | 2.9650 | 1200 | 1200 | 0 | 0 | 1144 s | 400 / 5130 | 0 | - | - |
+| cma 2 | 3.9520 | 1200 | 1200 | 0 | 0 | 1186 s | 400 / 6545 | 0 | - | - |
+| cma 3 | 1.8578 | 1200 | 1200 | 0 | 0 | 1048 s | 400 / 1882 | 0 | - | - |
+| cma 4 | 2.0659 | 1200 | 1200 | 0 | 0 | 1077 s | 400 / 2890 | 0 | - | - |
+| cma 5 | 0.8128 | 1200 | 1200 | 0 | 0 | 1058 s | 400 / 2222 | 0 | - | - |
+| ppo 1 | 0.3261 | 213 | 213 | 0 | 0 | 206 s | 71 / 20000 | 9 | 3 / 0.0 | - |
+| ppo 2 | 0.3310 | 153 | 153 | 0 | 0 | 156 s | 51 / 20000 | 1 | 18 / 0.2 | - |
+| ppo 3 | 0.4770 | 396 | 396 | 0 | 0 | 356 s | 132 / 20000 | 4 | 24 / 0.3 | - |
+| ppo 4 | 0.3766 | 261 | 261 | 0 | 0 | 245 s | 87 / 20000 | 9 | 3 / 0.0 | - |
+| ppo 5 | 0.5371 | 309 | 309 | 0 | 0 | 285 s | 103 / 20000 | 0 | - | - |
+
+Production total: 13276 charged, 10594 s (2.94 h). T1: the first scored mask that meets every gate on the training spectrum. T2: J <= 0.2306 dB (best tested baseline J 0.3306 dB minus 0.10 dB).
+
+| Method | Median best J (dB) | Range (dB) | Charged per run | T1 | T2 |
+|---|---|---|---|---|---|
+| discrete adjoint | 0.2166 | 0.1711 to 0.2949 | 1181 to 1200 | 5/5 | 3/5 |
+| CMA-ES | 2.0659 | 0.8128 to 3.9520 | 1200 to 1200 | 0/5 | 0/5 |
+| one-step PPO | 0.3766 | 0.3261 to 0.5371 | 153 to 396 | 4/5 | 0/5 |
+
+**Verdict.** discrete adjoint vs CMA-ES: discrete adjoint leads (the ranges of best J at the cap do not overlap); discrete adjoint vs one-step PPO: inconclusive (one-step PPO stopped below 90 % of the cap in at least one run); CMA-ES vs one-step PPO: inconclusive (one-step PPO stopped below 90 % of the cap in at least one run). one-step PPO runs ended at the 20000-candidate stop rule of stage6_bb, because most samples failed the geometry gates (free to score); that rule is in the committed binary but not in the protocol.
+
+### Cost accounting, cache, sensitivity
+
+- One adjoint iteration: 3 forward solves (one for each variant) and 11 + 12 adjoint solves (the T and R gradients of the worst variant). Charge: 12 (T gradient, which includes the forward solve of the worst variant) + 12 (R gradient, 12 adjoint solves; it reuses that forward solve, which is not charged again) + 2 (the other two forward solves) = 26, equal to the physical solves. A binary score costs 3 forward solves; a cache hit or a mask that fails a geometry gate costs 0.
+- Cache: the `Scorer` cache is keyed by the binary nominal mask and is the same for all methods. It had 0 hits in the production runs.
+- Sensitivity: the measured wall time of an adjoint solve is 0.852 times that of a forward solve (median over the five adjoint runs). The dotted line in panel A re-weights the adjoint solves with this ratio, which moves the adjoint curve to about 22.6 forward-equivalents for each iteration instead of 26.
+- The CMA-ES and PPO runs also spend wall time outside the FDTD solves, so their wall time is not proportional to the charged cost. Measured (wall time minus forward-solve time, divided by the candidates that failed the geometry gates): 1.5 ms for each such candidate for PPO, and 31 to 39 ms for CMA-ES, where this time also holds the covariance update and the eigen-decomposition of every generation.
+- Every PPO run stopped at the 20000-candidate stop rule of `stage6_bb` (153 to 396 charged): the policy moved to masks that fail the geometry gates, which cost nothing to score. That stop rule was in the binary committed before the production runs (`c786c38`), but not in the protocol. Comparisons with PPO are inconclusive at equal budget.
+
+### Finalists on the held-out sweep and grid
+
+| Finalist | Robust IL / RL training | Held-out 61 | Half-cell grid | Gates | Gain over Bezier k = 0.45 (train / 61 / half-cell) | Win |
+|---|---|---|---|---|---|---|
+| adjoint seed 5 | 0.1711 / 22.99 | 0.1718 / 22.99 | 0.1688 / 23.24 | pass | 0.1595 / 0.1588 / 0.1611 | yes |
+| cma seed 5 | 0.5780 / 21.77 | 0.5780 / 21.76 | 0.5860 / 19.75 | fail | -0.2474 / -0.2474 / -0.2561 | no |
+| ppo seed 1 | 0.3261 / 22.75 | 0.3261 / 22.75 | 0.3262 / 22.81 | pass | 0.0045 / 0.0045 / 0.0037 | no |
+| phase1 r_f 6 | 0.2737 / 22.50 | 0.2737 / 22.31 | 0.2724 / 22.59 | pass | 0.0569 / 0.0569 / 0.0575 | no |
+
+The finalist of each method is its lowest-J run on the training spectrum. Held-out validation cost: 125 s for the phase 2 finalists (`docs/results/stage6/phase2/validate.log`), 113 s for phase 1, and 155 s for the combined release validation, whose results are identical to both (`docs/results/stage6/release_validate/`).
+
+The release design is `adjoint seed 5`: the lowest training-set robust J among the designs that meet every gate. The protocol did not name the release design in advance. This rule was stated after the results were known, and it does not use held-out data. Its biased masks have 4 width violations (eroded) and 2 width and 2 gap violations (dilated); the protocol reports these and does not gate them.
+
+Regenerate the plots and tables:
+
+	tools/plot_stage6.py tradeoff docs/results/stage6/phase2/runs release/tradeoff.svg release/tradeoff.json --t2 0.2306
+	tools/plot_stage6.py spectra docs/results/stage6/release_validate release/spectra_heldout61.svg release/spectra_heldout61.json --designs "adjoint seed 5,phase1 r_f 6,baseline bezier:0.45,baseline arc"
+	tools/make_release.sh v0.6.0-rc1

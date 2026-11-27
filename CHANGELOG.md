@@ -28,14 +28,27 @@ Added
 - Plots, field movie, project page and release tooling (`tools/`).
 
 Results
-- Phase 1 design: robust worst-case IL 0.2737 dB, RL 22.31 dB on 61 held-out
-  wavelengths (0.2724 dB, 22.59 dB on the half-cell grid); passes every gate.
-- No win: the gain over the best tested conventional bend (Bezier k = 0.45,
-  0.3306 dB) is 0.057 dB, below the pre-registered 0.10 dB.
-- Failure mode: 23 of 25 scored masks of the phase 1 run broke the 5-cell rule;
-  the final relaxed iterate (0.0877 dB) is not feasible.
-- Layout certificate: passes ("layout-verified for the stated 2D rules").
-- Benchmark: BENCHMARK_CHANGELOG
+- Release design (adjoint, shared 20 x 20 representation, seed 5): robust
+  worst-case IL 0.1718 dB, RL 22.99 dB on 61 held-out wavelengths (0.1688 dB,
+  23.24 dB on the half-cell grid); passes every gate and beats the best tested
+  conventional bend (Bezier k = 0.45, 0.3306 dB) by 0.1595 / 0.1588 / 0.1611 dB
+  (training / held-out / half-cell grid). The protocol did not name the release
+  design; it is the lowest training-set J among the designs that pass every gate.
+- Full-resolution phase 1 design: robust IL 0.2737 dB, RL 22.31 dB held-out;
+  passes every gate; no win (gain 0.057 dB, below the pre-registered 0.10 dB).
+- Failure mode: 23 of 25 scored masks of the full-resolution run broke the
+  5-cell rule; the final relaxed iterate (0.0877 dB) is not feasible.
+- Benchmark (5 seeds, cap 1200 charged): adjoint median best J 0.2166 dB
+  (0.1711 to 0.2949), T1 5/5, T2 3/5; CMA-ES median 2.0659 dB (0.8128 to
+  3.9520), T1 0/5; one-step PPO median 0.3766 dB (0.3261 to 0.5371), T1 4/5,
+  T2 0/5, but every PPO run stopped at the 20000-candidate rule after 153 to
+  396 charged. Adjoint leads CMA-ES (ranges do not overlap); comparisons with
+  PPO are inconclusive at equal budget.
+- Layout certificates (release design and phase 1 design): pass
+  ("layout-verified for the stated 2D rules"); the biased masks of the release
+  design have 4 width (eroded) and 2 width + 2 gap (dilated) violations, which
+  are reported, not gated.
+- Clean-checkout receipts: `release/receipts/receipts.json`.
 
 Not verified
 - The RTL has not been simulated (no HDL simulator installed).

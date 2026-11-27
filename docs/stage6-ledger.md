@@ -41,8 +41,12 @@ Paths under `out/` are local working outputs. The release copies are under
 | Gate | Status | Artifact | Evidence |
 |---|---|---|---|
 | Tuning allowance (6 runs, cap 300, seed 0, sharp L) | done | `out/stage6/phase2/tuning/chosen.json` | best J at 300: adjoint lr 0.05 18.09 vs 0.10 19.61; CMA-ES sigma0 0.30 15.03 vs 0.15 21.23; PPO lr 0.05 20.01 vs 0.02 21.94 (no tuning run reached a feasible design below J 15); tuning cost 1778 charged, 1376 s wall |
-| Production (15 runs, cap 1200) | running | `out/stage6/phase2/runs/` | |
-| Finalist validation | open | `out/stage6/phase2/validate/` | |
+| Production (15 runs, cap 1200) | done | `docs/results/stage6/phase2/runs/` | 15/15 complete; adjoint median J 0.2166 dB (0.1711 to 0.2949); CMA-ES median 2.0659 dB, no run meets the gates; PPO median 0.3766 dB, all 5 runs stopped at the 20000-candidate rule after 153 to 396 charged (inconclusive) |
+| Cost accounting | done | `events.csv` and `summary.json` of each run | charged = physical solves (26 per adjoint iteration, 3 per score); forward and adjoint solves logged separately; cache hits 0; measured adjoint/forward wall-time ratio 0.852 |
+| Finalists on held-out sweep and grid | done | `docs/results/stage6/phase2/validate/` | adjoint seed 5: pass, win (0.1595 / 0.1588 / 0.1611 dB); CMA-ES seed 5: fail (RL 19.75 dB half-cell); PPO seed 1: pass, no win (0.0045 dB) |
+| Combined release validation | done | `docs/results/stage6/release_validate/` | identical to the phase 1 and phase 2 validation files (7/7 design entries) |
+| Release design choice | done (disclosed) | `release/release.json` | lowest training-set J among designs that pass every gate: adjoint seed 5; the rule was stated after the results; it does not use held-out data |
+| Lead plot: optimiser trade-offs | done | `release/tradeoff.svg`, `.png` | all 15 runs drawn; curves end where runs end; medians only while all 5 runs run; checked by eye |
 
 ## Phase 3: package and showcase
 
@@ -51,8 +55,8 @@ Paths under `out/` are local working outputs. The release copies are under
 | Lead plot: validated spectra | done | `release/spectra_heldout61.svg`, `.png` | `tools/plot_stage6.py spectra`; checked by eye: no curve crosses a gate |
 | Field movie from solver output | done | `out/stage6/movie/` (`field_movie`) | 150 frames, VP9 and H.264, poster; checked by eye: guided field through the bend |
 | Project page and portfolio index | done (draft) | `dist/site/` (`tools/build_site.py`) | 15 local links resolve; downloads byte-identical; JS renders 6 curves; play, pause, scrub (1.5 / 3.0 / 5.4 s) and MP4 fallback work with a Range-capable server (`tools/serve_site.py`); first screen correct at 1280 and 390 px |
-| Lead plot: optimiser trade-offs | open | `release/tradeoff.svg` | needs phase 2 |
-| Clean-checkout receipts | open | `release/receipts/` (`tools/clean_checkout_check.sh`) | runs after phase 2 (uses the GPU) |
+| Clean-checkout receipts | done | `release/receipts/receipts.json` | see the release-candidate commit; 24 tests pass, viewer builds, Stage 5 fixture identical, layouts rebuild byte-identical |
+| Layout of the release design | done (pass) | `release/bend80_certificate.json` | nominal: 0 violations, 0 symmetric difference; eroded: 4 width; dilated: 2 width, 2 gap (reported); negative control 178 cells |
 
 ## Phase 4: range
 

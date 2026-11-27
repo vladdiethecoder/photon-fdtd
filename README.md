@@ -50,10 +50,15 @@ The CPML and throughput results come from commit `921ccb35809a5872e2981425fb169f
 | Sharp 90-degree bend benchmark (lambda0 = 146 cells) | Measured: modal IL 3.748 dB, RL 6.69 dB, 36.4 % radiated | `bend_90_baseline_insertion_and_return_loss` |
 | Adjoint gradient of the modal bend transmission (2D TMz) | Verified against finite differences: per cell, directional (4 step sizes) and full chain, ratio within 1e-4 | `adjoint_gradient_matches_finite_differences` |
 | Inverse-designed bend, 48 x 48 box (2D TMz) | Verified under docs/stage5-protocol.md: worst IL 0.2586 dB, worst RL 23.36 dB (61 freqs); 0.33 dB better than the best conventional baseline, U = 0.0073 dB | `stage5_optimised_design_meets_gates`, docs/inverse-design.md |
+| Reflection adjoint (port 1) | Verified against finite differences: cosine 1.00000000, directional ratios within 5e-8 | `adjoint_reflection_gradient_matches_finite_differences` |
+| Robust 80 x 80 bend (2D TMz), Stage 6 | Verified under docs/stage6-protocol.md: robust IL 0.1718 dB, RL 22.99 dB (61 held-out wavelengths); 0.16 dB better than the best tested conventional bend; full-resolution run: no win | docs/stage6.md, `release/` |
+| Optimiser benchmark: adjoint, CMA-ES, one-step PPO | Measured, 5 seeds each: adjoint leads CMA-ES; PPO comparisons inconclusive (runs stopped early) | docs/stage6.md, `release/tradeoff.svg` |
+| GDSII and SVG layout export | Verified by an independent reader: zero symmetric difference, exact area, width, gap, connectivity, negative controls ("layout-verified for the stated 2D rules"; not PDK signoff) | `tools/check_layout.py`, `release/bend80_certificate.json` |
+| Fixed-point 1D Yee stencil (SystemVerilog) | Partial: the bit-exact Rust reference is tested; the RTL is not simulated (no HDL simulator installed) | `fixed_point_yee1d_reference_and_vectors`, docs/rtl.md |
 | CPML absorption of evanescent waves | Open. Not measured. | none |
 | Device selection, multi-GPU | Open. Device 0 is hard-coded. | none |
 
-Test suite result at commit 702b85c: 14 tests pass, 0 fail, 0 are ignored. The test binary ran for 11.5 s. `cargo test --release` does not build the GUI dependencies.
+Test suite result: see `release/receipts/receipts.json` (clean checkout of the release-candidate commit). `cargo test --release` does not build the GUI dependencies.
 
 ## CPML thickness
 
