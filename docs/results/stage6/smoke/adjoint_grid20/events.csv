@@ -1,0 +1,6 @@
+event,kind,charged,forward_solves,adjoint_solves,cache_hits,wall_s,forward_s,adjoint_s,j,geometry_ok,gates_ok,best_j,best_il,best_rl,note
+1,iter,26,3,23,0,17.055,2.227,14.827,NaN,0,0,NaN,NaN,NaN,beta 2 F 0.058712 worst 0
+2,score,29,6,23,0,19.590,4.749,14.827,0.324467,1,1,0.324467,0.324467,22.1174,it 0
+3,iter,55,9,46,0,36.609,6.968,29.625,NaN,0,0,0.324467,0.324467,22.1174,beta 4 F 0.093005 worst 2
+4,score,55,9,46,0,36.619,6.968,29.625,101.000000,0,0,0.324467,0.324467,22.1174,it 1
+5,score,55,9,46,1,36.620,6.968,29.625,101.000000,0,0,0.324467,0.324467,22.1174,final
