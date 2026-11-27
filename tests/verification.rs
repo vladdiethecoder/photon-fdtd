@@ -294,3 +294,106 @@ fn bend_90_baseline_insertion_and_return_loss() {
         assert!(s.s11_mode[k] + s.s21_mode[k] < 1.0 && s.s11_mode[k] > 0.0 && s.s21_mode[k] > 0.0);
     }
 }
+
+// ---- Stage 5: design region (src/design.rs) ----
+
+use photon_fdtd::design::{
+    ConicFilter, DesignBox, binary_fraction, densities, project, project_grad, pullback, single_cell_islands,
+};
+
+fn lcg(seed: &mut u64) -> f64 {
+    *seed = seed.wrapping_mul(6364136223846793005).wrapping_add(1442695040888963407);
+    (*seed >> 11) as f64 / (1u64 << 53) as f64
+}
+
+/// Filter and projection: partition of unity, exterior padding continues the
+/// slabs into the box, W^T is the transpose of W, and the chain-rule pullback
+/// matches central finite differences.
+#[test]
+fn design_filter_projection_and_pullback() {
+    let base = PortSetup::standard(Geometry::Bend, 1);
+    let bx = DesignBox::for_bend(&base, 48, 8);
+    let n = bx.n;
+    let f = ConicFilter::new(4.0);
+    // Partition of unity: a box full of silicon, with exterior silicon only in the slabs,
+    // stays 1 where the whole kernel lies in silicon.
+    let ones = f.apply(&bx, &vec![1.0; n * n]);
+    assert!((ones[(n / 2) * n + n / 2] - 1.0).abs() < 1e-12);
+    // The slab continues across the left box edge: filtered sharp L at the slab centre on a = 0.
+    let l = f.apply(&bx, &bx.sharp_l());
+    assert!(l[(bx.margin + bx.core_w / 2) * n] > 0.99, "slab pinched at the box edge");
+    // Transpose: <W x, y> = <x, W^T y> for the linear part.
+    let mut seed = 7u64;
+    let x: Vec<f64> = (0..n * n).map(|_| lcg(&mut seed)).collect();
+    let y: Vec<f64> = (0..n * n).map(|_| lcg(&mut seed)).collect();
+    let c = f.apply(&bx, &vec![0.0; n * n]);
+    let wx: Vec<f64> = f.apply(&bx, &x).iter().zip(&c).map(|(a, b)| a - b).collect();
+    let lhs: f64 = wx.iter().zip(&y).map(|(a, b)| a * b).sum();
+    let rhs: f64 = x.iter().zip(f.pullback(&bx, &y)).map(|(a, b)| a * b).sum();
+    assert!((lhs - rhs).abs() < 1e-10 * lhs.abs());
+    // Projection derivative and the full chain against finite differences (J = sum g_k rho_bar_k).
+    for &xv in &[0.1, 0.45, 0.5, 0.8] {
+        let h = 1e-6;
+        let fd = (project(xv + h, 8.0, 0.5) - project(xv - h, 8.0, 0.5)) / (2.0 * h);
+        assert!((fd - project_grad(xv, 8.0, 0.5)).abs() < 1e-6);
+    }
+    let g: Vec<f64> = (0..n * n).map(|_| lcg(&mut seed) - 0.5).collect();
+    let rho: Vec<f64> = (0..n * n).map(|_| lcg(&mut seed)).collect();
+    let analytic = pullback(&bx, &f, &rho, 8.0, &g);
+    let j = |r: &[f64]| densities(&bx, &f, r, 8.0).iter().zip(&g).map(|(a, b)| a * b).sum::<f64>();
+    let (mut dot, mut na, mut nf) = (0.0, 0.0, 0.0);
+    for k in (0..n * n).step_by(97) {
+        let (mut p, mut m) = (rho.clone(), rho.clone());
+        p[k] += 1e-6;
+        m[k] -= 1e-6;
+        let fd = (j(&p) - j(&m)) / 2e-6;
+        dot += fd * analytic[k];
+        na += analytic[k] * analytic[k];
+        nf += fd * fd;
+    }
+    assert!(dot / (na * nf).sqrt() > 0.999999, "pullback vs finite differences");
+}
+
+/// Fabrication metrics: binary fraction and isolated 1-cell islands.
+#[test]
+fn design_metrics_binary_fraction_and_islands() {
+    let base = PortSetup::standard(Geometry::Bend, 1);
+    let bx = DesignBox::for_bend(&base, 48, 8);
+    let n = bx.n;
+    for shape in [bx.sharp_l(), bx.circular_arc()] {
+        assert_eq!(binary_fraction(&shape), 1.0);
+        assert_eq!(single_cell_islands(&bx, &shape), 0);
+    }
+    let mut s = bx.sharp_l();
+    s[40 * n + 4] = 1.0; // isolated silicon pixel in the cladding
+    s[(bx.margin + 8) * n + 10] = 0.0; // isolated air pixel in the slab
+    assert_eq!(single_cell_islands(&bx, &s), 2);
+    let mut g = s.clone();
+    g[0] = 0.5;
+    assert!(binary_fraction(&g) < 1.0);
+}
+
+/// Forward evaluation: the box filled with the sharp L gives bit-identical
+/// modal S-parameters to the Stage 4 bend. The circular-arc baselines are
+/// recorded: in an 80 x 80 box (R = 64 cells) the band maximum IL is 0.258 dB
+/// and the band minimum RL 40.9 dB; in a 48 x 48 box (R = 32) 0.693 dB and 27.5 dB.
+#[test]
+fn design_box_forward_evaluation_and_baselines() {
+    let base = PortSetup::standard(Geometry::Bend, 1);
+    let reference = base.run(Run::Reference).unwrap();
+    let plain = base.sparams(&reference, &base.run(Run::Dut).unwrap());
+    let bx80 = DesignBox::for_bend(&base, 80, 8);
+    let l = base.clone().with_design(&bx80, &bx80.sharp_l());
+    let sl = l.sparams(&reference, &l.run(Run::Dut).unwrap());
+    assert_eq!(bit_mismatches(&sl.s21_mode, &plain.s21_mode), 0);
+    assert_eq!(bit_mismatches(&sl.s11_mode, &plain.s11_mode), 0);
+    for (n, il_max, rl_min) in [(80usize, 0.258, 40.91), (48, 0.693, 27.52)] {
+        let bx = DesignBox::for_bend(&base, n, 8);
+        let st = base.clone().with_design(&bx, &bx.circular_arc());
+        let s = st.sparams(&reference, &st.run(Run::Dut).unwrap());
+        let il = s.s21_mode.iter().map(|v| -db(*v)).fold(0.0, f64::max);
+        let rl = s.s11_mode.iter().map(|v| -db(*v)).fold(f64::INFINITY, f64::min);
+        println!("arc in {n} x {n}: band max IL {il:.3} dB, band min RL {rl:.2} dB");
+        assert!((il - il_max).abs() < 0.01 && (rl - rl_min).abs() < 0.1);
+    }
+}

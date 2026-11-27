@@ -186,6 +186,8 @@ pub struct PortSetup {
     pub nf: usize,
     pub src_x: usize,
     pub port1_x: usize,
+    /// Bend DUT only: eps of the design box cells (row-major, b * n + a).
+    pub design: Option<std::sync::Arc<(crate::design::DesignBox, Vec<f64>)>>,
 }
 
 /// Raw port data of one run.
@@ -282,6 +284,13 @@ pub fn port_flux(ea: &[(f64, f64)], eb: &[(f64, f64)], h: &[(f64, f64)], sign: f
 }
 
 impl PortSetup {
+    /// The bend with a design box: `rho_bar` per box cell (0 = air, 1 = silicon).
+    pub fn with_design(mut self, bx: &crate::design::DesignBox, rho_bar: &[f64]) -> Self {
+        let eps = rho_bar.iter().map(|&r| crate::design::DesignBox::eps(r)).collect();
+        self.design = Some(std::sync::Arc::new((bx.clone(), eps)));
+        self
+    }
+
     /// The standard setup at resolution `scale` (1: 16-cell slab).
     pub fn standard(geometry: Geometry, scale: usize) -> Self {
         let s = scale;
@@ -298,6 +307,7 @@ impl PortSetup {
             nf: 15,
             src_x: 10 + 40 * s,
             port1_x: 10 + 390 * s,
+            design: None,
         }
     }
 
@@ -397,6 +407,11 @@ impl PortSetup {
         let si = match (run, self.geometry) {
             (Run::Reference, _) | (Run::Dut, Geometry::Straight) => horizontal,
             (Run::Dut, Geometry::Bend) => {
+                if let Some(d) = &self.design
+                    && d.0.contains(i, j)
+                {
+                    return d.1[(j - d.0.y0) * d.0.n + (i - d.0.x0)];
+                }
                 let (x0, x1) = (self.corner_x(), self.corner_x() + self.core_w);
                 (horizontal && i < x1) || ((x0..x1).contains(&i) && j >= j0)
             }

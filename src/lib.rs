@@ -13,6 +13,7 @@
 //! exist only in the boundary strips.
 
 pub mod cpml;
+pub mod design;
 pub mod gpu;
 pub mod sparams;
 pub mod verify;
