@@ -1,18 +1,28 @@
-absorber reflection: test 512 x 512, reference 2048 x 2048, 1200 steps, point source at centre,
-Gaussian-sine lambda0 40 cells, t0 90 tau 30; probes 5 cells inside the absorber interface
-sponge 10 cells: reference exactly independent of its own walls (1 cell/step bound): true
-  normal (+x wall)   cell (496,256)  incident 7.026e-3  max|diff| 6.062e-4  R =  -21.3 dB (time max)   -21.2 dB (at f0)
-  diagonal (corner)  cell (496,496)  incident 5.936e-3  max|diff| 3.035e-3  R =   -5.8 dB (time max)    -5.5 dB (at f0)
-sponge 20 cells: reference exactly independent of its own walls (1 cell/step bound): true
-  normal (+x wall)   cell (486,256)  incident 7.168e-3  max|diff| 6.703e-4  R =  -20.6 dB (time max)   -17.1 dB (at f0)
-  diagonal (corner)  cell (486,486)  incident 6.065e-3  max|diff| 2.335e-3  R =   -8.3 dB (time max)    -7.6 dB (at f0)
-sponge 40 cells: reference exactly independent of its own walls (1 cell/step bound): true
-  normal (+x wall)   cell (466,256)  incident 7.515e-3  max|diff| 3.659e-4  R =  -26.3 dB (time max)   -26.4 dB (at f0)
-  diagonal (corner)  cell (466,466)  incident 6.353e-3  max|diff| 1.119e-3  R =  -15.1 dB (time max)   -15.1 dB (at f0)
-sponge 80 cells: reference exactly independent of its own walls (1 cell/step bound): true
-  normal (+x wall)   cell (426,256)  incident 8.351e-3  max|diff| 4.509e-5  R =  -45.4 dB (time max)   -57.0 dB (at f0)
-  diagonal (corner)  cell (426,426)  incident 7.059e-3  max|diff| 1.067e-4  R =  -36.4 dB (time max)   -47.9 dB (at f0)
-
-real	0m43.520s
-user	9m43.369s
-sys	0m29.424s
+square:  test 512 x 512, reference 2048 x 2048, source (256,256), 1200 steps
+grazing: test 1024 x 256, reference (3824, 3056), source (150,128), 1400 steps
+probes 5 cells inside the PML interface
+pulse A: Gaussian sine, lambda0 40 cells, t0 90 tau 30
+pulse B: Gaussian derivative (no DC), t0 45.02 tau 9.00; DFT metric at 1/40 cells^-1
+  N   m  kmax  amax pulse |   norm t  norm f0   corn t  corn f0   graz t  graz f0   (dB, time max / DFT at f0)
+  0   3     1  0.05     A |     -0.2    -15.7      4.9      5.0     -0.0      3.8
+  0   3     1  0.05     B |      1.3     -3.7      7.0      5.4     -0.0      2.9
+  4   3     1  0.05     A |    -43.0    -51.4    -38.3    -38.9    -23.0    -22.1
+  4   3     1  0.05     B |    -44.0    -47.4    -38.7    -37.0    -22.5    -22.1
+  6   3     1  0.05     A |    -65.7    -68.9    -61.6    -62.0    -36.9    -37.0
+  6   3     1  0.05     B |    -63.3    -66.7    -61.0    -59.8    -37.5    -37.0
+  7   3     1  0.05     A |    -76.2    -77.6    -77.8    -79.4    -46.0    -45.7
+  7   3     1  0.05     B |    -74.8    -74.8    -73.1    -75.2    -44.5    -45.8
+  8   3     1  0.05     A |    -81.1    -84.5    -80.2    -80.4    -56.2    -56.3
+  8   3     1  0.05     B |    -82.0    -83.9    -76.9    -75.0    -52.4    -56.3
+  9   3     1  0.05     A |    -90.6    -96.1    -85.6    -85.7    -65.0    -68.6
+  9   3     1  0.05     B |    -88.6    -93.2    -86.1    -90.1    -60.3    -68.6
+ 10   3     1  0.05     A |    -90.5    -91.5    -89.9    -90.9    -70.2    -73.8
+ 10   3     1  0.05     B |    -88.4    -91.2    -87.7    -96.2    -66.8    -73.7
+ 12   3     1  0.05     A |    -96.0    -95.6    -93.5    -95.5    -80.7    -80.3
+ 12   3     1  0.05     B |    -95.5    -95.4    -92.1   -104.4    -80.2    -80.4
+ 14   3     1  0.05     A |    -99.7    -98.9    -96.9   -100.7    -92.9    -92.9
+ 14   3     1  0.05     B |    -99.1    -98.8    -97.4   -105.9    -96.0    -93.0
+ 16   3     1  0.05     A |   -102.9   -102.0   -100.2   -103.8   -103.9   -105.2
+ 16   3     1  0.05     B |   -102.6   -102.2   -100.9   -102.0   -109.3   -105.2
+ 20   3     1  0.05     A |   -107.8   -106.9   -103.8   -104.4   -108.7   -124.9
+ 20   3     1  0.05     B |   -108.4   -106.9   -106.7   -102.9   -121.0   -124.7

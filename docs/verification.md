@@ -8,7 +8,7 @@ All verification code is in `src/verify.rs`. The `waveguide` binary prints the r
 
 Use `--release`. In a debug build, the CPU runs are very slow. To see the measured values, add `-- --nocapture`.
 
-At commit `160cfbb29b01fb1f351493c305fc157c57bd4038`, 7 tests pass. 0 tests fail, and 0 tests are ignored. The test binary runs for 27.8 s. `docs/results/test.log` has the full output.
+At commit `921ccb35809a5872e2981425fb169f3d2dd35507`, 10 tests pass. 0 tests fail, and 0 tests are ignored. The test binary runs for 12.4 s. `docs/results/test.log` has the full output.
 
 ## Tests
 
@@ -18,7 +18,10 @@ At commit `160cfbb29b01fb1f351493c305fc157c57bd4038`, 7 tests pass. 0 tests fail
 | `confinement_and_parity_1200x600` | The silicon strip holds the pulse. The all-air control spreads it. The GPU run matches the CPU run bit for bit. | See [Confinement criterion](#confinement-criterion), and 0 differing bits |
 | `confinement_and_parity_600x1200` | The same as the previous test, but the grid is taller than it is wide. A swapped nx or ny stride fails this test. | The same |
 | `bit_parity_serial_parallel_gpu_512x256` | After 500 steps, the serial CPU, rayon CPU and GPU fields are identical. | 0 differing bits for each pair |
-| `absorber_reflection_db` | Regression limit for the sponge reflection | normal < -25 dB, corner < -14 dB |
+| `bit_parity_cpml_corner_non_square_300x170` | A point source near a corner of a 300 x 170 grid puts field into both strip types and their overlap. After 800 steps, the three backends agree. | 0 differing bits in Ez. Also 0 in the four psi arrays (rayon vs serial). |
+| `absorber_reflection_db` | CPML gates at N = 10 for pulses A and B | normal <= -60 dB, corner <= -50 dB |
+| `absorber_reflection_grazing_db` | CPML gate at about 81 degrees, N = 10, pulses A and B | <= -50 dB |
+| `absorber_metric_detects_bare_pec` | With N = 0, the metric reports the reflection of bare PEC walls | normal and corner > -6 dB |
 | `large_grid_16384x20000_gpu_corners_match_cpu` | GPU offsets above 2^31 bytes are correct | 0 differing bits in two 25 x 25 corner patches |
 | `tall_grid_past_cuda_grid_y_limit_matches_cpu` | GPU rows above row 65535 get updates | 0 differing bits on all 4.48e6 cells |
 
@@ -37,56 +40,105 @@ Measured values:
 
 | Grid | Si band energy | Si probe | Air band energy | Air probe |
 |---|---|---|---|---|
-| 1200 x 600 | 0.9999 | 0.9939 | 0.0979 | 0.0704 |
-| 600 x 1200 | 0.9999 | 0.9796 | 0.0603 | 0.0454 |
+| 1200 x 600 | 0.9999 | 0.9933 | 0.0545 | 0.0677 |
+| 600 x 1200 | 0.9999 | 0.9791 | 0.0000 | 0.0451 |
+
+With the CPML, the all-air grid keeps only 6.44e-11 of its peak energy at t_end (1200 x 600). The air band-energy fraction is thus a ratio of residual values, and the 600 x 1200 value of 0.0000 has no physical meaning. The probe metric integrates over the full run and is the reliable air-control metric.
 
 ### Bit parity
 
-The CUDA kernels compile with `--fmad=false`. Thus NVRTC does not contract `a * b + c` into a fused multiply-add. Rust does not contract floating-point operations. Each kernel has the same order of operations as the CPU code, and the source amplitude comes from one host function. With these conditions, IEEE 754 arithmetic gives the same bits on both devices. The tests compare `f64::to_bits` and allow no difference.
+The CUDA kernels compile with `--fmad=false`. Thus NVRTC does not contract `a * b + c` into a fused multiply-add. Rust does not contract floating-point operations. Each kernel has the same order of operations as the CPU code, and the source amplitude comes from one host function.
+
+The CPML tables and strip index maps come from one `CpmlLayout`, which both backends receive. With these conditions, IEEE 754 arithmetic gives the same bits on both devices. The tests compare `f64::to_bits` and allow no difference.
+
+### Mutation runs
+
+Each mutation below was applied to the code and then removed. The table shows the tests that failed.
+
+| Mutation | Failed tests |
+|---|---|
+| GPU `psi_e_y`: `Ez -= cb psi` changed to `Ez += cb psi` | all parity tests, `absorber_reflection_db`, `absorber_reflection_grazing_db`, both corner and tall-grid tests |
+| GPU `psi_h_x`: a times 0.5 | all parity tests, `absorber_reflection_db`, both corner and tall-grid tests |
+| CPU `e_row`: y-strip Ez correction times 0 | all parity tests (6 failed) |
+| GPU `psi_e_x`: right-strip map shifted by one column | none |
+
+The last mutation is equivalent to the original code. The strip is W = N + 1 cells wide, and the extra column has a = 0. Thus a shift by one column applies the same nonzero corrections. The suite cannot detect an equivalent mutation, and no test needs to.
 
 ### Large GPU grid
 
-The grid has 16384 x 20000 cells. This is 3.28e8 cells. Each f64 array has 2.62 GB, and the 6 arrays use 15.7 GB of VRAM. `GpuYee::new` builds the coefficients in row blocks of about 32 MiB. Thus the host never holds a full-size array.
+The grid has 16384 x 20000 cells. This is 3.28e8 cells. Each f64 array has 2.62 GB, and the 4 full-grid arrays use 10.5 GB of VRAM. `GpuYee::new` builds `cb` in row blocks of about 32 MiB. Thus the host never holds a full-size array.
 
-The test puts an Ez impulse near each corner and runs 8 steps. The test then compares 25 x 25 patches with the same impulses on a 64 x 64 CPU grid. Near a corner, the coefficients of the two grids are the same, because the sponge depth uses only the distance to the nearest edge. The high-corner impulse is at a byte offset above 2^31, and the test asserts this condition. The test also counts the nonzero cells: the patches hold all 290 nonzero cells of the CPU grid.
+The test puts an Ez impulse near each corner and runs 8 steps with a 16-cell CPML. The test then compares 25 x 25 patches with the same impulses on a 64 x 64 CPU grid. Near a corner, the CPML tables and strips of the two grids are the same, because they depend only on the distance to the nearest walls. The high-corner impulse is at a byte offset above 2^31, and the test asserts this condition. The test also counts the nonzero cells: the patches hold all 290 nonzero cells of the CPU grid.
 
 The suggested grid of 16384 x 16385 does not cross 2^31 bytes in the updated cells. Only its last row is past 2^31 bytes, and this row is a PEC row that the update does not change. For this reason, the test uses ny = 20000.
 
 ### Rows above the CUDA gridDim.y limit
 
-CUDA limits gridDim.y to 65535. The kernels launch min(ny, 65535) rows of blocks and use a loop with a grid stride over the rows. The test uses a 64 x 70000 grid with a second source near the top row, and it compares all cells with the CPU. A mutation run confirmed that the test can fail: a loop that stops after one pass made the test fail, as expected.
+CUDA limits gridDim.y to 65535. The main kernels and the x-strip kernels launch min(ny, 65535) rows of blocks and use a loop with a grid stride over the rows. The test uses a 64 x 70000 grid with a second source near the top row, and it compares all cells with the CPU. In Stage 1, a mutation run confirmed that the test can fail: a loop that stops after one pass made the test fail.
 
 ## Absorber reflection
 
 Run the measurement:
 
 	cargo run --release --bin waveguide -- --check-pml
+	cargo run --release --bin waveguide -- --check-pml --sweep
 
 ### Method
 
-The measurement uses two all-air grids. Each grid has a point source at its centre and the same waveform: lambda0 = 40 cells, t0 = 90 and tau = 30. Each run has 1200 steps.
+Each case compares a test grid with a larger reference grid. Both grids have a point source and the same waveform. The two grids are the same, except for the boundary that the wave reaches in the test grid.
 
-- The test grid has 512 x 512 cells and the sponge under test.
-- The reference grid has 2048 x 2048 cells. The centre offset (768, 768) maps each test cell to a reference cell.
+| Geometry | Test grid | Source | Reference grid | Steps | Probes |
+|---|---|---|---|---|---|
+| Square | 512 x 512 | (256, 256) | 2048 x 2048, offset 768 | 1200 | normal: (nx-1-N-5, 256). Corner: (nx-1-N-5, ny-1-N-5). |
+| Grazing | 1024 x 256 | (150, 128) | 3824 x 3056, offset 1400 | 1400 | (850, N+5) |
 
-Each probe is 5 cells inside the sponge interface, on the interior side. One probe is on the centre row near the +x wall (normal incidence). The other probe is on the diagonal near the corner. The result for each probe is:
+Each probe is 5 cells inside the CPML interface, on the interior side. At the grazing probe, the direct wave arrives at about 81 degrees from the wall normal (atan(700 / 113) at N = 10). The probe also receives the waves from the other walls, so the result is the total boundary error at that cell.
+
+The result for each probe is:
 
 	R_dB    = 20 log10( max_t |Ez_test(t) - Ez_ref(t)| / max_t |Ez_ref(t)| )
-	R_f0_dB = 20 log10( |DFT(Ez_test - Ez_ref)(f0)| / |DFT(Ez_ref)(f0)| )
+	R_f0_dB = 20 log10( |DFT(Ez_test - Ez_ref)(f0)| / |DFT(Ez_ref)(f0)| ),  f0 = 1/40
 
-The reference must be exact. In the Yee stencil, a change moves at most one cell per step. This speed is faster than c, which is 0.7 cells per step. `reference_is_clean` checks each probe. For each probe, the path from the source to the reference sponge and back to the probe must be longer than 1200 cells. Thus the reference probe values do not depend on the reference walls. This independence is exact, not only below a tolerance.
+The reference must be exact. In the Yee stencil, a change moves at most one cell per step. This speed is faster than c, which is 0.7 cells per step. `reference_is_clean` checks each probe. For each probe, the path from the source to the reference CPML strip and back to the probe must be longer than the number of steps. Thus the reference probe values do not depend on the reference walls. This independence is exact, not only below a tolerance.
 
-### Results at commit 160cfbb
+Pulse A is the Gaussian sine of Stage 1. Pulse B is a differentiated Gaussian with no DC content. Its spectral peak is at 1/40, so it has tau = sqrt(2) * 40 / (2 pi) = 9.00 and t0 = 5 tau. Pulse B checks that a DC component does not change the result.
 
-| Sponge (cells) | Normal, time max | Normal, at f0 | Corner, time max | Corner, at f0 |
-|---|---|---|---|---|
-| 10 | -21.3 dB | -21.2 dB | -5.8 dB | -5.5 dB |
-| 20 | -20.6 dB | -17.1 dB | -8.3 dB | -7.6 dB |
-| 40 | -26.3 dB | -26.4 dB | -15.1 dB | -15.1 dB |
-| 80 | -45.4 dB | -57.0 dB | -36.4 dB | -47.9 dB |
+The GPU runs all traces. The parity tests show that the GPU result is bitwise equal to the CPU result.
 
-The scenarios use a 40-cell sponge. At 40 cells, the sponge reflects -26 dB at normal incidence and -15 dB near a corner. The request that started this measurement gives about -40 dB for simple grading or Mur, and below -80 dB for CPML. The sponge is below both of these levels. The waveguide confinement result is not sensitive to this reflection: at t_end, the energy of the all-air control is 4.54e-5 of its peak.
+### Results against thickness
 
-The first measurement found a defect. The H update did not apply the self coefficient ca, so the sponge had electric loss only and was not matched. With this defect, the 40-cell sponge gave -18.0 dB at normal incidence and -12.5 dB at the corner. Commit 160cfbb includes the correction.
+`docs/results/check_pml.log` has the full table with both metrics. The README gives the time-domain values. Summary, with the default profile:
 
-Hypothesis, not tested: most of the remaining normal-incidence reflection comes from the Hx and Hy coefficients. They use the cell centre, not the half-cell positions. Oblique incidence on an isotropic conductor causes the corner reflection. A CPML removes both causes.
+- N = 0 (bare PEC walls) gives -0.2 dB to +7.0 dB. Thus the metric detects a reflection.
+- N = 6 is the thinnest PML that meets -60 dB at normal incidence and -50 dB at the corner for both pulses.
+- N = 8 is the thinnest PML that also meets -50 dB at grazing incidence.
+- N = 10 (the default) gives -87.7 dB or lower at normal incidence and at the corner, and -66.8 dB or lower at grazing incidence.
+- From N = 8 to N = 14, pulse A and pulse B differ by less than 4 dB. At N >= 16 the difference is larger, but all values are below -100 dB. The DC component of pulse A does not change the conclusion.
+
+### Parameter sweep
+
+The sweep (`docs/results/check_pml_sweep.log`) has 160 profiles: N in {8, 10, 12, 16}, kappa_max in {1, 3, 5, 7, 11}, alpha_max in {0, 0.05, 0.1, 0.2} and m in {3, 4}. The table shows the effect of kappa_max at m = 3, alpha_max = 0.05. Each value is the worst case of pulses A and B.
+
+| N | kappa_max | Worst of normal and corner | Grazing |
+|---|---|---|---|
+| 10 | 1 | -87.7 dB | -66.8 dB |
+| 10 | 3 | -88.1 dB | -43.3 dB |
+| 10 | 5 | -87.6 dB | -40.4 dB |
+| 10 | 7 | -84.0 dB | -40.2 dB |
+| 10 | 11 | -64.8 dB | -41.9 dB |
+| 12 | 1 | -92.1 dB | -80.2 dB |
+| 12 | 7 | -91.7 dB | -50.9 dB |
+
+In the rows of this table, kappa_max > 1 makes the grazing reflection 23 to 30 dB worse. At the other probes, it improves the worst case by 0.4 dB or less. With alpha_max = 0.2, kappa_max > 1 improves the worst case of normal and corner by up to 17.7 dB. Those profiles are worse than the default at every probe. At each N in the sweep, the best profile (worst case of all probes and both pulses) has kappa_max = 1.
+
+The usual advice for kappa_max (5 to 11) is to absorb evanescent waves. The point source in this check is hundreds of cells from the walls, so its evanescent field at the walls is negligible.
+
+Hypothesis, not tested: kappa_max > 1 shortens the effective wavelength inside the CPML by the factor kappa. With 10 cells, the stretched field is then sampled too coarsely, and the discretization reflection increases. The effect is strongest at grazing incidence, where the wave crosses many cells along the wall.
+
+alpha_max at N = 10, kappa_max = 1 (worst of normal and corner, then grazing): 0 gives -88.6 dB and -63.8 dB. 0.05 gives -87.7 dB and -66.8 dB. 0.1 gives -71.9 dB and -67.5 dB. 0.2 gives -55.3 dB and -57.2 dB. The default 0.05 is the best compromise of these values.
+
+The default profile has kappa_max = 1. A problem with strong evanescent fields at the boundary (for example, a waveguide below cutoff that ends in the CPML) can need kappa_max > 1. No test measures that case.
+
+### History: the Stage 1 sponge
+
+v0.1.0 used a graded conductive sponge. At 40 cells, it gave -26.3 dB at normal incidence and -15.1 dB at the corner. The first measurement of the sponge found a defect: the H update did not apply the loss term. With this defect, the result was -18.0 dB and -12.5 dB. The CPML replaced the sponge and its per-cell coefficients `ca` and `hb`.
