@@ -135,6 +135,7 @@ def main():
     ap.add_argument("--out", required=True)
     ap.add_argument("--tag", default="v0.6.0-rc1")
     ap.add_argument("--fps", type=int, default=25)
+    ap.add_argument("--portfolio-href", default="../index.html", help="back link; empty: link to the source repository instead")
     a = ap.parse_args()
     out = os.path.join(a.out, "photon-fdtd")
     os.makedirs(os.path.join(out, "files"), exist_ok=True)
@@ -203,9 +204,10 @@ def main():
 <table><tr><th>method</th><th>runs</th><th>complete</th><th>median best J (dB)</th><th>range (dB)</th><th>charged per run</th><th>T1 runs</th><th>T2 runs</th><th>geometry-feasible / scored</th></tr>{trows}</table>
 <p>{esc(rel.get('benchmark_verdict', ''))}</p>"""
     poster_note = f"Ez at lambda0 = {movie['lambda0_cells']:g} cells, {movie['frames']} frames, {movie['steps_per_frame']} steps per frame; red +Ez, blue −Ez, grey silicon."
+    back = f'<a href="{esc(a.portfolio_href)}">← portfolio</a>' if a.portfolio_href else f'<a href="{REPO}">source on GitHub</a>'
     page = f"""<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>photon-fdtd: robust inverse-designed waveguide bend (2D TMz)</title><style>{CSS}</style></head><body><main>
-<p><a href="../index.html">← portfolio</a></p>
+<p>{back}</p>
 <h1>photon-fdtd: a verified 2D FDTD solver and a robust inverse-designed bend</h1>
 <div class="hero">
 <p><strong>Result.</strong> {esc(rel['headline'])}</p>

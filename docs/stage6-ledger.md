@@ -70,5 +70,5 @@ Paths under `out/` are local working outputs. The release copies are under
 
 ## Commits
 
-- Code and results tested by the receipts: `d9f6957`.
-- After it: `release/receipts/`, `release/release.json` (test count), `release/SHA256SUMS`, the benchmark-table header text in `tools/build_site.py`, and this ledger. None of them changes the solver, the tests, or the layout files.
+- Code and results tested by the final receipts: `48d6220` (clean clone: 24 tests pass, both builds, Stage 5 fixture identical, layouts byte-identical, RTL testbench 2 of 2).
+- After it: `release/receipts/`, `release/release.json`, `release/SHA256SUMS`, the `--portfolio-href` option of `tools/build_site.py` (page back link for GitHub Pages), and this ledger. None of them changes the solver, the tests, the RTL, or the layout files.

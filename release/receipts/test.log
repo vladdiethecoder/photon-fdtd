@@ -1,5 +1,5 @@
-   Compiling photon-fdtd v0.6.0-rc.1 (/run/media/vdubrov/NVMe-Storage/.tmp/photon-fdtd-clean-d9f6957956579b92484a48feded0908083a6d622)
-    Finished `release` profile [optimized] target(s) in 8.90s
+   Compiling photon-fdtd v0.6.0-rc.1 (/run/media/vdubrov/NVMe-Storage/.tmp/photon-fdtd-clean-48d62201845fb49ef98598e5a264f34a3cbd1907)
+    Finished `release` profile [optimized] target(s) in 9.33s
      Running unittests src/lib.rs (target/release/deps/photon_fdtd-3ccd942c0aed8d5f)
 
 running 0 tests
@@ -115,8 +115,8 @@ test cfl_guard_rejects_courant_above_2d_limit ... ok
 test design_metrics_binary_fraction_and_islands ... ok
 test export_gds_round_trip_matches_mask ... ok
 nominal: N 64, T 400, max |fixed - f64| 4.396e-3 (144.1 LSB), first overflow step None
-saturate: N 64, T 400, max |fixed - f64| 3.911e0 (128149.0 LSB), first overflow step Some(59)
 test design_filter_projection_and_pullback ... ok
+saturate: N 64, T 400, max |fixed - f64| 3.911e0 (128149.0 LSB), first overflow step Some(59)
 test fixed_point_yee1d_reference_and_vectors ... ok
 test slab_mode_grid_dispersion_is_second_order ... ok
 test gpu_viewer_kernels_paint_render_reset ... ok
@@ -126,21 +126,21 @@ test large_grid_16384x20000_gpu_corners_match_cpu ... ok
 test absorber_metric_detects_bare_pec ... ok
 test bit_parity_cpml_corner_non_square_300x170 ... ok
 test tall_grid_past_cuda_grid_y_limit_matches_cpu ... ok
-test absorber_reflection_db ... ok
 test confinement_and_parity_600x1200 ... ok
 test confinement_and_parity_1200x600 ... ok
+test absorber_reflection_db ... ok
 test absorber_reflection_grazing_db ... ok
 test straight_guide_mode_energy_balance_and_cpml_reflection ... ok
 test bend_90_baseline_insertion_and_return_loss ... ok
-test stage5_optimised_design_meets_gates ... ok
 test stage5_feature_check_and_best_baseline ... ok
+test stage5_optimised_design_meets_gates ... ok
 test design_box_forward_evaluation_and_baselines ... ok
 test adjoint_gradient_matches_finite_differences has been running for over 60 seconds
 test adjoint_reflection_gradient_matches_finite_differences has been running for over 60 seconds
 test adjoint_gradient_matches_finite_differences ... ok
 test adjoint_reflection_gradient_matches_finite_differences ... ok
 
-test result: ok. 24 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 92.55s
+test result: ok. 24 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 95.65s
 
    Doc-tests photon_fdtd
 
