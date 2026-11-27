@@ -119,8 +119,8 @@
     }
   },
   "claim": "layout-verified for the stated 2D rules",
-  "command": "tools/check_layout.py release/bend80_phase1 --design-revision '5cacc419b217e42db56f0cb423b7937ceb95c6ef docs/results/stage6/release_validate/phase1_r_f_6_s1.mask' --extra docs/results/stage6/release_validate/phase1_r_f_6_s1.mask --cert release/bend80_phase1_certificate.json",
-  "design_revision": "5cacc419b217e42db56f0cb423b7937ceb95c6ef docs/results/stage6/release_validate/phase1_r_f_6_s1.mask",
+  "command": "tools/check_layout.py release/bend80_phase1 --design-revision '0eca8cb75234a37500e47957bc00889d9fba5a1f docs/results/stage6/release_validate/phase1_r_f_6_s1.mask' --extra docs/results/stage6/release_validate/phase1_r_f_6_s1.mask --cert release/bend80_phase1_certificate.json",
+  "design_revision": "0eca8cb75234a37500e47957bc00889d9fba5a1f docs/results/stage6/release_validate/phase1_r_f_6_s1.mask",
   "files_sha256": {
     "docs/results/stage6/release_validate/phase1_r_f_6_s1.mask": "a175d9a9cc74cacec7a4c5991faa3ff512da86747eb9d1939a75551dcd198c01",
     "release/bend80_phase1.gds": "8a0ee93ac4d51450ef59d22e9d1dd47df921f904518a41fb5b9fe3bb04eaf150",
@@ -169,7 +169,7 @@
     "parity": "zero symmetric difference between the imported raster and the source mask, at cell centres",
     "width_gap": "opening and closing with the disk dx^2 + dy^2 <= 4 (5 cells across) change no design-box cell"
   },
-  "solver_revision": "5cacc419b217e42db56f0cb423b7937ceb95c6ef",
+  "solver_revision": "0eca8cb75234a37500e47957bc00889d9fba5a1f",
   "solver_tree_dirty": false,
   "tools": {
     "numpy": "2.5.4",
