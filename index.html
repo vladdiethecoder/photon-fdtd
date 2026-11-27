@@ -33,12 +33,12 @@ figcaption{font-size:.9rem;color:var(--muted)}
 .toggles label{margin-right:14px;white-space:nowrap}
 footer{margin-top:3em;font-size:.85rem;color:var(--muted)}
 </style></head><body><main>
-<p><a href="https://github.com/vladdiethecoder/photon-fdtd">source on GitHub</a></p>
+<p><a href="https://vladdiethecoder.github.io/">← portfolio</a></p>
 <h1>photon-fdtd: a verified 2D FDTD solver and a robust inverse-designed bend</h1>
 <div class="hero">
 <p><strong>Result.</strong> The best validated 80 x 80 inverse-designed bend (adjoint seed 5, shared 20 x 20 representation) meets the release gates on the training spectrum, the 61-wavelength held-out spectrum and the half-cell grid (worst case over eroded, nominal and dilated masks: IL 0.1718 dB, RL 22.99 dB held-out; gates IL &lt; 0.50 dB, RL &gt;= 22 dB), and beats the best tested conventional bend (bezier:0.45, robust IL 0.3306 dB) by 0.1595 / 0.1588 / 0.1611 dB (training / 61 held-out / half-cell grid), more than the largest measured grid change (0.0026 dB). The full-resolution phase 1 run (phase1 r_f 6; bend80_phase1.gds, kept as the record of the unconstrained-grid failure mode) meets the release gates on the training spectrum, the 61-wavelength held-out spectrum and the half-cell grid (worst case over eroded, nominal and dilated masks: IL 0.2737 dB, RL 22.31 dB held-out; gates IL &lt; 0.50 dB, RL &gt;= 22 dB), but does not beat the best tested conventional bend (bezier:0.45, robust IL 0.3306 dB) by the required 0.10 dB: the gain is 0.0569 / 0.0569 / 0.0575 dB. The release design was chosen by the lowest training-set robust J among the designs that meet every gate; the protocol did not name it in advance, and the choice does not use held-out data.</p>
 <p><span class="stat">Release gates (robust IL &lt; 0.50 dB and RL ≥ 22 dB over eroded, nominal and dilated masks; binary, connected, 5-cell width and gap): <span class="badge pass">PASS</span></span> <span class="stat">Win over the best tested conventional bend: <span class="badge pass">WIN</span></span> <span class="stat">Layout certificate: <span class="badge pass">PASS</span></span></p>
-<p class="scope"><strong>Scope.</strong> 2D TMz model in natural units (Rust CPU and CUDA f64). Not a 3D silicon-on-insulator result, not fabrication-ready, and not a PDK signoff. The layout scale (1 cell = 10 nm) is illustrative, not calibrated. Release candidate v0.6.0-rc1, solver revision <code>0eca8cb75234</code>.</p>
+<p class="scope"><strong>Scope.</strong> 2D TMz model in natural units (Rust CPU and CUDA f64). Not a 3D silicon-on-insulator result, not fabrication-ready, and not a PDK signoff. The layout scale (1 cell = 10 nm) is illustrative, not calibrated. Release candidate v0.6.0, solver revision <code>0eca8cb75234</code>.</p>
 </div>
 <div class="grid2">
 <figure><img src="files/bend80.svg" alt="Optimised 80 by 80 bend, nominal silicon mask"><figcaption>Nominal mask with a 16-cell halo of the input and output slabs (white = silicon). Manhattan cell-edge contours.</figcaption></figure>
@@ -80,13 +80,13 @@ footer{margin-top:3em;font-size:.85rem;color:var(--muted)}
 <table><tr><th>file</th><th>size</th><th>SHA-256</th></tr><tr><td><a href="files/bend80.gds" download>bend80.gds</a></td><td>3,668 B</td><td><code>dd688da9a04bbab0…</code></td></tr><tr><td><a href="files/bend80.svg" download>bend80.svg</a></td><td>1,274 B</td><td><code>1e0117ba58345b47…</code></td></tr><tr><td><a href="files/bend80_certificate.json" download>bend80_certificate.json</a></td><td>6,396 B</td><td><code>df24c923c63fbb94…</code></td></tr><tr><td><a href="files/bend80_phase1.gds" download>bend80_phase1.gds</a></td><td>4,100 B</td><td><code>8a0ee93ac4d51450…</code></td></tr><tr><td><a href="files/bend80_phase1.svg" download>bend80_phase1.svg</a></td><td>1,372 B</td><td><code>8fc4e4991515e34a…</code></td></tr><tr><td><a href="files/bend80_phase1_certificate.json" download>bend80_phase1_certificate.json</a></td><td>6,448 B</td><td><code>dae9d64989caca83…</code></td></tr><tr><td><a href="files/spectra_heldout61.svg" download>spectra_heldout61.svg</a></td><td>19,036 B</td><td><code>a4c15b559d053092…</code></td></tr><tr><td><a href="files/tradeoff.svg" download>tradeoff.svg</a></td><td>2,873,015 B</td><td><code>b9cd0aa5e184889f…</code></td></tr><tr><td><a href="files/spectra_heldout61.png" download>spectra_heldout61.png</a></td><td>161,936 B</td><td><code>7287e72bdcadf090…</code></td></tr><tr><td><a href="files/tradeoff.png" download>tradeoff.png</a></td><td>154,717 B</td><td><code>60130f98d8fbe200…</code></td></tr></table>
 
 <h2>Reproduce</h2>
-<pre>git clone https://github.com/vladdiethecoder/photon-fdtd && cd photon-fdtd && git checkout v0.6.0-rc1
+<pre>git clone https://github.com/vladdiethecoder/photon-fdtd && cd photon-fdtd && git checkout v0.6.0
 cargo test --release                      # 24 passed, 0 failed
 cargo run --release --bin stage6_baselines -- --out out/stage6/baselines
 tools/stage6_phase1.sh                    # phase 1 optimiser and held-out validation
 tools/stage6_phase2.sh                    # phase 2 benchmark (about 4 to 5 hours on one RTX 5090)
 tools/make_release.sh                     # layout export, certificate, plots, this page</pre>
-<p>Protocol (fixed before the production runs): <a href="https://github.com/vladdiethecoder/photon-fdtd/blob/v0.6.0-rc1/docs/stage6-protocol.md">docs/stage6-protocol.md</a>. Progress ledger: <a href="https://github.com/vladdiethecoder/photon-fdtd/blob/v0.6.0-rc1/docs/stage6-ledger.md">docs/stage6-ledger.md</a>.</p>
+<p>Protocol (fixed before the production runs): <a href="https://github.com/vladdiethecoder/photon-fdtd/blob/v0.6.0/docs/stage6-protocol.md">docs/stage6-protocol.md</a>. Progress ledger: <a href="https://github.com/vladdiethecoder/photon-fdtd/blob/v0.6.0/docs/stage6-ledger.md">docs/stage6-ledger.md</a>.</p>
 
 <section class="limits" id="limitations"><h2>Limitations &amp; Failure Modes</h2>
 <ul>
@@ -97,7 +97,7 @@ tools/make_release.sh                     # layout export, certificate, plots, t
 <li><strong>Known failures kept in the record.</strong> Phase 1: 23 of 25 scored masks of the r_f 6 run failed the geometry gates; the chosen design is the scored mask of it 3, of 96 iterations. The final relaxed iterate (post-hoc diagnostic, not a candidate) reaches a robust IL of 0.0877 dB and RL 24.41 dB held-out, but its nominal mask has 1 floating silicon component, 8 width and 11 gap violations (minimum width 2 cells, minimum gap 3 cells): the projection-based length-scale control did not hold. Earlier, a nominal-only 80 x 80 run (Stage 5 stretch, 0.0376 dB) also failed the 5-cell width rule; it is not a release target. Release design (adjoint seed 5): the nominal mask meets every geometry rule, but the biased masks do not: eroded layer 4 width and 0 gap violations, dilated layer 2 width and 2 gap violations (reported, not gated).</li>
 <li><strong>Not verified.</strong> RTL: the SystemVerilog stencil is bit-exact with its software reference in Verilator on two test cases only; no synthesis figures. No Lean proof in this release candidate. The layout scale is illustrative. The independent layout reader is a second implementation by the same author, not a commercial DRC tool.</li>
 </ul></section>
-<footer>photon-fdtd v0.6.0-rc1 · generated by tools/build_site.py from the release files · <a href="https://github.com/vladdiethecoder/photon-fdtd">source</a></footer>
+<footer>photon-fdtd v0.6.0 · generated by tools/build_site.py from the release files · <a href="https://github.com/vladdiethecoder/photon-fdtd">source</a></footer>
 </main>
 <script>const FPS = 25;</script><script>
 (function(){
